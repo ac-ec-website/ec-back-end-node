@@ -1,0 +1,17 @@
+{
+  "name": "ec-website-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "set \"NODE_ENV=development\" && node app.js",
+    "dev": "set \"NODE_ENV=development\" && nodemon app.js",
+    "test": "set \"NODE_ENV=test\" && mocha --exit --timeout 5000 --recursive \"test/**/*.js\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

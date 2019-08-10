@@ -1,0 +1,19 @@
+{
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": false,
+  "editor.renderControlCharacters": true,
+  "editor.renderWhitespace": "none",
+  "editor.tabSize": 2,
+  "editor.wordWrap": "on",
+  "liveServer.settings.donotShowInfoMsg": true,
+  "window.zoomLevel": 0,
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "prettier.printWidth": 100,
+  "prettier.singleQuote": true,
+  "prettier.semi": false,
+}
