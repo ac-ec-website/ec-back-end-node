@@ -11,7 +11,8 @@
     "password": "password",
     "database": "ec_website_api_test",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "logging": false
   },
   "production": {
     "use_env_variable": "DATABASE_URL",
