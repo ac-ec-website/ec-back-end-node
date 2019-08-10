@@ -23,6 +23,9 @@ module.exports = {
       cost_price: {
         type: Sequelize.INTEGER
       },
+      origin_price: {
+        type: Sequelize.INTEGER
+      },
       sell_price: {
         type: Sequelize.INTEGER
       },
