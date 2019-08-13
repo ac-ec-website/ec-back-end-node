@@ -1,7 +1,7 @@
 'use strict'
 module.exports = (sequelize, DataTypes) => {
-  const payment = sequelize.define(
-    'payment',
+  const Payment = sequelize.define(
+    'Payment',
     {
       params: DataTypes.TEXT,
       sn: DataTypes.INTEGER,
@@ -12,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   )
-  payment.associate = function(models) {
+  Payment.associate = function(models) {
     Payment.belongsTo(models.Order)
   }
-  return payment
+  return Payment
 }
