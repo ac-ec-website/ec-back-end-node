@@ -6,6 +6,10 @@ const port = process.env.PORT || 3000
 
 const cors = require('cors')
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 // 處理跨域問題
 const origin = [
   'http://localhost:8080',
@@ -20,6 +24,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions))
 app.use(bodyParser.json())
+app.use('/upload', express.static(__dirname + '/upload'))
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`)

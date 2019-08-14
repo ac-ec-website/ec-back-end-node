@@ -1,2 +1,6 @@
 node_modules
 .nyc_output
+
+temp/
+upload/
+.env
