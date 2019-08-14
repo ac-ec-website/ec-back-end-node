@@ -35,6 +35,34 @@ describe('#Product Controller', () => {
     })
   })
 
+  describe('GET /api/products/:id', () => {
+    before(async function() {
+      // 在所有測試開始前會執行的程式碼區塊
+      await db.Product.destroy({ where: {}, truncate: true })
+
+      await db.Product.create({ name: 'product1' })
+    })
+
+    it('取得特定產品資訊', done => {
+      request(app)
+        .get('/api/products/1')
+        .set('Accept', 'application/json')
+        .expect(200)
+        .end(function(err, res) {
+          if (err) return done(err)
+          expect(res.body.product.id).to.be.equal(1)
+          expect(res.body.product.name).to.be.equal('product1')
+
+          done()
+        })
+    })
+
+    after(async function() {
+      // 在所有測試結束後會執行的程式碼區塊
+      await db.Product.destroy({ where: {}, truncate: true })
+    })
+  })
+
   // describe('POST /api/products', () => {
   //   before(async function () {
   //     // 在所有測試開始前會執行的程式碼區塊

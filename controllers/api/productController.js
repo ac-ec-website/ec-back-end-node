@@ -9,6 +9,13 @@ const productController = {
     return res.json({
       products
     })
+  },
+  getProduct: async (req, res) => {
+    const product = await Product.findByPk(req.params.id)
+
+    return res.json({
+      product
+    })
   }
 }
 
