@@ -7,7 +7,9 @@
     "start": "set \"NODE_ENV=development\" && node app.js",
     "dev": "set \"NODE_ENV=development\" && nodemon app.js",
     "test": "set \"NODE_ENV=test\" && nyc mocha --exit --timeout 5000 --recursive \"tests/**/*.js\"",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "dev-ginger": "set \"NODE_ENV=ginger-dev\" && node app.js",
+    "test-local": "set \"NODE_ENV=ginger-test\" && nyc mocha --exit --timeout 5000 --recursive \"tests/**/*.js\""
   },
   "keywords": [],
   "author": "",
@@ -23,7 +25,9 @@
     "pg": "^7.12.1",
     "sequelize": "^5.13.0",
     "sequelize-cli": "^5.5.0",
+    "sequelize-test-helpers": "^1.1.2",
     "sinon": "^7.4.1",
+    "sinon-chai": "^3.3.0",
     "supertest": "^4.0.2"
   }
 }
