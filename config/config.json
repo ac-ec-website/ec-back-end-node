@@ -21,5 +21,20 @@
     "dialectOptions": {
       "ssl": true
     }
+  },
+  "ginger-dev": {
+    "username": "root",
+    "database": "ec_website_api",
+    "host": "192.168.99.100",
+    "port": "32768",
+    "dialect": "mysql"
+  },
+  "ginger-test": {
+    "username": "root",
+    "database": "ec_website_api_test",
+    "host": "192.168.99.100",
+    "port": "32768",
+    "dialect": "mysql",
+    "logging": false
   }
 }
