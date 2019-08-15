@@ -14,6 +14,40 @@ const cartController = {
     return res.json({
       cart
     })
+  },
+  // 增加購物車內商品數量
+  addItemToCart: async (req, res) => {
+    try {
+      const cartItem = await CartItem.findAll({
+        where: { CartId: req.params.cartId, id: req.params.id }
+      })
+
+      cartItem[0].quantity += 1
+      cartItem[0].save()
+
+      await res.json({
+        cartItem
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  // 減少購物車內商品數量
+  subItemFromCart: async (req, res) => {
+    try {
+      const cartItem = await CartItem.findAll({
+        where: { CartId: req.params.cartId, id: req.params.id }
+      })
+
+      cartItem[0].quantity -= 1
+      cartItem[0].save()
+
+      await res.json({
+        cartItem
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 
