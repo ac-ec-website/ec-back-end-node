@@ -7,7 +7,7 @@ const app = require('../../app')
 const db = require('../../models')
 
 describe('#Cart Controller', () => {
-  describe('GET /api/cart/1', () => {
+  describe('GET /api/cart/1 - 查看購物車內容', () => {
     before(async function() {
       // 在所有測試開始前會執行的程式碼區塊
       await db.Cart.destroy({ where: {}, truncate: true })
@@ -32,6 +32,88 @@ describe('#Cart Controller', () => {
     after(async function() {
       // 在所有測試結束後會執行的程式碼區塊
       await db.Cart.destroy({ where: {}, truncate: true })
+    })
+  })
+  describe('POST /api/cart/1/cartItem/1/add - 增加購物車商品數量', () => {
+    before(async function() {
+      // 在所有測試開始前會執行的程式碼區塊
+      await db.Product.destroy({ where: {}, truncate: true })
+      await db.Cart.destroy({ where: {}, truncate: true })
+      await db.CartItem.destroy({ where: {}, truncate: true })
+
+      await db.Product.create({ id: 1 })
+      await db.Cart.create({ id: 1 })
+      await db.CartItem.create({
+        id: 1,
+        quantity: 2,
+        CartId: 1,
+        ProductId: 1
+      })
+    })
+
+    it('增加商品數量', done => {
+      request(app)
+        .post('/api/cart/1/cartItem/1/add')
+        .send('')
+        .set('Accept', 'application/json')
+        .expect(200)
+        .end(function(err, res) {
+          if (err) return done(err)
+          expect(res.body.cartItem[0].ProductId).to.be.equal(1)
+          expect(res.body.cartItem[0].CartId).to.be.equal(1)
+          expect(res.body.cartItem[0].id).to.be.equal(1)
+          expect(res.body.cartItem[0].quantity).to.be.equal(3)
+
+          done()
+        })
+    })
+
+    after(async function() {
+      // 在所有測試結束後會執行的程式碼區塊
+      await db.Product.destroy({ where: {}, truncate: true })
+      await db.Cart.destroy({ where: {}, truncate: true })
+      await db.CartItem.destroy({ where: {}, truncate: true })
+    })
+  })
+  describe('POST /api/cart/1/cartItem/1/sub - 減少購物車商品數量', () => {
+    before(async function() {
+      // 在所有測試開始前會執行的程式碼區塊
+      await db.Product.destroy({ where: {}, truncate: true })
+      await db.Cart.destroy({ where: {}, truncate: true })
+      await db.CartItem.destroy({ where: {}, truncate: true })
+
+      await db.Product.create({ id: 1 })
+      await db.Cart.create({ id: 1 })
+      await db.CartItem.create({
+        id: 1,
+        quantity: 2,
+        CartId: 1,
+        ProductId: 1
+      })
+    })
+
+    it('減少商品數量', done => {
+      request(app)
+        .post('/api/cart/1/cartItem/1/sub')
+        .send('')
+        .set('Accept', 'application/json')
+        .expect(200)
+        .end(function(err, res) {
+          if (err) return done(err)
+          expect(res.body.cartItem[0].ProductId).to.be.equal(1)
+          expect(res.body.cartItem[0].CartId).to.be.equal(1)
+          expect(res.body.cartItem[0].id).to.be.equal(1)
+          expect(res.body.cartItem[0].quantity).to.be.equal(1)
+
+          done()
+        })
+    })
+
+    after(async function() {
+      // 在所有測試結束後會執行的程式碼區塊
+      await db.Product.destroy({ where: {}, truncate: true })
+      await db.Cart.destroy({ where: {}, truncate: true })
+      await db.CartItem.destroy({ where: {}, truncate: true })
     })
   })
 })
