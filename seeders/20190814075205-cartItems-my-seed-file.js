@@ -28,6 +28,22 @@ module.exports = {
           ProductId: 3,
           createdAt: new Date(),
           updatedAt: new Date()
+        },
+        {
+          id: 4,
+          quantity: 30,
+          CartId: 2,
+          ProductId: 5,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        {
+          id: 5,
+          quantity: 8,
+          CartId: 3,
+          ProductId: 4,
+          createdAt: new Date(),
+          updatedAt: new Date()
         }
       ],
       {}
