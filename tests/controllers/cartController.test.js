@@ -116,4 +116,43 @@ describe('#Cart Controller', () => {
       await db.CartItem.destroy({ where: {}, truncate: true })
     })
   })
+  describe('DELETE /api/cart/1/cartItem/1 - 刪除購物車內的商品', () => {
+    before(async function() {
+      // 在所有測試開始前會執行的程式碼區塊
+      await db.Product.destroy({ where: {}, truncate: true })
+      await db.Cart.destroy({ where: {}, truncate: true })
+      await db.CartItem.destroy({ where: {}, truncate: true })
+
+      await db.Product.create({ id: 1 })
+      await db.Cart.create({ id: 1 })
+      await db.CartItem.create({
+        id: 1,
+        quantity: 2,
+        CartId: 1,
+        ProductId: 1
+      })
+    })
+
+    it('刪除購物車內的商品', done => {
+      request(app)
+        .delete('/api/cart/1/cartItem/1')
+        .send('')
+        .set('Accept', 'application/json')
+        .expect(200)
+        .end(function(err, res) {
+          if (err) return done(err)
+          expect(res.body.status).to.be.equal('success')
+          expect(res.body.message).to.be.equal('已刪除成功')
+
+          done()
+        })
+    })
+
+    after(async function() {
+      // 在所有測試結束後會執行的程式碼區塊
+      await db.Product.destroy({ where: {}, truncate: true })
+      await db.Cart.destroy({ where: {}, truncate: true })
+      await db.CartItem.destroy({ where: {}, truncate: true })
+    })
+  })
 })
