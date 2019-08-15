@@ -8,13 +8,13 @@ const adminProduct = {
   getProducts: async (req, res) => {
     const products = await Product.findAll()
 
-    res.json({ products })
+    return res.json({ products })
   },
 
   getProduct: async (req, res) => {
     const product = await Product.findByPk(req.params.id)
 
-    res.json({ product })
+    return res.json({ product })
   },
 
   postProduct: async (req, res) => {
@@ -26,7 +26,7 @@ const adminProduct = {
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID)
       imgur.upload(file.path, async (err, img) => {
-        await Product.create({
+        const productData = await Product.create({
           name: req.body.name,
           description: req.body.description,
           stock_quantity: req.body.stock_quantity,
@@ -36,11 +36,12 @@ const adminProduct = {
           product_status: req.body.product_status,
           image: file ? img.data.link : null
         })
+        const product = await Product.findByPk(productData.id)
 
-        res.json({ status: 'success', message: 'Product was successfully created' })
+        return res.json({ product, status: 'success', message: 'Product was successfully created' })
       })
     } else {
-      await Product.create({
+      const productData = await Product.create({
         name: req.body.name,
         description: req.body.description,
         stock_quantity: req.body.stock_quantity,
@@ -50,8 +51,9 @@ const adminProduct = {
         product_status: req.body.product_status,
         image: null
       })
+      const product = await Product.findByPk(productData.id)
 
-      res.json({ status: 'success', message: 'Product was successfully created' })
+      return res.json({ product, status: 'success', message: 'Product was successfully created' })
     }
   },
 
@@ -76,7 +78,7 @@ const adminProduct = {
           image: file ? img.data.link : product.image
         })
 
-        res.json({ status: 'success', message: 'Product was successfully update' })
+        return res.json({ product, status: 'success', message: 'Product was successfully update' })
       })
     } else {
       const product = await Product.findByPk(req.params.id)
@@ -91,7 +93,7 @@ const adminProduct = {
         image: product.image
       })
 
-      res.json({ status: 'success', message: 'Product was successfully update' })
+      return res.json({ product, status: 'success', message: 'Product was successfully update' })
     }
   },
 
@@ -99,7 +101,7 @@ const adminProduct = {
     const product = await Product.findByPk(req.params.id)
     await product.destroy()
 
-    res.json({ status: 'success', message: '' })
+    return res.json({ status: 'success', message: '' })
   }
 }
 
