@@ -7,7 +7,8 @@ const productController = {
     const products = await Product.findAll()
 
     return res.json({
-      products
+      products,
+      status: 'heroku deploy success'
     })
   },
   getProduct: async (req, res) => {
