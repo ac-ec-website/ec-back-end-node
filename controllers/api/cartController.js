@@ -11,8 +11,14 @@ const cartController = {
       include: [{ model: Product, as: 'items' }]
     })
 
+    let total_amount =
+      cart.items.length > 0
+        ? cart.items.map(d => d.sell_price * d.CartItem.quantity).reduce((a, b) => a + b)
+        : 0
+
     return res.json({
-      cart
+      cart,
+      total_amount
     })
   },
   // 增加購物車內商品數量
