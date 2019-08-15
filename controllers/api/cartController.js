@@ -48,6 +48,21 @@ const cartController = {
     } catch (error) {
       console.log(error)
     }
+  },
+  // 刪除購物車內的商品
+  deleteItemFromCart: async (req, res) => {
+    try {
+      const cartItem = await CartItem.destroy({
+        where: { CartId: req.params.cartId, id: req.params.id }
+      })
+
+      await res.json({
+        status: 'success',
+        message: '已刪除成功'
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 
