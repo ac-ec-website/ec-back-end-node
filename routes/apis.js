@@ -5,6 +5,8 @@ const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
 
 const adminProduct = require('../controllers/api/adminProduct')
+const adminOrder = require('../controllers/api/adminOrder')
+
 const productController = require('../controllers/api/productController.js')
 const cartController = require('../controllers/api/cartController.js')
 
@@ -19,12 +21,15 @@ router.post('/cart/:cartId/cartItem/:id/add', cartController.addItemToCart)
 // 減少購物車內商品數量
 router.post('/cart/:cartId/cartItem/:id/sub', cartController.subItemFromCart)
 // 刪除購物車內的商品
-
 router.delete('/cart/:cartId/cartItem/:id', cartController.deleteItemFromCart)
+
 router.get('/admin/products', adminProduct.getProducts)
 router.get('/admin/products/:id', adminProduct.getProduct)
 router.post('/admin/products', upload.single('image'), adminProduct.postProduct)
 router.put('/admin/products/:id', upload.single('image'), adminProduct.putProduct)
 router.delete('/admin/products/:id', adminProduct.deleteProduct)
+
+router.get('/admin/orders', adminOrder.getOrders)
+router.get('/admin/orders/:id', adminOrder.getOrder)
 
 module.exports = router
