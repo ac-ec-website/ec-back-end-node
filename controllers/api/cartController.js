@@ -24,9 +24,11 @@ const cartController = {
       }
     })
 
-    isCartItemNew ? (cartItem.quantity = 1) : cartItem.quantity++
-    await cartItem.save()
+    isCartItemNew
+      ? (cartItem.quantity = parseInt(req.body.quantity) || 1)
+      : (cartItem.quantity = cartItem.quantity + (parseInt(req.body.quantity) || 1))
 
+    await cartItem.save()
     req.session.cartId = cart.id
     req.session.save()
     res.json({
