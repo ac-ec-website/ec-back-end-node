@@ -12,6 +12,7 @@ const cartController = require('../controllers/api/cartController.js')
 
 router.get('/products', productController.getProducts)
 router.get('/products/:id', productController.getProduct)
+router.post('/cart', cartController.postCart)
 
 // === 購物車 API === //
 // 取得單一購物車的資料
