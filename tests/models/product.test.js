@@ -57,29 +57,29 @@ describe('# Product Model', () => {
     let data = null
 
     it('create', done => {
-      db.Product.create({}).then(user => {
-        data = user
+      db.Product.create({}).then(product => {
+        data = product
         done()
       })
     })
     it('read', done => {
-      db.Product.findByPk(data.id).then(user => {
-        expect(data.id).to.be.equal(user.id)
+      db.Product.findByPk(data.id).then(product => {
+        expect(data.id).to.be.equal(product.id)
         done()
       })
     })
     it('update', done => {
       db.Product.update({}, { where: { id: data.id } }).then(() => {
-        db.Product.findByPk(data.id).then(user => {
-          expect(data.updatedAt).to.be.not.equal(user.updatedAt)
+        db.Product.findByPk(data.id).then(product => {
+          expect(data.updatedAt).to.be.not.equal(product.updatedAt)
           done()
         })
       })
     })
     it('delete', done => {
       db.Product.destroy({ where: { id: data.id } }).then(() => {
-        db.Product.findByPk(data.id).then(user => {
-          expect(user).to.be.equal(null)
+        db.Product.findByPk(data.id).then(product => {
+          expect(product).to.be.equal(null)
           done()
         })
       })

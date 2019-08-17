@@ -5,6 +5,7 @@ const app = express()
 const port = process.env.PORT || 3000
 
 const cors = require('cors')
+const session = require('express-session')
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
@@ -21,6 +22,16 @@ const corsOptions = {
   credentials: true,
   maxAge: 1728000
 }
+
+app.use(
+  session({
+    secret: 'gpw',
+    name: 'gpw',
+    cookie: { maxAge: 80000 },
+    resave: false,
+    saveUninitialized: true
+  })
+)
 
 app.use(cors(corsOptions))
 app.use(bodyParser.urlencoded({ extended: true }))

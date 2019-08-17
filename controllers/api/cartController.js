@@ -69,6 +69,41 @@ const cartController = {
     } catch (error) {
       console.log(error)
     }
+  },
+
+  postCart: async (req, res) => {
+    if (!req.body.productId) {
+      return res.json({
+        status: 'error',
+        message: 'req.body 缺少 productId'
+      })
+    }
+
+    let [cart, isCartNew] = await Cart.findOrCreate({
+      where: {
+        id: req.session.cartId || 0
+      }
+    })
+
+    let [cartItem, isCartItemNew] = await CartItem.findOrCreate({
+      where: {
+        CartId: cart.id,
+        ProductId: req.body.productId
+      }
+    })
+
+    isCartItemNew
+      ? (cartItem.quantity = parseInt(req.body.quantity) || 1)
+      : (cartItem.quantity = cartItem.quantity + (parseInt(req.body.quantity) || 1))
+
+    await cartItem.save()
+    req.session.cartId = cart.id
+    req.session.save()
+    res.json({
+      status: 'success',
+      cart,
+      cartItem
+    })
   }
 }
 
