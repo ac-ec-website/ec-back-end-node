@@ -27,7 +27,7 @@ app.use(
   session({
     secret: 'gpw',
     name: 'gpw',
-    cookie: { maxAge: 80000 },
+    cookie: { maxAge: 8000000 },
     resave: false,
     saveUninitialized: true
   })
