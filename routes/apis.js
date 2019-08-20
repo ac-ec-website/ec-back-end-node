@@ -32,5 +32,6 @@ router.delete('/admin/products/:id', adminProduct.deleteProduct)
 
 router.get('/admin/orders', adminOrder.getOrders)
 router.get('/admin/orders/:id', adminOrder.getOrder)
+router.put('/admin/orders/:id', adminOrder.putOrder)
 
 module.exports = router
