@@ -51,29 +51,29 @@ describe('# Order Model ', () => {
     let data = null
 
     it('create', done => {
-      db.Order.create({}).then(user => {
-        data = user
+      db.Order.create({}).then(order => {
+        data = order
         done()
       })
     })
     it('read', done => {
-      db.Order.findByPk(data.id).then(user => {
-        expect(data.id).to.be.equal(user.id)
+      db.Order.findByPk(data.id).then(order => {
+        expect(data.id).to.be.equal(order.id)
         done()
       })
     })
     it('update', done => {
       db.Order.update({}, { where: { id: data.id } }).then(() => {
-        db.Order.findByPk(data.id).then(user => {
-          expect(data.updatedAt).to.be.not.equal(user.updatedAt)
+        db.Order.findByPk(data.id).then(order => {
+          expect(data.updatedAt).to.be.not.equal(order.updatedAt)
           done()
         })
       })
     })
     it('delete', done => {
       db.Order.destroy({ where: { id: data.id } }).then(() => {
-        db.Order.findByPk(data.id).then(user => {
-          expect(user).to.be.equal(null)
+        db.Order.findByPk(data.id).then(order => {
+          expect(order).to.be.equal(null)
           done()
         })
       })
