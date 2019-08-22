@@ -9,6 +9,7 @@ const adminOrder = require('../controllers/api/adminOrder')
 
 const productController = require('../controllers/api/productController.js')
 const cartController = require('../controllers/api/cartController.js')
+const adminController = require('../controllers/api/adminController')
 
 router.get('/products', productController.getProducts)
 router.get('/products/:id', productController.getProduct)
@@ -23,6 +24,9 @@ router.post('/cart/:cartId/cartItem/:id/add', cartController.addItemToCart)
 router.post('/cart/:cartId/cartItem/:id/sub', cartController.subItemFromCart)
 // 刪除購物車內的商品
 router.delete('/cart/:cartId/cartItem/:id', cartController.deleteItemFromCart)
+
+router.post('/admin/signup', adminController.signUp)
+router.post('/admin/signin', adminController.signIn)
 
 router.get('/admin/products', adminProduct.getProducts)
 router.get('/admin/products/:id', adminProduct.getProduct)
