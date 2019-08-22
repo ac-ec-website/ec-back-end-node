@@ -9,12 +9,17 @@ const adminOrder = require('../controllers/api/adminOrder')
 
 const productController = require('../controllers/api/productController.js')
 const cartController = require('../controllers/api/cartController.js')
+const orderController = require('../controllers/api/orderController.js')
 
+// === 商品顯示 API === //
+// 取得所有商品資料
 router.get('/products', productController.getProducts)
+// 取得單一商品資料
 router.get('/products/:id', productController.getProduct)
-router.post('/cart', cartController.postCart)
 
 // === 購物車 API === //
+// 加入購物車
+router.post('/cart', cartController.postCart)
 // 取得單一購物車的資料
 router.get('/cart/:id', cartController.getCart)
 // 增加購物車內商品數量
@@ -24,6 +29,11 @@ router.post('/cart/:cartId/cartItem/:id/sub', cartController.subItemFromCart)
 // 刪除購物車內的商品
 router.delete('/cart/:cartId/cartItem/:id', cartController.deleteItemFromCart)
 
+// === 訂單創建 API === //
+// 新增一筆訂單
+router.post('/order', upload.none(), orderController.postOrder)
+
+// === 管理員功能 API === //
 router.get('/admin/products', adminProduct.getProducts)
 router.get('/admin/products/:id', adminProduct.getProduct)
 router.post('/admin/products', upload.single('image'), adminProduct.postProduct)
