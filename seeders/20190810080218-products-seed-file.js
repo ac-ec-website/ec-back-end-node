@@ -17,6 +17,7 @@ module.exports = {
           origin_price: 580,
           sell_price: 460,
           product_status: true,
+          CategoryId: 1,
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -31,6 +32,7 @@ module.exports = {
           origin_price: 650,
           sell_price: 520,
           product_status: true,
+          CategoryId: 1,
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -46,6 +48,7 @@ module.exports = {
           origin_price: 580,
           sell_price: 460,
           product_status: true,
+          CategoryId: 1,
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -61,6 +64,7 @@ module.exports = {
           origin_price: 430,
           sell_price: 349,
           product_status: true,
+          CategoryId: 1,
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -76,6 +80,7 @@ module.exports = {
           origin_price: 390,
           sell_price: 320,
           product_status: true,
+          CategoryId: 2,
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -90,6 +95,7 @@ module.exports = {
           origin_price: 390,
           sell_price: 320,
           product_status: true,
+          CategoryId: 2,
           createdAt: new Date(),
           updatedAt: new Date()
         }
