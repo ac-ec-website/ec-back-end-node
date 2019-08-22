@@ -13,6 +13,11 @@ module.exports = (sequelize, DataTypes) => {
   )
   User.associate = function(models) {
     User.hasMany(models.Order)
+    User.belongsToMany(models.Product, {
+      through: models.Favorite,
+      foreignKey: 'UserId',
+      as: 'FavoritedProducts'
+    })
   }
   return User
 }

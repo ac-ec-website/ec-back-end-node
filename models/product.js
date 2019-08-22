@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
       cost_price: DataTypes.INTEGER,
       origin_price: DataTypes.INTEGER,
       sell_price: DataTypes.INTEGER,
-      product_status: DataTypes.BOOLEAN
+      product_status: DataTypes.BOOLEAN,
+      CategoryId: DataTypes.INTEGER
     },
     {}
   )
@@ -31,6 +32,13 @@ module.exports = (sequelize, DataTypes) => {
       },
       foreignKey: 'ProductId'
     })
+    Product.belongsTo(models.Category)
+    Product.belongsToMany(models.User, {
+      through: models.Favorite,
+      foreignKey: 'ProductId',
+      as: 'FavoritedUsers'
+    })
+    Product.hasMany(models.Reply)
   }
   return Product
 }
