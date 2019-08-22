@@ -4,6 +4,8 @@ const router = express.Router()
 const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
 
+const { checkIsLogin, checkIsAdmin } = require('../config/authorization')
+
 const adminProduct = require('../controllers/api/adminProduct')
 const adminOrder = require('../controllers/api/adminOrder')
 
@@ -27,6 +29,9 @@ router.delete('/cart/:cartId/cartItem/:id', cartController.deleteItemFromCart)
 
 router.post('/admin/signup', adminController.signUp)
 router.post('/admin/signin', adminController.signIn)
+
+// router.use(checkIsLogin)
+// router.use(checkIsAdmin)
 
 router.get('/admin/products', adminProduct.getProducts)
 router.get('/admin/products/:id', adminProduct.getProduct)
