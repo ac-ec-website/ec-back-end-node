@@ -1,6 +1,7 @@
 const db = require('../../models')
 const User = db.User
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 const adminController = {
   signUp: async (req, res) => {
@@ -42,7 +43,43 @@ const adminController = {
       user: newUser
     })
   },
-  signIn: async (req, res) => {}
+
+  signIn: async (req, res) => {
+    if (!req.body.email || !req.body.password) {
+      return res.json({
+        status: 'error',
+        message: '所有欄位都要填寫'
+      })
+    }
+
+    const user = await User.findOne({
+      where: {
+        email: req.body.email
+      }
+    })
+
+    if (!user) {
+      return res.json({
+        status: 'error',
+        message: '帳號錯誤'
+      })
+    }
+    if (!bcrypt.compareSync(req.body.password, user.password)) {
+      return res.json({
+        status: 'error',
+        message: '密碼錯誤'
+      })
+    }
+
+    const payload = user.dataValues
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' })
+    return res.json({
+      status: 'success',
+      message: 'ok',
+      token,
+      user
+    })
+  }
 }
 
 module.exports = adminController

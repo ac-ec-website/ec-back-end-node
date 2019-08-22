@@ -4,12 +4,13 @@ const request = require('supertest')
 const sinon = require('sinon')
 const should = chai.should()
 const { expect } = require('chai')
+const bcrypt = require('bcrypt')
 
 const app = require('../../../app')
 const db = require('../../../models')
 
 describe('#AdminController', () => {
-  describe('後台註冊 POST /api/admin/singup', () => {
+  describe('後台註冊 POST /api/admin/signup', () => {
     before(async function() {
       await db.User.destroy({ where: {}, truncate: true })
       await db.User.create({ email: 'user23@example.com' })
@@ -83,6 +84,84 @@ describe('#AdminController', () => {
           expect(res.body.status).to.be.equal('success')
           expect(res.body.message).to.be.equal('成功註冊帳號！')
           expect(res.body.user.name).to.be.equal('user17')
+          done()
+        })
+    })
+
+    after(async function() {
+      await db.User.destroy({ where: {}, truncate: true })
+    })
+  })
+
+  describe('後台登入 POST /api/admin/signin', () => {
+    before(async function() {
+      await db.User.destroy({ where: {}, truncate: true })
+      const salt = bcrypt.genSaltSync(10)
+      await db.User.create({
+        email: 'user@example.com',
+        password: bcrypt.hashSync('12345678', salt)
+      })
+    })
+
+    it('所有欄位必填', done => {
+      request(app)
+        .post('/api/admin/signin')
+        .send('')
+        .set('Accept', 'application/json')
+        .expect(200)
+        .end(function(err, res) {
+          if (err) return done(err)
+          expect(res.body.status).to.be.equal('error')
+          expect(res.body.message).to.be.equal('所有欄位都要填寫')
+          done()
+        })
+    })
+
+    it('檢驗帳號', done => {
+      request(app)
+        .post('/api/admin/signin')
+        .send({
+          email: 'user13@example.com',
+          password: '12345678'
+        })
+        .set('Accept', 'application/json')
+        .expect(200)
+        .end(function(err, res) {
+          if (err) return done(err)
+          expect(res.body.status).to.be.equal('error')
+          expect(res.body.message).to.be.equal('帳號錯誤')
+          done()
+        })
+    })
+
+    it('檢驗密碼', done => {
+      request(app)
+        .post('/api/admin/signin')
+        .send({
+          email: 'user@example.com',
+          password: '123'
+        })
+        .set('Accept', 'application/json')
+        .expect(200)
+        .end(function(err, res) {
+          if (err) return done(err)
+          expect(res.body.status).to.be.equal('error')
+          expect(res.body.message).to.be.equal('密碼錯誤')
+          done()
+        })
+    })
+
+    it('登入成功，簽發 JWT Token', done => {
+      request(app)
+        .post('/api/admin/signin')
+        .send({ email: 'user@example.com', password: '12345678' })
+        .set('Accept', 'application/json')
+        .expect(200)
+        .end(function(err, res) {
+          if (err) return done(err)
+          expect(res.body.status).to.be.equal('success')
+          expect(res.body.message).to.be.equal('ok')
+          expect(res.body.token.length).to.be.above(0)
           done()
         })
     })
