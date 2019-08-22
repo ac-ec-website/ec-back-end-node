@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
       address: DataTypes.STRING,
       shipping_status: DataTypes.STRING,
       payment_status: DataTypes.STRING,
-      UserId: DataTypes.INTEGER
+      UserId: DataTypes.INTEGER,
+      CouponId: DataTypes.INTEGER
     },
     {}
   )
@@ -26,6 +27,9 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'OrderId'
     })
     Order.hasMany(models.Payment)
+    Order.hasMany(models.Reply)
+    Order.belongsTo(models.Coupon)
+    Order.belongsTo(models.Discount)
   }
   return Order
 }

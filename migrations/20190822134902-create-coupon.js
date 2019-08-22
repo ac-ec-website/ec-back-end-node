@@ -1,42 +1,36 @@
-'use strict'
+'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Orders', {
+    return queryInterface.createTable('Coupons', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      sn: {
-        type: Sequelize.INTEGER
-      },
-      total_amount: {
-        type: Sequelize.INTEGER
-      },
       name: {
         type: Sequelize.STRING
       },
-      email: {
+      coupon_code: {
         type: Sequelize.STRING
       },
-      phone: {
-        type: Sequelize.STRING
+      description: {
+        type: Sequelize.TEXT
       },
-      address: {
-        type: Sequelize.STRING
-      },
-      shipping_status: {
-        type: Sequelize.STRING
-      },
-      payment_status: {
-        type: Sequelize.STRING
-      },
-      UserId: {
+      percent: {
         type: Sequelize.INTEGER
       },
-      CouponId: {
+      product_reduce: {
         type: Sequelize.INTEGER
+      },
+      shipping_free: {
+        type: Sequelize.INTEGER
+      },
+      limited_num: {
+        type: Sequelize.INTEGER
+      },
+      end_date: {
+        type: Sequelize.DATE
       },
       createdAt: {
         allowNull: false,
@@ -46,9 +40,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    })
+    });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Orders')
+    return queryInterface.dropTable('Coupons');
   }
-}
+};
