@@ -38,6 +38,9 @@ module.exports = {
       CouponId: {
         type: Sequelize.INTEGER
       },
+      DiscountId: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
