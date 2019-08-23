@@ -7,7 +7,7 @@ const app = require('../../app')
 const db = require('../../models')
 
 describe('#Cart Controller', () => {
-  describe('GET /api/cart/1 - 查看購物車內容', () => {
+  describe('GET /api/cart - 查看購物車內容', () => {
     before(async function() {
       // 在所有測試開始前會執行的程式碼區塊
       await db.Cart.destroy({ where: {}, truncate: true })
@@ -15,9 +15,10 @@ describe('#Cart Controller', () => {
       await db.Cart.create({ id: 1, quantity: 100 })
     })
 
+    // ::TODO:: 測試案例待修正
     it('取得單一購物車資料', done => {
       request(app)
-        .get('/api/cart/1')
+        .get('/api/cart')
         .set('Accept', 'application/json')
         .expect(200)
         .end(function(err, res) {
