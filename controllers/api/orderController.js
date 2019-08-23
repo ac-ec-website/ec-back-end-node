@@ -120,6 +120,9 @@ const orderController = {
     console.log('orderItemData', orderItemData)
     console.log('=== (6）訂單的商品資料 orderData ===')
 
+    req.session.orderId = order.sn
+    req.session.save()
+
     return res.json({
       cartData, // 回傳的購物車
       orderData, // 回傳的訂單資料
