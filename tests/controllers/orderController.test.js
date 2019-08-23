@@ -13,15 +13,19 @@ describe('#Order Controller', () => {
       await db.Order.destroy({ where: {}, truncate: true })
     })
 
+    // ::TODO:: 測試碼待更新
     it('（O）成功創建一筆訂單', done => {
       request(app)
         .post('/api/order')
-        .send('name=root&email=123@gmail.com&phone=123&address=test')
+        .send(
+          'orderCustomerName=root&orderCustomerEmail=123@gmail.com&orderCustomerPhone=123&orderCustomerAddress=test'
+        )
         .set('Accept', 'application/json')
         .expect(200)
         .end(function(err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('success')
+
           done()
         })
     })
@@ -36,6 +40,7 @@ describe('#Order Controller', () => {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('error')
           expect(res.body.message).to.be.equal('請填寫所有的欄位')
+
           done()
         })
     })

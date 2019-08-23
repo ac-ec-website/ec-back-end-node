@@ -7,7 +7,7 @@ const Product = db.Product
 
 const orderController = {
   postOrder: async (req, res) => {
-    // Step 1. 檢查客戶資料是否填寫完整
+    // ===== Step 1. 檢查客戶資料是否填寫完整 =====
     if (
       !req.body.orderCustomerName ||
       !req.body.orderCustomerEmail ||
@@ -17,36 +17,35 @@ const orderController = {
       return res.json({ status: 'error', message: '請填寫所有的欄位' })
     }
 
-    const cartId = req.session.cartId
-    console.log('=== 新增訂單，後端接受到的 cartId 資料 ===')
+    const cartId = req.session.cartId || 1
+    console.log('=== （1）目前購物車的 cartId ===')
     console.log('cartId', cartId)
-    console.log('=== 新增訂單，後端接受到的 cartId 資料 ===')
+    console.log('=== （1）目前購物車的 cartId ===')
 
-    // Step 2-1. 取得該購物車（獲取總價資料）
-
-    const CartData = await Cart.findOne({
+    // ===== Step 2. 取得該購物車資料 & 商品總價 =====
+    const cartData = await Cart.findOne({
       where: {
         id: cartId
       },
       include: [{ model: Product, as: 'items' }]
     })
-    console.log('=== 新增訂單，後端接受到的  CartData 資料 ===')
-    console.log('CartData', CartData)
-    console.log('=== 新增訂單，後端接受到的  CartData 資料 ===')
 
-    // Step 2-2. 計算與商品總價有關的資訊
+    console.log('=== (2）目前購物車內的 cartData 資料 ===')
+    console.log('cartData.items', cartData.items)
+    console.log('=== (2）目前購物車內的 cartData 資料 ===')
+
+    // ===== Step 3. 取得該購物車商品總價 =====
     let total_amount =
-      CartData.items.length > 0
-        ? CartData.items.map(d => d.sell_price * d.CartItem.quantity).reduce((a, b) => a + b)
+      cartData.items.length > 0
+        ? cartData.items.map(d => d.sell_price * d.CartItem.quantity).reduce((a, b) => a + b)
         : 0
 
-    console.log('=== 商品總價 ===')
+    console.log('=== (3）商品總價 total_amount 資料 ===')
     console.log('total_amount', total_amount)
-    console.log('=== 商品總價 ===')
+    console.log('=== (3）商品總價 total_amount 資料 ===')
 
-    // Step 3-1. 創建訂單
-
-    const orderData = await Order.create({
+    // ===== Step 4. 創建訂單 =====
+    const order = await Order.create({
       // ::TODO:: 暫時讓 sn = cartId
       sn: cartId,
       total_amount: total_amount,
@@ -57,59 +56,75 @@ const orderController = {
       shipping_status: false,
       payment_status: false,
       // ::TODO:: 等 User 建立後再行修改
-      UserId: null
+      UserId: null,
+      CouponId: null
     })
 
-    // Step 3-2. 取出剛才創建訂單
-
-    const order = await Order.findOne({
+    const orderData = await Order.findOne({
       where: {
         sn: cartId
-      },
-      include: [{ model: Product, as: 'items' }]
+      }
     })
 
-    console.log('=== 訂單資料 ===')
-    console.log('order', order)
-    console.log('=== 訂單資料 ===')
+    console.log('=== (4）訂單資料 orderData 資料 ===')
+    console.log('orderData', orderData)
+    console.log('=== (4）訂單資料 orderData 資料 ===')
 
-    // ::TODO:: Step 4-1. 取得與該購物車有關的商品資料
+    // ===== Step 5. 取得與該購物車有關的商品資料 =====
 
-    const CartItemData = await CartItem.findAll({
+    const cartItemData = await CartItem.findAll({
       where: {
         CartId: cartId
       }
     })
-    console.log('=== 新增訂單，後端接受到的  CartItemData 資料 ===')
-    console.log('CartItemData', CartItemData)
-    console.log('=== 新增訂單，後端接受到的  CartItemData 資料 ===')
 
-    // ::TODO:: Step 4-2. 建立 OrderItem，並傳入與 cartId 有關的 CartItem 商品資料
+    console.log('=== (5）該購物車的商品資料 cartItemData ===')
+    console.log('cartItemData', cartItemData)
+    console.log('=== (5）該購物車的商品資料 cartItemData ===')
 
-    const OrderItemData = await OrderItem.create({
-      price: 0,
-      quantity: 0,
-      OrderId: 0,
-      ProductId: 0
+    // ===== Step 6. 建立與訂單有關的 OrderItem =====
+    // ::TODO:: 建立 OrderItem，並傳入與 cartId 有關的 CartItem 商品資料
+
+    const orderItem = await cartData.items.map(async d => {
+      const data = await OrderItem.create({
+        price: d.sell_price,
+        OrderId: order.sn,
+        ProductId: d.id,
+        // ::TODO:: 需要從 cartItem 中，透過商品 id，取得其購買的商品數量
+        // ::TODO:: 無法正常寫入 DB，已確認為 number(integer)
+        quantity: 100
+        // quantity: await cartItemData.map(item => {
+        //   console.log('===== 購物車內容物 =====')
+        //   console.log('item.dataValues', item.dataValues)
+        //   console.log('===== 購物車內容物 =====')
+
+        //   console.log('===== 外層傳入 =====')
+        //   console.log('d.id', d.id)
+        //   console.log('===== 外層傳入 =====')
+
+        //   if (item.dataValues.ProductId == d.id) {
+        //     console.log('回傳的商品數量', item.dataValues.quantity)
+        //     return item.dataValues.quantity
+        //   }
+        // })
+      })
     })
 
-    // ::TODO:: Step 4-3. 取出剛才創建訂單
-
-    const orderItem = await orderItem.findAll({
+    const orderItemData = await OrderItem.findAll({
       where: {
-        id: OrderItemData.id
+        OrderId: order.sn
       }
     })
 
-    return res.json({
-      CartData,
-      total_amount,
-      OrderData,
-      order,
+    console.log('=== (6）訂單的商品資料 orderData ===')
+    console.log('orderItemData', orderItemData)
+    console.log('=== (6）訂單的商品資料 orderData ===')
 
-      // ::TODO:: CartItemData,
-      // ::TODO:: OrderItemData,
-      // ::TODO::orderItem,
+    return res.json({
+      cartData, // 回傳的購物車
+      orderData, // 回傳的訂單資料
+      cartItemData, // 回傳的購物車商品資料
+      orderItemData, // 回傳的訂單商品資料
       status: 'success',
       message: 'Order was successfully created'
     })
