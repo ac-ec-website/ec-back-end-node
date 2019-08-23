@@ -12,12 +12,12 @@ module.exports = (sequelize, DataTypes) => {
       shipping_status: DataTypes.STRING,
       payment_status: DataTypes.STRING,
       UserId: DataTypes.INTEGER,
-      CouponId: DataTypes.INTEGER
+      CouponId: DataTypes.INTEGER,
+      DiscountId: DataTypes.INTEGER
     },
     {}
   )
   Order.associate = function(models) {
-    Order.belongsTo(models.User)
     Order.belongsToMany(models.Product, {
       as: 'items',
       through: {
@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     })
     Order.hasMany(models.Payment)
     Order.hasMany(models.Reply)
+    Order.belongsTo(models.User)
     Order.belongsTo(models.Coupon)
     Order.belongsTo(models.Discount)
   }
