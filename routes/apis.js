@@ -5,6 +5,7 @@ const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
 
 const adminProduct = require('../controllers/api/adminProduct')
+const adminCategory = require('../controllers/api/adminCategory')
 const adminOrder = require('../controllers/api/adminOrder')
 
 const productController = require('../controllers/api/productController.js')
@@ -39,6 +40,12 @@ router.get('/admin/products/:id', adminProduct.getProduct)
 router.post('/admin/products', upload.single('image'), adminProduct.postProduct)
 router.put('/admin/products/:id', upload.single('image'), adminProduct.putProduct)
 router.delete('/admin/products/:id', adminProduct.deleteProduct)
+
+router.get('/admin/categories', adminCategory.getCategories)
+router.get('/admin/categories/:id', adminCategory.getCategory)
+router.post('/admin/categories', adminCategory.postCategory)
+router.put('/admin/categories/:id', adminCategory.putCategory)
+router.delete('/admin/categories/:id', adminCategory.deleteCategory)
 
 router.get('/admin/orders', adminOrder.getOrders)
 router.get('/admin/orders/:id', adminOrder.getOrder)
