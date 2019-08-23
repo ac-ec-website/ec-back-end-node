@@ -26,24 +26,39 @@ describe('# Order Model ', () => {
   })
 
   context('Associations', () => {
-    const User = 'User'
     const Product = 'Product'
     const Payment = 'Payment'
+    const Reply = 'Reply'
+    const User = 'User'
+    const Coupon = 'Coupon'
+    const Discount = 'Discount'
 
     before(() => {
-      Order.associate({ User })
       Order.associate({ Product })
       Order.associate({ Payment })
+      Order.associate({ Reply })
+      Order.associate({ User })
+      Order.associate({ Coupon })
+      Order.associate({ Discount })
     })
 
-    it('defined a belongsTo association with user', () => {
-      expect(Order.belongsTo).to.have.been.calledWith(User)
-    })
     it('defined a belongsToMany association with product', () => {
       expect(Order.belongsToMany).to.have.been.calledWith(Product)
     })
     it('defined a hasMany association with payment', () => {
       expect(Order.hasMany).to.have.been.calledWith(Payment)
+    })
+    it('defined a hasMany association with reply', () => {
+      expect(Order.hasMany).to.have.been.calledWith(Reply)
+    })
+    it('defined a belongsTo association with user', () => {
+      expect(Order.belongsTo).to.have.been.calledWith(User)
+    })
+    it('defined a belongsTo association with coupon', () => {
+      expect(Order.belongsTo).to.have.been.calledWith(Coupon)
+    })
+    it('defined a belongsTo association with discount', () => {
+      expect(Order.belongsTo).to.have.been.calledWith(Discount)
     })
   })
 

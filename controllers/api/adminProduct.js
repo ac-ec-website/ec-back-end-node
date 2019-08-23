@@ -1,18 +1,18 @@
 const db = require('../../models')
-const Product = db.Product
+const { Category, Product } = db
 
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
 const adminProduct = {
   getProducts: async (req, res) => {
-    const products = await Product.findAll()
+    const products = await Product.findAll({ include: [Category] })
 
     return res.json({ products })
   },
 
   getProduct: async (req, res) => {
-    const product = await Product.findByPk(req.params.id)
+    const product = await Product.findByPk(req.params.id, { include: [Category] })
 
     return res.json({ product })
   },
