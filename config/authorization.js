@@ -22,17 +22,15 @@ const checkIsLogin = async (req, res, next) => {
     req.user = user
     next()
   } catch (err) {
-    console.log(err)
     return res.json({
       status: 'forbidden',
-      message: '錯誤的 JWT token'
+      message: '錯誤的 JWT token 或 token 已過期，請重新登入取得新簽發的 JWT token'
     })
   }
 }
 
 const checkIsAdmin = (req, res, next) => {
   if (req.user) {
-    console.log(req.user)
     if (req.user.role === 'admin') {
       return next()
     }
