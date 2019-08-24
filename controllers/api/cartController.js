@@ -7,18 +7,20 @@ const cartController = {
   // 取得單一購物車的資料
   getCart: async (req, res) => {
     const cart = await Cart.findOne({
-      where: { id: req.session.cartId },
+      where: { id: req.session.cartId || 1 },
       include: [{ model: Product, as: 'items' }]
     })
 
-    let total_amount =
+    const total_amount =
       cart.items.length > 0
         ? cart.items.map(d => d.sell_price * d.CartItem.quantity).reduce((a, b) => a + b)
         : 0
 
     return res.json({
       cart,
-      total_amount
+      total_amount,
+      status: 'success',
+      message: '成功取得購物車的資料'
     })
   },
   // 增加購物車內商品數量
