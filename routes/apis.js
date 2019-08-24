@@ -6,6 +6,8 @@ const upload = multer({ dest: 'temp/' })
 
 const adminProduct = require('../controllers/api/adminProduct')
 const adminCategory = require('../controllers/api/adminCategory')
+const adminCoupon = require('../controllers/api/adminCoupon')
+const adminDiscount = require('../controllers/api/adminDiscount')
 const adminOrder = require('../controllers/api/adminOrder')
 
 const productController = require('../controllers/api/productController.js')
@@ -46,6 +48,18 @@ router.get('/admin/categories/:id', adminCategory.getCategory)
 router.post('/admin/categories', adminCategory.postCategory)
 router.put('/admin/categories/:id', adminCategory.putCategory)
 router.delete('/admin/categories/:id', adminCategory.deleteCategory)
+
+router.get('/admin/coupons', adminCoupon.getCoupons)
+router.get('/admin/coupons/:id', adminCoupon.getCoupon)
+router.post('/admin/coupons', upload.none(), adminCoupon.postCoupon)
+router.put('/admin/coupons/:id', upload.none(), adminCoupon.putCoupon)
+router.delete('/admin/coupons/:id', adminCoupon.deleteCoupon)
+
+router.get('/admin/discounts', adminDiscount.getDiscounts)
+router.get('/admin/discounts/:id', adminDiscount.getDiscount)
+router.post('/admin/discounts', upload.none(), adminDiscount.postDiscount)
+router.put('/admin/discounts/:id', upload.none(), adminDiscount.putDiscount)
+router.delete('/admin/discounts/:id', adminDiscount.deleteDiscount)
 
 router.get('/admin/orders', adminOrder.getOrders)
 router.get('/admin/orders/:id', adminOrder.getOrder)
