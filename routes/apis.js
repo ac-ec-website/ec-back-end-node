@@ -30,9 +30,11 @@ router.post('/cart/:cartId/cartItem/:id/sub', cartController.subItemFromCart)
 // 刪除購物車內的商品
 router.delete('/cart/:cartId/cartItem/:id', cartController.deleteItemFromCart)
 
-// === 訂單創建 API === //
+// === 訂單 API === //
 // 新增一筆訂單
 router.post('/order', upload.none(), orderController.postOrder)
+// 取得一筆訂單
+router.get('/order', orderController.getOrder)
 
 // === 管理員功能 API === //
 router.get('/admin/products', adminProduct.getProducts)

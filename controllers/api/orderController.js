@@ -17,6 +17,7 @@ const orderController = {
       return res.json({ status: 'error', message: '請填寫所有的欄位' })
     }
 
+    // ::TODO::（待修正） 暫時補 1，讓本機實作和測試可執行
     const cartId = req.session.cartId || 1
     console.log('=== （1）目前購物車的 cartId ===')
     console.log('cartId', cartId)
@@ -120,6 +121,8 @@ const orderController = {
     console.log('orderItemData', orderItemData)
     console.log('=== (6）訂單的商品資料 orderData ===')
 
+    // 將 cartId & orderId 存入 res.session 以供後續讀取資料使用
+    req.session.cartId = cartId
     req.session.orderId = order.sn
     req.session.save()
 
@@ -129,7 +132,21 @@ const orderController = {
       cartItemData, // 回傳的購物車商品資料
       orderItemData, // 回傳的訂單商品資料
       status: 'success',
-      message: 'Order was successfully created'
+      message: '成功新增一筆訂單'
+    })
+  },
+  // 取得單一訂單的資料
+  getOrder: async (req, res) => {
+    const order = await Order.findOne({
+      // ::TODO::（待修正） 暫時補 1，讓本機實作和測試可執行
+      where: { id: req.session.orderId || 1 },
+      include: [{ model: Product, as: 'items' }]
+    })
+
+    return res.json({
+      order,
+      status: 'success',
+      message: '成功取得單一訂單的資料'
     })
   }
 }
