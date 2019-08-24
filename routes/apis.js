@@ -24,7 +24,7 @@ router.get('/products/:id', productController.getProduct)
 // 加入購物車
 router.post('/cart', cartController.postCart)
 // 取得單一購物車的資料
-router.get('/cart/:id', cartController.getCart)
+router.get('/cart', cartController.getCart)
 // 增加購物車內商品數量
 router.post('/cart/:cartId/cartItem/:id/add', cartController.addItemToCart)
 // 減少購物車內商品數量
