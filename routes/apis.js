@@ -4,6 +4,8 @@ const router = express.Router()
 const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
 
+const { checkIsLogin, checkIsAdmin } = require('../config/authorization')
+
 const adminProduct = require('../controllers/api/adminProduct')
 const adminCategory = require('../controllers/api/adminCategory')
 const adminCoupon = require('../controllers/api/adminCoupon')
@@ -13,6 +15,8 @@ const adminOrder = require('../controllers/api/adminOrder')
 const productController = require('../controllers/api/productController.js')
 const cartController = require('../controllers/api/cartController.js')
 const orderController = require('../controllers/api/orderController.js')
+const adminController = require('../controllers/api/adminController')
+const userController = require('../controllers/api/userController')
 
 // === 商品顯示 API === //
 // 取得所有商品資料
@@ -39,6 +43,12 @@ router.post('/order', upload.none(), orderController.postOrder)
 router.get('/order', orderController.getOrder)
 
 // === 管理員功能 API === //
+router.post('/admin/signup', adminController.signUp)
+router.post('/admin/signin', adminController.signIn)
+
+// router.use(checkIsLogin)
+// router.use(checkIsAdmin)
+router.get('/get_current_user', userController.getCurrentUser)
 router.get('/admin/products', adminProduct.getProducts)
 router.get('/admin/products/:id', adminProduct.getProduct)
 router.post('/admin/products', upload.single('image'), adminProduct.postProduct)
