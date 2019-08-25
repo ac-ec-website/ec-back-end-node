@@ -17,6 +17,8 @@ if (process.env.NODE_ENV !== 'production') {
 //   'http://localhost:3000',
 //   'https://ec-website-api.herokuapp.com'
 // ]
+
+app.use(cors())
 const corsOptions = {
   origin: origin,
   credentials: true,
@@ -34,7 +36,7 @@ app.use(
 )
 
 // app.use(cors(corsOptions))
-app.use(cors())
+
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use('/upload', express.static(__dirname + '/upload'))
