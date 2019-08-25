@@ -18,7 +18,7 @@ const MerchantID = process.env.MERCHANT_ID
 const HashKey = process.env.HASH_KEY
 const HashIV = process.env.HASH_IV
 const PayGateWay = 'https://ccore.spgateway.com/MPG/mpg_gateway'
-const ReturnURL = 'http://localhost:8080/#/order' // ::TODO::
+const ReturnURL = URL + '/spgateway/callback?from=ReturnURL' // ::TODO::
 const NotifyURL = URL + '/spgateway/callback?from=NotifyURL'
 const ClientBackURL = 'http://localhost:8080/#/order' // ::TODO::
 
@@ -142,7 +142,7 @@ let paymentController = {
           payment_status: 1
         })
         .then(order => {
-          return res.redirect('/orders')
+          return res.redirect('http://localhost:8080/#/order')
         })
     })
   }

@@ -44,7 +44,7 @@ router.post('/order', upload.none(), orderController.postOrder)
 router.get('/order', orderController.getOrder)
 
 // === 款項 API === //
-router.get('/order/:id/payment', paymentController.getPayment)
+router.get('/payment', paymentController.getPayment)
 router.post('/spgateway/callback', paymentController.spgatewayCallback)
 
 // === 管理員功能 API === //
