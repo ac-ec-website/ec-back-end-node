@@ -7,7 +7,7 @@ const cartController = {
   // 取得單一購物車的資料
   getCart: async (req, res) => {
     const cart = await Cart.findOne({
-      where: { id: req.session.cartId || 1 },
+      where: { id: req.session.cartId },
       include: [{ model: Product, as: 'items' }]
     })
 
