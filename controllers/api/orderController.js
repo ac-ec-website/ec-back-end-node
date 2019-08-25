@@ -58,7 +58,7 @@ const orderController = {
     console.log('total_amount', total_amount)
     console.log('=== (3）商品總價 total_amount 資料 ===')
 
-    const snNum = faker.lorem.text()
+    const snNum = faker.random.number()
 
     // ===== Step 4. 創建訂單 =====
     const order = await Order.create({
