@@ -77,6 +77,8 @@ const orderController = {
       discountId: null
     })
 
+    console.log('order', order)
+
     const orderData = await Order.findOne({
       where: {
         sn: snNum
@@ -84,6 +86,7 @@ const orderController = {
     })
 
     console.log('=== (4）訂單資料 orderData 資料 ===')
+    console.log('orderData', order.id)
     console.log('orderData', orderData.id)
     console.log('orderData', orderData)
     console.log('=== (4）訂單資料 orderData 資料 ===')

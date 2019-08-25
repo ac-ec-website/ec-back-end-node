@@ -17,6 +17,7 @@ const cartController = require('../controllers/api/cartController.js')
 const orderController = require('../controllers/api/orderController.js')
 const adminController = require('../controllers/api/adminController')
 const userController = require('../controllers/api/userController')
+const paymentController = require('../controllers/api/paymentController')
 
 // === 商品顯示 API === //
 // 取得所有商品資料
@@ -41,6 +42,10 @@ router.delete('/cart/:cartId/cartItem/:id', cartController.deleteItemFromCart)
 router.post('/order', upload.none(), orderController.postOrder)
 // 取得一筆訂單
 router.get('/order', orderController.getOrder)
+
+// === 款項 API === //
+router.get('/order/:id/payment', paymentController.getPayment)
+router.post('/spgateway/callback', paymentController.spgatewayCallback)
 
 // === 管理員功能 API === //
 router.post('/admin/signup', adminController.signUp)
