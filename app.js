@@ -12,11 +12,11 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // 處理跨域問題
-const origin = [
-  'http://localhost:8080',
-  'http://localhost:3000',
-  'https://ec-website-api.herokuapp.com'
-]
+// const origin = [
+//   'http://localhost:8080',
+//   'http://localhost:3000',
+//   'https://ec-website-api.herokuapp.com'
+// ]
 const corsOptions = {
   origin: origin,
   credentials: true,
@@ -33,7 +33,8 @@ app.use(
   })
 )
 
-app.use(cors(corsOptions))
+// app.use(cors(corsOptions))
+app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use('/upload', express.static(__dirname + '/upload'))
