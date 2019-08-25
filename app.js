@@ -19,11 +19,11 @@ if (process.env.NODE_ENV !== 'production') {
 // ]
 
 app.use(cors())
-const corsOptions = {
-  origin: origin,
-  credentials: true,
-  maxAge: 1728000
-}
+// const corsOptions = {
+//   origin: origin,
+//   credentials: true,
+//   maxAge: 1728000
+// }
 
 app.use(
   session({
