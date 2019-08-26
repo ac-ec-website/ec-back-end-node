@@ -133,6 +133,8 @@ let paymentController = {
     const data = JSON.parse(create_mpg_aes_decrypt(req.body.TradeInfo))
 
     console.log('===== spgatewayCallback: create_mpg_aes_decrypt、data =====')
+
+    // 回傳的資料內容
     console.log(data)
 
     return Order.findAll({ where: { sn: data['Result']['MerchantOrderNo'] } }).then(orders => {

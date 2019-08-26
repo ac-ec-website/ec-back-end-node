@@ -26,6 +26,12 @@ module.exports = {
       address: {
         type: Sequelize.STRING
       },
+      order_status: {
+        type: Sequelize.STRING
+      },
+      remark: {
+        type: Sequelize.TEXT
+      },
       shipping_status: {
         type: Sequelize.STRING
       },
