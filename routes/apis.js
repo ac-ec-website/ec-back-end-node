@@ -82,4 +82,7 @@ router.get('/admin/orders', adminOrder.getOrders)
 router.get('/admin/orders/:id', adminOrder.getOrder)
 router.put('/admin/orders/:id', adminOrder.putOrder)
 
+router.get('/admin/users', adminController.getUsers)
+router.put('/admin/user', adminController.putUser)
+
 module.exports = router
