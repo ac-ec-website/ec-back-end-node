@@ -1,11 +1,9 @@
 const db = require('../../models')
-const Product = db.Product
-const Order = db.Order
-const OrderItem = db.OrderItem
+const { Order, Coupon, Discount, Shipping } = db
 
 const adminOrder = {
   getOrders: async (req, res) => {
-    const orders = await Order.findAll({ include: 'items' })
+    const orders = await Order.findAll({ include: [Shipping, 'items'] })
 
     return res.json({ orders })
   },
@@ -13,7 +11,7 @@ const adminOrder = {
   getOrder: async (req, res) => {
     const order = await Order.findOne({
       where: { id: req.params.id },
-      include: 'items'
+      include: [Coupon, Discount, Shipping, 'items']
     })
 
     return res.json({ order })

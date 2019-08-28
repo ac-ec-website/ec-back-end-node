@@ -3,12 +3,14 @@ module.exports = (sequelize, DataTypes) => {
   const Order = sequelize.define(
     'Order',
     {
-      sn: DataTypes.INTEGER,
+      sn: DataTypes.STRING,
       total_amount: DataTypes.INTEGER,
       name: DataTypes.STRING,
       email: DataTypes.STRING,
       phone: DataTypes.STRING,
       address: DataTypes.STRING,
+      order_status: DataTypes.STRING,
+      remark: DataTypes.TEXT,
       shipping_status: DataTypes.STRING,
       payment_status: DataTypes.STRING,
       UserId: DataTypes.INTEGER,
@@ -27,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'OrderId'
     })
     Order.hasMany(models.Payment)
+    Order.hasMany(models.Shipping)
     Order.hasMany(models.Reply)
     Order.belongsTo(models.User)
     Order.belongsTo(models.Coupon)

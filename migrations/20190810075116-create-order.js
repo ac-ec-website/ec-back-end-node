@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       sn: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       total_amount: {
         type: Sequelize.INTEGER
@@ -25,6 +25,12 @@ module.exports = {
       },
       address: {
         type: Sequelize.STRING
+      },
+      order_status: {
+        type: Sequelize.STRING
+      },
+      remark: {
+        type: Sequelize.TEXT
       },
       shipping_status: {
         type: Sequelize.STRING

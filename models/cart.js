@@ -3,7 +3,8 @@ module.exports = (sequelize, DataTypes) => {
   const Cart = sequelize.define(
     'Cart',
     {
-      quantity: DataTypes.INTEGER
+      quantity: DataTypes.INTEGER,
+      shipping_method: DataTypes.STRING
     },
     {}
   )
