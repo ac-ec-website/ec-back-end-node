@@ -34,7 +34,8 @@ const adminProduct = {
           origin_price: req.body.origin_price,
           sell_price: req.body.sell_price,
           product_status: req.body.product_status,
-          image: file ? img.data.link : null
+          image: file ? img.data.link : null,
+          CategoryId: req.body.categoryId
         })
         const product = await Product.findByPk(productData.id)
 
@@ -49,7 +50,8 @@ const adminProduct = {
         origin_price: req.body.origin_price,
         sell_price: req.body.sell_price,
         product_status: req.body.product_status,
-        image: null
+        image: null,
+        CategoryId: req.body.categoryId
       })
       const product = await Product.findByPk(productData.id)
 
@@ -75,7 +77,8 @@ const adminProduct = {
           origin_price: req.body.origin_price,
           sell_price: req.body.sell_price,
           product_status: req.body.product_status,
-          image: file ? img.data.link : product.image
+          image: file ? img.data.link : product.image,
+          CategoryId: req.body.categoryId
         })
 
         return res.json({ product, status: 'success', message: 'Product was successfully update' })
@@ -90,7 +93,8 @@ const adminProduct = {
         origin_price: req.body.origin_price,
         sell_price: req.body.sell_price,
         product_status: req.body.product_status,
-        image: product.image
+        image: product.image,
+        CategoryId: req.body.categoryId
       })
 
       return res.json({ product, status: 'success', message: 'Product was successfully update' })

@@ -6,6 +6,7 @@ const upload = multer({ dest: 'temp/' })
 
 const { checkIsLogin, checkIsAdmin } = require('../config/authorization')
 
+const adminController = require('../controllers/api/adminController')
 const adminProduct = require('../controllers/api/adminProduct')
 const adminCategory = require('../controllers/api/adminCategory')
 const adminCoupon = require('../controllers/api/adminCoupon')
@@ -15,7 +16,6 @@ const adminOrder = require('../controllers/api/adminOrder')
 const productController = require('../controllers/api/productController.js')
 const cartController = require('../controllers/api/cartController.js')
 const orderController = require('../controllers/api/orderController.js')
-const adminController = require('../controllers/api/adminController')
 const userController = require('../controllers/api/userController')
 const paymentController = require('../controllers/api/paymentController')
 
