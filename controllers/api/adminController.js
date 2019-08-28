@@ -79,6 +79,27 @@ const adminController = {
       token,
       user
     })
+  },
+
+  getUsers: async (req, res) => {
+    const user = await User.findAll({})
+    return res.json({
+      user
+    })
+  },
+
+  putUser: async (req, res) => {
+    if (!req.body.id || !req.body.role) {
+      return res.json({
+        status: 'error',
+        message: 'Cannot find id and role'
+      })
+    }
+    await User.update({ role: req.body.role }, { where: { id: req.body.id } })
+    const user = await User.findOne({ where: { id: req.body.id } })
+    return res.json({
+      user
+    })
   }
 }
 

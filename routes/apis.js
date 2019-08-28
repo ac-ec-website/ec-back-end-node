@@ -51,9 +51,10 @@ router.post('/spgateway/callback', paymentController.spgatewayCallback)
 router.post('/admin/signup', adminController.signUp)
 router.post('/admin/signin', adminController.signIn)
 
-// router.use(checkIsLogin)
-// router.use(checkIsAdmin)
+router.use(checkIsLogin)
 router.get('/get_current_user', userController.getCurrentUser)
+router.use(checkIsAdmin)
+
 router.get('/admin/products', adminProduct.getProducts)
 router.get('/admin/products/:id', adminProduct.getProduct)
 router.post('/admin/products', upload.single('image'), adminProduct.postProduct)
@@ -81,5 +82,8 @@ router.delete('/admin/discounts/:id', adminDiscount.deleteDiscount)
 router.get('/admin/orders', adminOrder.getOrders)
 router.get('/admin/orders/:id', adminOrder.getOrder)
 router.put('/admin/orders/:id', adminOrder.putOrder)
+
+router.get('/admin/users', adminController.getUsers)
+router.put('/admin/user', adminController.putUser)
 
 module.exports = router
