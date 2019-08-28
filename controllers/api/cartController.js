@@ -106,6 +106,30 @@ const cartController = {
       cart,
       cartItem
     })
+  },
+  // 更新購物車資料
+  putCart: async (req, res) => {
+    console.log('前端傳來的配送方式', req.body.shipping_method)
+
+    if (!req.body.shipping_method) {
+      return res.json({
+        status: 'error',
+        message: '請填寫配送方式'
+      })
+    }
+
+    await Cart.update(
+      { shipping_method: req.body.shipping_method },
+      { where: { id: req.session.cartId } }
+    )
+
+    const cart = await Cart.findOne({ where: { id: req.session.cartId } })
+
+    return res.json({
+      cart,
+      status: 'success',
+      message: '已更新購物車資料(配送方式)'
+    })
   }
 }
 
