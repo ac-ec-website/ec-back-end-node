@@ -14,6 +14,9 @@ module.exports = {
       shipping_method: {
         type: Sequelize.STRING
       },
+      shipping_fee: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
