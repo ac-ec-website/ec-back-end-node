@@ -21,13 +21,13 @@ const orderController = {
       return res.json({ status: 'error', message: '請填寫訂單客戶資料欄位' })
     }
 
-    if (
-      !req.body.orderRecipientName ||
-      !req.body.orderRecipientPhone ||
-      !req.body.orderRecipientAddress
-    ) {
-      return res.json({ status: 'error', message: '請填寫訂單配送資料欄位' })
-    }
+    // if (
+    //   !req.body.orderRecipientName ||
+    //   !req.body.orderRecipientPhone ||
+    //   !req.body.orderRecipientAddress
+    // ) {
+    //   return res.json({ status: 'error', message: '請填寫訂單配送資料欄位' })
+    // }
 
     // ===== Step 2 取得該購物車資料 & 商品總價 =====
 
@@ -160,6 +160,7 @@ const orderController = {
     // ===== Step 8 將 tempCartId & tempOrderId 存入 res.session =====
     req.session.cartId = tempCartId
     req.session.orderId = tempOrderId
+    req.session.paymentId = paymentData.id
     req.session.save()
 
     console.log('=== (Ｏ）回傳 session 內容 ===')
