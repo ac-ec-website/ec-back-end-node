@@ -4,6 +4,7 @@ const crypto = require('crypto')
 // const nodemailer = require('nodemailer')
 const db = require('./../../models')
 const Order = db.Order
+const Payment = db.Payment
 
 // const transporter = nodemailer.createTransport({
 //   service: 'gmail',
@@ -102,25 +103,29 @@ function getTradeInfo(Amt, Desc, email) {
 }
 
 let paymentController = {
-  getPayment: (req, res) => {
+  getPayment: async (req, res) => {
     console.log('===== getPayment =====')
     console.log(req.session.orderId)
     console.log('==========')
 
-    return Order.findByPk(req.session.orderId, {}).then(order => {
-      console.log('order', order)
-      const tradeInfo = getTradeInfo(order.total_amount, order.id, order.email)
-      order
-        .update({
-          ...req.body,
-          sn: tradeInfo.MerchantOrderNo
-        })
-        .then(order => {
-          res.json({ order, tradeInfo })
-        })
+    const order = await Order.findByPk(req.session.orderId, {})
+    const payment = await Payment.findByPk(req.session.paymentId, {})
+
+    const tradeInfo = getTradeInfo(order.total_amount, order.id, order.email)
+
+    await order.update({
+      ...req.body,
+      sn: tradeInfo.MerchantOrderNo
     })
+
+    await payment.update({
+      ...req.body,
+      sn: tradeInfo.MerchantOrderNo
+    })
+
+    return res.json({ order, payment, tradeInfo })
   },
-  spgatewayCallback: (req, res) => {
+  spgatewayCallback: async (req, res) => {
     console.log('===== spgatewayCallback =====')
     console.log(req.method)
     console.log(req.query)
@@ -135,18 +140,26 @@ let paymentController = {
     console.log('===== spgatewayCallback: create_mpg_aes_decrypt、data =====')
 
     // 回傳的資料內容
-    console.log(data)
+    console.log('回傳內容', data)
 
-    return Order.findAll({ where: { sn: data['Result']['MerchantOrderNo'] } }).then(orders => {
-      orders[0]
-        .update({
-          ...req.body,
-          payment_status: 1
-        })
-        .then(order => {
-          return res.redirect('http://localhost:8080/#/order')
-        })
-    })
+    const order = await Order.findOne({ where: { sn: data['Result']['MerchantOrderNo'] } })
+
+    const payment = await Payment.findOne({ where: { sn: data['Result']['MerchantOrderNo'] } })
+
+    if ((data.Status = 'SUCCESS')) {
+      await order.update({
+        ...req.body,
+        payment_status: 1
+      })
+      await payment.update({
+        ...req.body,
+        params: JSON.stringify(data),
+        payment_method: data.Result.PaymentType,
+        payment_status: 1 //（0 - 尚未付款, 1 - 已付款）
+      })
+    }
+
+    return res.redirect('http://localhost:8080/#/order')
   }
 }
 
