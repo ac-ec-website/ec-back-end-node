@@ -11,23 +11,31 @@ describe('#Cart Controller', () => {
     before(async function() {
       // 在所有測試開始前會執行的程式碼區塊
       await db.Cart.destroy({ where: {}, truncate: true })
-
-      await db.Cart.create({ id: 1, quantity: 100, shipping_method: '住家宅配' })
     })
 
     it('（O）取得單一購物車資料', done => {
-      request(app)
-        .get('/api/cart')
+      var agent = request.agent(app)
+      agent
+        .post('/api/cart')
+        .send({ productId: 1 })
         .set('Accept', 'application/json')
         .expect(200)
         .end(function(err, res) {
           if (err) return done(err)
-          expect(res.body.cart.id).to.be.equal(1)
-          expect(res.body.cart.quantity).to.be.equal(100)
-          expect(res.body.cart.shipping_method).to.be.equal('住家宅配')
-          expect(res.body.status).to.be.equal('success')
 
-          done()
+          // ::TODO:: 更新購物車運送方式
+
+          agent
+            .get('/api/cart')
+            .set('Accept', 'application/json')
+            .expect(200)
+            .end(function(err, res) {
+              if (err) return done(err)
+              expect(res.body.cart.id).to.be.equal(1)
+              expect(res.body.status).to.be.equal('success')
+
+              done()
+            })
         })
     })
 
@@ -40,39 +48,56 @@ describe('#Cart Controller', () => {
     before(async function() {
       // 在所有測試開始前會執行的程式碼區塊
       await db.Cart.destroy({ where: {}, truncate: true })
-
-      await db.Cart.create({ id: 1, quantity: 100, shipping_method: '' })
     })
 
     it('（O）成功更新購物車的配送資訊', done => {
-      request(app)
-        .put('/api/cart')
-        .send('shipping_method=住家宅配')
+      var agent = request.agent(app)
+      agent
+        .post('/api/cart')
+        .send({ productId: 1 })
         .set('Accept', 'application/json')
         .expect(200)
         .end(function(err, res) {
           if (err) return done(err)
-          expect(res.body.cart.id).to.be.equal(1)
-          expect(res.body.cart.quantity).to.be.equal(100)
-          expect(res.body.cart.shipping_method).to.be.equal('住家宅配')
-          expect(res.body.status).to.be.equal('success')
 
-          done()
+          agent
+            .put('/api/cart')
+            .send('shipping_method=住家宅配')
+            .set('Accept', 'application/json')
+            .expect(200)
+            .end(function(err, res) {
+              if (err) return done(err)
+              expect(res.body.cart.id).to.be.equal(1)
+              expect(res.body.cart.shipping_method).to.be.equal('住家宅配')
+              expect(res.body.status).to.be.equal('success')
+
+              done()
+            })
         })
     })
 
     it('（Ｘ）無法更新購物車的配送資訊', done => {
-      request(app)
-        .put('/api/cart')
-        .send('')
+      var agent = request.agent(app)
+      agent
+        .post('/api/cart')
+        .send({ productId: 1 })
         .set('Accept', 'application/json')
         .expect(200)
         .end(function(err, res) {
           if (err) return done(err)
-          expect(res.body.status).to.be.equal('error')
-          expect(res.body.message).to.be.equal('請填寫配送方式')
 
-          done()
+          agent
+            .put('/api/cart')
+            .send('')
+            .set('Accept', 'application/json')
+            .expect(200)
+            .end(function(err, res) {
+              if (err) return done(err)
+              expect(res.body.status).to.be.equal('error')
+              expect(res.body.message).to.be.equal('請填寫配送方式')
+
+              done()
+            })
         })
     })
 

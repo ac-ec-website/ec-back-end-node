@@ -10,91 +10,122 @@ describe('#Order Controller', () => {
   describe('POST Order - 新增訂單', () => {
     before(async function() {
       // 在所有測試開始前會執行的程式碼區塊
-      await db.Product.destroy({ where: {}, truncate: true })
       await db.Cart.destroy({ where: {}, truncate: true })
-      await db.CartItem.destroy({ where: {}, truncate: true })
       await db.Order.destroy({ where: {}, truncate: true })
-
-      // 1. 建立產品
-      await db.Product.create({ id: 1, name: 'product1', sell_price: 100 })
-      await db.Product.create({ id: 2, name: 'product2', sell_price: 100 })
-      await db.Product.create({ id: 3, name: 'product3', sell_price: 100 })
-
-      // 2. 建立購物車
-      await db.Cart.create({ id: 1 })
-
-      // 3. 建立購物車商品
-      await db.CartItem.create({ id: 1, quantity: 1, cartId: 1, ProductId: 1 })
-      await db.CartItem.create({ id: 2, quantity: 1, cartId: 1, ProductId: 2 })
     })
 
     it('（O）成功創建一筆訂單', done => {
-      request(app)
-        .post('/api/order')
-        .send(
-          'orderCustomerName=root&orderCustomerEmail=root@example.com&orderCustomerPhone=0912345678&orderCustomerAddress=test&orderRecipientName=user1&orderRecipientPhone=0912345678&orderRecipientAddress=test'
-        )
+      var agent = request.agent(app)
+      agent
+        .post('/api/cart')
+        .send({ productId: 1 })
         .set('Accept', 'application/json')
         .expect(200)
         .end(function(err, res) {
           if (err) return done(err)
-          // 訂單資訊
-          expect(res.body.orderData.name).to.be.equal('root')
-          expect(res.body.orderData.email).to.be.equal('root@example.com')
-          expect(res.body.orderData.phone).to.be.equal('0912345678')
-          expect(res.body.orderData.address).to.be.equal('test')
-          // 配送資訊
-          expect(res.body.shippingData.shipping_method).to.be.equal('住家宅配')
-          expect(res.body.shippingData.shipping_status).to.be.equal(0)
-          expect(res.body.shippingData.name).to.be.equal('user1')
-          expect(res.body.shippingData.phone).to.be.equal('0912345678')
-          expect(res.body.shippingData.address).to.be.equal('test')
-          // 付款資訊
-          expect(res.body.paymentData.payment_status).to.be.equal(0)
-          expect(res.body.paymentData.total_amount).to.be.equal('200')
-          expect(res.body.status).to.be.equal('success')
 
-          done()
+          agent
+            .put('/api/cart')
+            .send('shipping_method=住家宅配')
+            .set('Accept', 'application/json')
+            .expect(200)
+            .end(function(err, res) {
+              if (err) return done(err)
+
+              agent
+                .post('/api/order')
+                .send(
+                  'orderCustomerName=root&orderCustomerEmail=root@example.com&orderCustomerPhone=0912345678&orderCustomerAddress=test&orderRecipientName=user1&orderRecipientPhone=0912345678&orderRecipientAddress=test'
+                )
+                .set('Accept', 'application/json')
+                .expect(200)
+                .end(function(err, res) {
+                  if (err) return done(err)
+                  // 訂單資訊
+                  expect(res.body.orderData.id).to.be.equal(1)
+                  expect(res.body.status).to.be.equal('success')
+
+                  done()
+                })
+            })
         })
     })
 
     it('（X）訂單創建失敗，請填寫訂單配送資料欄位', done => {
-      request(app)
-        .post('/api/order')
-        .send(
-          'orderCustomerName=root&orderCustomerEmail=root@example.com&orderCustomerPhone=0912345678&orderCustomerAddress=test'
-        )
+      var agent = request.agent(app)
+      agent
+        .post('/api/cart')
+        .send({ productId: 1 })
         .set('Accept', 'application/json')
         .expect(200)
         .end(function(err, res) {
           if (err) return done(err)
-          expect(res.body.status).to.be.equal('error')
-          expect(res.body.message).to.be.equal('請填寫訂單配送資料欄位')
 
-          done()
+          agent
+            .put('/api/cart')
+            .send('shipping_method=住家宅配')
+            .set('Accept', 'application/json')
+            .expect(200)
+            .end(function(err, res) {
+              if (err) return done(err)
+
+              agent
+                .post('/api/order')
+                .send(
+                  'orderCustomerName=root&orderCustomerEmail=root@example.com&orderCustomerPhone=0912345678&orderCustomerAddress=test'
+                )
+                .set('Accept', 'application/json')
+                .expect(200)
+                .end(function(err, res) {
+                  if (err) return done(err)
+                  expect(res.body.status).to.be.equal('error')
+                  expect(res.body.message).to.be.equal('請填寫訂單配送資料欄位')
+
+                  done()
+                })
+            })
         })
     })
 
     it('（X）訂單創建失敗，請填寫訂單客戶資料欄位', done => {
-      request(app)
-        .post('/api/order')
-        .send('orderRecipientName=user1&orderRecipientPhone=0912345678&orderRecipientAddress=test')
+      var agent = request.agent(app)
+      agent
+        .post('/api/cart')
+        .send({ productId: 1 })
         .set('Accept', 'application/json')
         .expect(200)
         .end(function(err, res) {
           if (err) return done(err)
-          expect(res.body.status).to.be.equal('error')
-          expect(res.body.message).to.be.equal('請填寫訂單客戶資料欄位')
 
-          done()
+          agent
+            .put('/api/cart')
+            .send('shipping_method=住家宅配')
+            .set('Accept', 'application/json')
+            .expect(200)
+            .end(function(err, res) {
+              if (err) return done(err)
+
+              agent
+                .post('/api/order')
+                .send(
+                  'orderRecipientName=user1&orderRecipientPhone=0912345678&orderRecipientAddress=test'
+                )
+                .set('Accept', 'application/json')
+                .expect(200)
+                .end(function(err, res) {
+                  if (err) return done(err)
+                  expect(res.body.status).to.be.equal('error')
+                  expect(res.body.message).to.be.equal('請填寫訂單客戶資料欄位')
+
+                  done()
+                })
+            })
         })
     })
 
     after(async function() {
       // 在所有測試結束後會執行的程式碼區塊
-      await db.Product.destroy({ where: {}, truncate: true })
       await db.Cart.destroy({ where: {}, truncate: true })
-      await db.CartItem.destroy({ where: {}, truncate: true })
       await db.Order.destroy({ where: {}, truncate: true })
     })
   })
@@ -102,24 +133,53 @@ describe('#Order Controller', () => {
     before(async function() {
       // 在所有測試開始前會執行的程式碼區塊
       await db.Order.destroy({ where: {}, truncate: true })
-
-      await db.Order.create({ id: 1, sn: 3, total_amount: 500 })
     })
 
     // ::TODO:: 測試碼待更新
     it('（O）成功取得訂單資料', done => {
-      request(app)
-        .get('/api/order')
+      var agent = request.agent(app)
+      agent
+        .post('/api/cart')
+        .send({ productId: 1 })
         .set('Accept', 'application/json')
         .expect(200)
         .end(function(err, res) {
           if (err) return done(err)
-          expect(res.body.order.id).to.be.equal(1)
-          expect(res.body.order.sn).to.be.equal(3)
-          expect(res.body.order.total_amount).to.be.equal(500)
-          expect(res.body.status).to.be.equal('success')
 
-          done()
+          agent
+            .put('/api/cart')
+            .send('shipping_method=住家宅配')
+            .set('Accept', 'application/json')
+            .expect(200)
+            .end(function(err, res) {
+              if (err) return done(err)
+
+              agent
+                .post('/api/order')
+                .send(
+                  'orderCustomerName=root&orderCustomerEmail=root@example.com&orderCustomerPhone=0912345678&orderCustomerAddress=test&orderRecipientName=user1&orderRecipientPhone=0912345678&orderRecipientAddress=test'
+                )
+                .set('Accept', 'application/json')
+                .expect(200)
+                .end(function(err, res) {
+                  if (err) return done(err)
+                  // 訂單資訊
+                  expect(res.body.orderData.id).to.be.equal(1)
+                  expect(res.body.status).to.be.equal('success')
+
+                  agent
+                    .get('/api/order')
+                    .set('Accept', 'application/json')
+                    .expect(200)
+                    .end(function(err, res) {
+                      if (err) return done(err)
+                      expect(res.body.order.id).to.be.equal(1)
+                      expect(res.body.status).to.be.equal('success')
+
+                      done()
+                    })
+                })
+            })
         })
     })
 
