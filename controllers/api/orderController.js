@@ -1,111 +1,99 @@
 const db = require('../../models')
 const faker = require('faker')
-const Order = db.Order
-const OrderItem = db.OrderItem
+const snNum = faker.random.number() // 新增訂單使用
+const Product = db.Product
 const Cart = db.Cart
 const CartItem = db.CartItem
-const Product = db.Product
+const Order = db.Order
+const OrderItem = db.OrderItem
+const Payment = db.Payment
+const Shipping = db.Shipping
 
 const orderController = {
   postOrder: async (req, res) => {
-    // ===== Step 1. 檢查客戶資料是否填寫完整 =====
-    // if (
-    //   !req.body.orderCustomerName ||
-    //   !req.body.orderCustomerEmail ||
-    //   !req.body.orderCustomerPhone ||
-    //   !req.body.orderCustomerAddress
-    // ) {
-    //   return res.json({ status: 'error', message: '請填寫訂單客戶資料欄位' })
-    // }
+    // ===== Step 1 檢查客戶資料是否填寫完整 =====
+    if (
+      !req.body.orderCustomerName ||
+      !req.body.orderCustomerEmail ||
+      !req.body.orderCustomerPhone ||
+      !req.body.orderCustomerAddress
+    ) {
+      return res.json({ status: 'error', message: '請填寫訂單客戶資料欄位' })
+    }
 
-    // if (
-    //   !req.body.orderRecipientName ||
-    //   !req.body.orderRecipientPhone ||
-    //   !req.body.orderRecipientAddress
-    // ) {
-    //   return res.json({ status: 'error', message: '請填寫訂單配送資料欄位' })
-    // }
+    if (
+      !req.body.orderRecipientName ||
+      !req.body.orderRecipientPhone ||
+      !req.body.orderRecipientAddress
+    ) {
+      return res.json({ status: 'error', message: '請填寫訂單配送資料欄位' })
+    }
 
-    console.log('=== （0）送出訂單的預設 cartId ===')
-    console.log('req.session', req.session)
-    console.log('=== 0）送出訂單的預設 cartId ===')
+    // ===== Step 2 取得該購物車資料 & 商品總價 =====
 
-    // ::TODO::（待修正） 暫時補 1，讓本機實作和測試可執行
-    const cartId = req.session.cartId
-    console.log('=== （1）目前購物車的 cartId ===')
-    console.log('cartId', cartId)
-    console.log('=== （1）目前購物車的 cartId ===')
+    // ===== Step 2-1 取得目前購物車 cartId =====
+    const tempCartId = req.session.cartId // ::TODO:: 如何讓測試可執行
+    console.log('=== （Ｏ）目前購物車 cartId ===')
+    console.log(tempCartId)
+    console.log('=== （Ｏ）目前購物車 cartId ===')
 
-    // ===== Step 2. 取得該購物車資料 & 商品總價 =====
+    // ===== Step 2-2 取得目前購物車內的 cartData 資料 =====
     const cartData = await Cart.findOne({
       where: {
-        id: cartId
+        id: tempCartId
       },
       include: [{ model: Product, as: 'items' }]
     })
 
-    console.log('=== (2）目前購物車內的 cartData 資料 ===')
-    console.log('cartData.items', cartData.items)
-    console.log('=== (2）目前購物車內的 cartData 資料 ===')
+    // ===== Step 2-3 取得使用者選擇的配送方式 =====
+    let shippingMethod = await cartData.shipping_method
 
-    // ===== Step 3. 取得該購物車商品總價 =====
+    console.log('=== （Ｏ）配送方式 shippingMethod ===')
+    console.log(shippingMethod)
+    console.log('=== （Ｏ）配送方式 shippingMethod ===')
+
+    // ===== Step 2-4 取得該購物車商品總價 =====
     let total_amount =
       cartData.items.length > 0
         ? cartData.items.map(d => d.sell_price * d.CartItem.quantity).reduce((a, b) => a + b)
         : 0
 
-    console.log('=== (3）商品總價 total_amount 資料 ===')
-    console.log('total_amount', total_amount)
-    console.log('=== (3）商品總價 total_amount 資料 ===')
+    console.log('=== （Ｏ）商品總價 total_amount ===')
+    console.log(total_amount)
+    console.log('=== （Ｏ）商品總價 total_amount ===')
 
-    const snNum = faker.random.number()
-
-    // ===== Step 4. 創建訂單 =====
-    const order = await Order.create({
-      // ::TODO:: 暫時讓 sn = cartId
+    // ===== Step 3 創建訂單 =====
+    const orderData = await Order.create({
       sn: snNum,
       total_amount: total_amount,
       name: req.body.orderCustomerName,
       email: req.body.orderCustomerEmail,
       phone: req.body.orderCustomerPhone,
       address: req.body.orderCustomerAddress,
-      shipping_status: false,
-      payment_status: false,
-      // ::TODO:: 等 User 建立後再行修改
+      order_status: 1, // (0 - 已取消, 1 - 處理中）
+      remark: null,
+      shipping_status: 0, //（0 - 尚未配送, 1 - 配送中, 2 - 已送達）
+      payment_status: 0, //（0 - 尚未付款, 1 - 已付款）
       UserId: null,
       CouponId: null,
       discountId: null
     })
 
-    console.log('order', order)
+    console.log('=== （Ｏ）訂單資料 orderData ===')
+    console.log(orderData)
+    console.log('=== （Ｏ）訂單資料 orderData ===')
 
-    const orderData = await Order.findOne({
-      where: {
-        sn: snNum
-      }
-    })
+    // ===== Step 4 建立與訂單有關的 OrderItem =====
 
-    console.log('=== (4）訂單資料 orderData 資料 ===')
-    console.log('orderData', order.id)
-    console.log('orderData', orderData.id)
-    console.log('orderData', orderData)
-    console.log('=== (4）訂單資料 orderData 資料 ===')
-
-    // ===== Step 5. 取得與該購物車有關的商品資料 =====
-
+    // ===== Step 4-1 取得與該購物車有關的商品資料 =====
     const cartItemData = await CartItem.findAll({
       where: {
-        CartId: cartId
+        CartId: tempCartId // 以 req 而來的 tempCartId 作為搜尋條件
       }
     })
 
-    console.log('=== (5）該購物車的商品資料 cartItemData ===')
-    console.log('cartItemData', cartItemData)
-    console.log('=== (5）該購物車的商品資料 cartItemData ===')
-
-    // ===== Step 6. 建立與訂單有關的 OrderItem =====
-    // 宣告 tempOrderId
-    const tempOrderId = await orderData.id
+    // ===== Step 4-2 逐一建立與該訂單有關的 OrderItem =====
+    const tempOrderId = await orderData.id // 取得 orderId 使用
 
     const orderItem = await cartData.items.map(async d => {
       const data = await OrderItem.create({
@@ -120,72 +108,83 @@ const orderController = {
     function getQyt(d) {
       let qyt = null
       cartItemData.forEach(item => {
-        console.log('===== 購物車內容物 =====')
-        console.log('item.dataValues', item.dataValues)
-        console.log('===== 購物車內容物 =====')
-
-        console.log('===== 外層傳入 =====')
-        console.log('d.id', d.id)
-        console.log('===== 外層傳入 =====')
-
+        // 若該購物車內商品的 id 等於目前的產品 id，則回傳其數量使用
         if (item.dataValues.ProductId == d.id) {
           console.log('回傳的商品數量', item.dataValues.quantity)
           return (qyt = item.dataValues.quantity)
         }
       })
-      console.log('qyt', qyt)
       return qyt
     }
 
-    console.log('==========================================')
-    console.log('cartId', cartId)
-    console.log('==========================================')
+    // ===== Step 5 建立與訂單有關的 Payment =====
+    const paymentData = await Payment.create({
+      params: null,
+      sn: null,
+      total_amount: total_amount,
+      payment_method: null,
+      payment_status: 0, //（0 - 尚未付款, 1 - 已付款）
+      OrderId: tempOrderId
+    })
 
-    const orderItemData = await Order.findAll({
-      where: {
-        sn: snNum
-      },
+    console.log('=== (Ｏ）訂單的付款資料 paymentData ===')
+    console.log(paymentData)
+    console.log('=== (Ｏ）訂單的付款資料 paymentData ===')
+
+    // ===== Step 6 建立與訂單有關的 Shipping =====
+    const shippingData = await Shipping.create({
+      sn: null,
+      shipping_fee: 60,
+      shipping_method: shippingMethod,
+      shipping_status: 0, //（0 - 尚未配送, 1 - 配送中, 2 - 已送達）
+      name: req.body.orderRecipientName, // 從 前端 取得
+      phone: req.body.orderRecipientPhone, // 從 前端 取得
+      address: req.body.orderRecipientAddress, // 從 前端 取得
+      OrderId: tempOrderId
+    })
+
+    console.log('=== (Ｏ）訂單的付款資料 shippingData ===')
+    console.log(shippingData)
+    console.log('=== (Ｏ）訂單的付款資料 shippingData ===')
+
+    // ===== Step 7 取得該訂單的商品資訊 =====
+    const orderItemData = await Order.findOne({
+      where: { id: tempOrderId }, // ::TODO:: 如何讓測試可執行
       include: [{ model: Product, as: 'items' }]
     })
 
-    console.log('=== (7）訂單的商品資料 orderItemData ===')
-    console.log('orderItemData', orderItemData)
-    console.log('=== (7）訂單的商品資料 orderItemData ===')
+    console.log('=== (Ｏ）取得該訂單的商品資訊 ===')
+    console.log(orderItemData)
+    console.log('=== (Ｏ）取得該訂單的商品資訊 ===')
 
-    // 將 cartId & orderId 存入 res.session 以供後續讀取資料使用
-    req.session.cartId = cartId
+    // ===== Step 8 將 tempCartId & tempOrderId 存入 res.session =====
+    req.session.cartId = tempCartId
     req.session.orderId = tempOrderId
     req.session.save()
 
-    console.log('=== (7）回傳 session 內容 ===')
+    console.log('=== (Ｏ）回傳 session 內容 ===')
     console.log('req.session', req.session)
-    console.log('=== (7）回傳 session 內容 ===')
+    console.log('=== (Ｏ）回傳 session 內容 ===')
 
     res.json({
-      //cartData, // 回傳的購物車
-      orderData, // 回傳的訂單資料
-      //cartItemData, // 回傳的購物車商品資料
-      orderItemData, // 回傳的訂單商品資料
+      orderData,
+      orderItemData,
+      paymentData,
+      shippingData,
       status: 'success',
       message: '成功新增一筆訂單'
     })
   },
   // 取得單一訂單的資料
   getOrder: async (req, res) => {
-    console.log('=== (0）取得 req.session ===')
+    console.log('=== (Ｏ）取得目前 session 內容 ===')
     console.log('req.session', req.session)
-    console.log('=== (0）取得 req.session ===')
+    console.log('=== (Ｏ）取得目前 session 內容 ===')
 
     const order = await Order.findOne({
-      // ::TODO::（待修正） 暫時補 1，讓本機實作和測試可執行
-      where: { id: req.session.orderId },
+      where: { id: req.session.orderId }, // ::TODO::如何讓測試可執行
       include: [{ model: Product, as: 'items' }]
     })
-
-    console.log('=== (1）取得訂單內容 內容 ===')
-    console.log('order', order)
-    console.log('order', order.items)
-    console.log('=== (1）取得訂單內容 內容 ===')
 
     res.json({
       order,
