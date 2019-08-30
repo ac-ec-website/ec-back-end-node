@@ -161,6 +161,7 @@ const orderController = {
     // ===== Step 8 將 tempCartId & tempOrderId 存入 res.session =====
     req.session.cartId = tempCartId
     req.session.orderId = tempOrderId
+    req.session.paymentId = paymentData.id
     req.session.save()
 
     console.log('=== (Ｏ）回傳 session 內容 ===')

@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     'Payment',
     {
       params: DataTypes.TEXT,
-      sn: DataTypes.INTEGER,
+      sn: DataTypes.STRING,
       total_amount: DataTypes.INTEGER,
       payment_method: DataTypes.STRING,
       payment_status: DataTypes.STRING,

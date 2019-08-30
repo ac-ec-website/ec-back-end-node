@@ -4,8 +4,20 @@ const request = require('supertest')
 const sinon = require('sinon')
 const should = chai.should()
 const { expect } = require('chai')
+const authorization = require('../../../config/authorization')
 
-const app = require('../../../app')
+authorization.checkIsLogin = sinon
+  .stub(authorization, 'checkIsLogin')
+  .callsFake(function(req, res, next) {
+    return next()
+  })
+authorization.checkIsAdmin = sinon
+  .stub(authorization, 'checkIsAdmin')
+  .callsFake(function(req, res, next) {
+    return next()
+  })
+
+let app = require('../../../app')
 const db = require('../../../models')
 
 describe('#Admin Category', () => {

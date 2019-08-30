@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.TEXT
       },
       sn: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       total_amount: {
         type: Sequelize.INTEGER
