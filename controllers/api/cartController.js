@@ -118,8 +118,18 @@ const cartController = {
       })
     }
 
+    let shippingFee = 0
+
+    if (req.body.shipping_method === '住家宅配') {
+      shippingFee = 60
+    }
+
+    if (req.body.shipping_method === '其他') {
+      shippingFee = 100
+    }
+
     await Cart.update(
-      { shipping_method: req.body.shipping_method },
+      { shipping_method: req.body.shipping_method, shipping_fee: shippingFee },
       { where: { id: req.session.cartId } }
     )
 

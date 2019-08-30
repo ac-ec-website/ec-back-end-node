@@ -10,7 +10,7 @@ module.exports = {
         {
           id: 1,
           sn: null,
-          shipping_fee: 30,
+          shipping_fee: 60,
           shipping_method: '住家宅配',
           // 0 - 未配送, 1 - 配送中, 2 - 已送達
           shipping_status: 0,
@@ -24,7 +24,7 @@ module.exports = {
         {
           id: 2,
           sn: null,
-          shipping_fee: 30,
+          shipping_fee: 60,
           shipping_method: '住家宅配',
           // 0 - 未配送, 1 - 配送中, 2 - 已送達
           shipping_status: 1,

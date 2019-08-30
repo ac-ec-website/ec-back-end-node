@@ -23,8 +23,6 @@ describe('#Cart Controller', () => {
         .end(function(err, res) {
           if (err) return done(err)
 
-          // ::TODO:: 更新購物車運送方式
-
           agent
             .get('/api/cart')
             .set('Accept', 'application/json')
@@ -50,7 +48,7 @@ describe('#Cart Controller', () => {
       await db.Cart.destroy({ where: {}, truncate: true })
     })
 
-    it('（O）成功更新購物車的配送資訊', done => {
+    it('（O）成功更新購物車的配送資訊 - 住家宅配', done => {
       var agent = request.agent(app)
       agent
         .post('/api/cart')
@@ -69,6 +67,34 @@ describe('#Cart Controller', () => {
               if (err) return done(err)
               expect(res.body.cart.id).to.be.equal(1)
               expect(res.body.cart.shipping_method).to.be.equal('住家宅配')
+              expect(res.body.cart.shipping_fee).to.be.equal(60)
+              expect(res.body.status).to.be.equal('success')
+
+              done()
+            })
+        })
+    })
+
+    it('（O）成功更新購物車的配送資訊 - 其他', done => {
+      var agent = request.agent(app)
+      agent
+        .post('/api/cart')
+        .send({ productId: 1 })
+        .set('Accept', 'application/json')
+        .expect(200)
+        .end(function(err, res) {
+          if (err) return done(err)
+
+          agent
+            .put('/api/cart')
+            .send('shipping_method=其他')
+            .set('Accept', 'application/json')
+            .expect(200)
+            .end(function(err, res) {
+              if (err) return done(err)
+              expect(res.body.cart.id).to.be.equal(2)
+              expect(res.body.cart.shipping_method).to.be.equal('其他')
+              expect(res.body.cart.shipping_fee).to.be.equal(100)
               expect(res.body.status).to.be.equal('success')
 
               done()
@@ -123,7 +149,7 @@ describe('#Cart Controller', () => {
       })
     })
 
-    it('增加商品數量', done => {
+    it('（Ｏ）成功增加商品數量', done => {
       request(app)
         .post('/api/cart/1/cartItem/1/add')
         .send('')
@@ -242,7 +268,7 @@ describe('#Cart Controller', () => {
       })
     })
 
-    it('減少商品數量', done => {
+    it('（Ｏ）減少商品數量', done => {
       request(app)
         .post('/api/cart/1/cartItem/1/sub')
         .send('')
@@ -283,7 +309,7 @@ describe('#Cart Controller', () => {
       })
     })
 
-    it('刪除購物車內的商品', done => {
+    it('（Ｏ）刪除購物車內的商品', done => {
       request(app)
         .delete('/api/cart/1/cartItem/1')
         .send('')
