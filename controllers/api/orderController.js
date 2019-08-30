@@ -158,8 +158,10 @@ const orderController = {
     // console.log(orderItemData)
     // console.log('=== (Ｏ）取得該訂單的商品資訊 ===')
 
-    // ===== Step 8 將 tempCartId & tempOrderId 存入 res.session =====
-    req.session.cartId = tempCartId
+    // ===== Step 8 清空 req.session.cartId，避免購物車重複使用 =====
+    req.session.cartId = ''
+
+    // ===== Step 9 將 tempOrderId, paymentData.id 存入 res.session =====
     req.session.orderId = tempOrderId
     req.session.paymentId = paymentData.id
     req.session.save()
