@@ -32,7 +32,7 @@ const orderController = {
     // ===== Step 2 取得該購物車資料 & 商品總價 =====
 
     // ===== Step 2-1 取得目前購物車 cartId =====
-    const tempCartId = req.session.cartId // ::TODO:: 如何讓測試可執行
+    const tempCartId = req.session.cartId
     console.log('=== （Ｏ）目前購物車 cartId ===')
     console.log(tempCartId)
     console.log('=== （Ｏ）目前購物車 cartId ===')
@@ -47,6 +47,7 @@ const orderController = {
 
     // ===== Step 2-3 取得使用者選擇的配送方式 =====
     let shippingMethod = await cartData.shipping_method
+    let shippingFee = await cartData.shipping_fee
 
     console.log('=== （Ｏ）配送方式 shippingMethod ===')
     console.log(shippingMethod)
@@ -71,7 +72,7 @@ const orderController = {
       phone: req.body.orderCustomerPhone,
       address: req.body.orderCustomerAddress,
       order_status: 1, // (0 - 已取消, 1 - 處理中）
-      remark: null,
+      remark: req.body.orderRemark,
       shipping_status: 0, //（0 - 尚未配送, 1 - 配送中, 2 - 已送達）
       payment_status: 0, //（0 - 尚未付款, 1 - 已付款）
       UserId: null,
@@ -134,7 +135,7 @@ const orderController = {
     // ===== Step 6 建立與訂單有關的 Shipping =====
     const shippingData = await Shipping.create({
       sn: null,
-      shipping_fee: 60,
+      shipping_fee: shippingFee,
       shipping_method: shippingMethod,
       shipping_status: 0, //（0 - 尚未配送, 1 - 配送中, 2 - 已送達）
       name: req.body.orderRecipientName, // 從 前端 取得
@@ -149,7 +150,7 @@ const orderController = {
 
     // ===== Step 7 取得該訂單的商品資訊 =====
     const orderItemData = await Order.findOne({
-      where: { id: tempOrderId }, // ::TODO:: 如何讓測試可執行
+      where: { id: tempOrderId },
       include: [{ model: Product, as: 'items' }]
     })
 
@@ -182,7 +183,7 @@ const orderController = {
     console.log('=== (Ｏ）取得目前 session 內容 ===')
 
     const order = await Order.findOne({
-      where: { id: req.session.orderId }, // ::TODO::如何讓測試可執行
+      where: { id: req.session.orderId },
       include: [{ model: Product, as: 'items' }]
     })
 
