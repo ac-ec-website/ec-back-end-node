@@ -77,7 +77,7 @@ const orderController = {
       payment_status: 0, //（0 - 尚未付款, 1 - 已付款）
       UserId: null,
       CouponId: null,
-      discountId: null
+      DiscountId: null
     })
 
     // console.log('=== （Ｏ）訂單資料 orderData ===')
