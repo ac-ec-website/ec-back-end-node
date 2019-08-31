@@ -159,7 +159,7 @@ const orderController = {
     // console.log('=== (Ｏ）取得該訂單的商品資訊 ===')
 
     // ===== Step 8 清空 req.session.cartId，避免購物車重複使用 =====
-    // req.session.cartId = ''
+    req.session.cartId = ''
 
     // ===== Step 9 將 tempOrderId, paymentData.id 存入 res.session =====
     req.session.orderId = tempOrderId
