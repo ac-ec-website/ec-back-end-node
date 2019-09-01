@@ -21,10 +21,10 @@ module.exports = {
         {
           id: 2,
           name: '單身快樂',
-          coupon_code: '111',
+          coupon_code: '1111',
           description: '單身狗專屬優惠券',
           percent: null,
-          product_reduce: 1111,
+          product_reduce: 111,
           shipping_free: 0,
           limited_num: 111,
           end_date: null,
