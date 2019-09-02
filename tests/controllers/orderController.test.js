@@ -11,6 +11,7 @@ describe('#Order Controller', () => {
     before(async function() {
       // 在所有測試開始前會執行的程式碼區塊
       await db.Cart.destroy({ where: {}, truncate: true })
+      await db.CartItem.destroy({ where: {}, truncate: true })
       await db.Order.destroy({ where: {}, truncate: true })
     })
 
@@ -126,6 +127,7 @@ describe('#Order Controller', () => {
     after(async function() {
       // 在所有測試結束後會執行的程式碼區塊
       await db.Cart.destroy({ where: {}, truncate: true })
+      await db.CartItem.destroy({ where: {}, truncate: true })
       await db.Order.destroy({ where: {}, truncate: true })
     })
   })
@@ -133,6 +135,8 @@ describe('#Order Controller', () => {
     before(async function() {
       // 在所有測試開始前會執行的程式碼區塊
       await db.Order.destroy({ where: {}, truncate: true })
+      await db.Cart.destroy({ where: {}, truncate: true })
+      await db.CartItem.destroy({ where: {}, truncate: true })
     })
 
     // ::TODO:: 測試碼待更新
@@ -186,6 +190,8 @@ describe('#Order Controller', () => {
     after(async function() {
       // 在所有測試結束後會執行的程式碼區塊
       await db.Order.destroy({ where: {}, truncate: true })
+      await db.Cart.destroy({ where: {}, truncate: true })
+      await db.CartItem.destroy({ where: {}, truncate: true })
     })
   })
 })
