@@ -9,6 +9,10 @@ const authorization = require('../../../config/authorization')
 authorization.checkIsLogin = sinon
   .stub(authorization, 'checkIsLogin')
   .callsFake(function(req, res, next) {
+    req.user = {
+      id: 1,
+      name: 'root'
+    }
     return next()
   })
 authorization.checkIsAdmin = sinon
