@@ -77,7 +77,7 @@ const orderController = {
       payment_status: 0, //（0 - 尚未付款, 1 - 已付款）
       UserId: null,
       CouponId: null,
-      discountId: null
+      DiscountId: null
     })
 
     // console.log('=== （Ｏ）訂單資料 orderData ===')
@@ -158,8 +158,8 @@ const orderController = {
     // console.log(orderItemData)
     // console.log('=== (Ｏ）取得該訂單的商品資訊 ===')
 
-    // ===== Step 8 清空 req.session.cartId，避免購物車重複使用 =====
-    req.session.cartId = ''
+    // ===== Step 8 設定 req.session.cartId 為 undefined，避免購物車重複使用，同時，不影響 productController getProducts =====
+    req.session.cartId = undefined
 
     // ===== Step 9 將 tempOrderId, paymentData.id 存入 res.session =====
     req.session.orderId = tempOrderId

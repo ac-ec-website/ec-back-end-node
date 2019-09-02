@@ -6,22 +6,31 @@ const Product = db.Product
 const cartController = {
   // 取得單一購物車的資料
   getCart: async (req, res) => {
-    const cart = await Cart.findOne({
-      where: { id: req.session.cartId },
-      include: [{ model: Product, as: 'items' }]
-    })
+    try {
+      const cart = await Cart.findOne({
+        where: { id: req.session.cartId },
+        include: [{ model: Product, as: 'items' }]
+      })
 
-    const total_amount =
-      cart.items.length > 0
-        ? cart.items.map(d => d.sell_price * d.CartItem.quantity).reduce((a, b) => a + b)
-        : 0
+      const total_amount =
+        cart.items.length > 0
+          ? cart.items.map(d => d.sell_price * d.CartItem.quantity).reduce((a, b) => a + b)
+          : 0
 
-    return res.json({
-      cart,
-      total_amount,
-      status: 'success',
-      message: '成功取得購物車的資料'
-    })
+      return res.json({
+        cart,
+        total_amount,
+        status: 'success',
+        message: '成功取得購物車的資料'
+      })
+    } catch (error) {
+      if (!req.session.cartId) {
+        return res.json({
+          status: 'error',
+          message: '目前尚無 cartId'
+        })
+      }
+    }
   },
   // 增加購物車內商品數量
   addItemToCart: async (req, res) => {
@@ -34,7 +43,9 @@ const cartController = {
       cartItem[0].save()
 
       await res.json({
-        cartItem
+        cartItem,
+        status: 'success',
+        message: '成功增加購物車的商品數量'
       })
     } catch (error) {
       console.log(error)
@@ -47,11 +58,18 @@ const cartController = {
         where: { CartId: req.params.cartId, id: req.params.id }
       })
 
-      cartItem[0].quantity -= 1
-      cartItem[0].save()
+      if (cartItem[0].quantity > 1) {
+        cartItem[0].quantity -= 1
+        cartItem[0].save()
+      } else {
+        cartItem[0].quantity = 0
+        cartItem[0].save()
+      }
 
       await res.json({
-        cartItem
+        cartItem,
+        status: 'success',
+        message: '成功減少購物車的商品數量'
       })
     } catch (error) {
       console.log(error)
@@ -109,37 +127,39 @@ const cartController = {
   },
   // 更新購物車資料
   putCart: async (req, res) => {
-    console.log('前端傳來的配送方式', req.body.shipping_method)
+    try {
+      if (!req.body.shipping_method) {
+        return res.json({
+          status: 'error',
+          message: '請填寫配送方式'
+        })
+      }
 
-    if (!req.body.shipping_method) {
+      let shippingFee = 0
+
+      if (req.body.shipping_method === '住家宅配') {
+        shippingFee = 60
+      }
+
+      if (req.body.shipping_method === '其他') {
+        shippingFee = 100
+      }
+
+      await Cart.update(
+        { shipping_method: req.body.shipping_method, shipping_fee: shippingFee },
+        { where: { id: req.session.cartId } }
+      )
+
+      const cart = await Cart.findOne({ where: { id: req.session.cartId } })
+
       return res.json({
-        status: 'error',
-        message: '請填寫配送方式'
+        cart,
+        status: 'success',
+        message: '已更新購物車資料(配送方式)'
       })
+    } catch (error) {
+      console.log(error)
     }
-
-    let shippingFee = 0
-
-    if (req.body.shipping_method === '住家宅配') {
-      shippingFee = 60
-    }
-
-    if (req.body.shipping_method === '其他') {
-      shippingFee = 100
-    }
-
-    await Cart.update(
-      { shipping_method: req.body.shipping_method, shipping_fee: shippingFee },
-      { where: { id: req.session.cartId } }
-    )
-
-    const cart = await Cart.findOne({ where: { id: req.session.cartId } })
-
-    return res.json({
-      cart,
-      status: 'success',
-      message: '已更新購物車資料(配送方式)'
-    })
   }
 }
 

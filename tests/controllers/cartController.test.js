@@ -13,7 +13,7 @@ describe('#Cart Controller', () => {
       await db.Cart.destroy({ where: {}, truncate: true })
     })
 
-    it('（O）取得單一購物車資料', done => {
+    it('（Ｏ）取得單一購物車資料', done => {
       var agent = request.agent(app)
       agent
         .post('/api/cart')
@@ -37,9 +37,24 @@ describe('#Cart Controller', () => {
         })
     })
 
+    it('（Ｘ）無法取得單一購物車資料', done => {
+      var agent = request.agent(app)
+      agent
+        .get('/api/cart')
+        .set('Accept', 'application/json')
+        .expect(200)
+        .end(function(err, res) {
+          if (err) return done(err)
+          expect(res.body.status).to.be.equal('error')
+
+          done()
+        })
+    })
+
     after(async function() {
       // 在所有測試結束後會執行的程式碼區塊
       await db.Cart.destroy({ where: {}, truncate: true })
+      await db.CartItem.destroy({ where: {}, truncate: true })
     })
   })
   describe('PUT Cart - 更新購物車的配送資訊', () => {
@@ -48,7 +63,7 @@ describe('#Cart Controller', () => {
       await db.Cart.destroy({ where: {}, truncate: true })
     })
 
-    it('（O）成功更新購物車的配送資訊 - 住家宅配', done => {
+    it('（Ｏ）成功更新購物車的配送資訊 - 住家宅配', done => {
       var agent = request.agent(app)
       agent
         .post('/api/cart')
@@ -75,7 +90,7 @@ describe('#Cart Controller', () => {
         })
     })
 
-    it('（O）成功更新購物車的配送資訊 - 其他', done => {
+    it('（Ｏ）成功更新購物車的配送資訊 - 其他', done => {
       var agent = request.agent(app)
       agent
         .post('/api/cart')
@@ -130,6 +145,7 @@ describe('#Cart Controller', () => {
     after(async function() {
       // 在所有測試結束後會執行的程式碼區塊
       await db.Cart.destroy({ where: {}, truncate: true })
+      await db.CartItem.destroy({ where: {}, truncate: true })
     })
   })
   describe('POST /api/cart/1/cartItem/1/add - 增加購物車商品數量', () => {
