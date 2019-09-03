@@ -5,7 +5,7 @@ const sinon = require('sinon')
 const should = chai.should()
 const { expect } = require('chai')
 const bcrypt = require('bcrypt')
-
+const authorization = require('../../../config/authorization')
 const app = require('../../../app')
 const db = require('../../../models')
 
@@ -167,6 +167,61 @@ describe('#AdminController', () => {
     })
 
     after(async function() {
+      await db.User.destroy({ where: {}, truncate: true })
+    })
+  })
+
+  describe('更改使用者權限 PUT /api/admin/user', () => {
+    before(async function() {
+      sinon.stub(authorization, 'checkIsLogin').callsFake((req, res, next) => {
+        return next()
+      })
+      sinon.stub(authorization, 'checkIsAdmin').callsFake((req, res, next) => {
+        return next()
+      })
+      await db.User.destroy({ where: {}, truncate: true })
+
+      const salt = bcrypt.genSaltSync(10)
+      await db.User.create({
+        id: 1,
+        role: 'user'
+      })
+    })
+
+    it('所有欄位必填', done => {
+      request(app)
+        .put('/api/admin/user')
+        .send('')
+        .set('Accept', 'application/json')
+        .expect(200)
+        .end(function(err, res) {
+          if (err) return done(err)
+          expect(res.body.status).to.be.equal('error')
+          expect(res.body.message).to.be.equal('Cannot find id and role')
+          done()
+        })
+    })
+
+    it('成功修改使用者權限', done => {
+      request(app)
+        .put('/api/admin/user')
+        .send({
+          id: 1,
+          role: 'admin'
+        })
+        .set('Accept', 'application/json')
+        .expect(200)
+        .end(function(err, res) {
+          if (err) return done(err)
+          expect(res.body.user.id).to.be.equal(1)
+          expect(res.body.user.role).to.be.equal('admin')
+          done()
+        })
+    })
+
+    after(async function() {
+      authorization.checkIsLogin.restore()
+      authorization.checkIsAdmin.restore()
       await db.User.destroy({ where: {}, truncate: true })
     })
   })

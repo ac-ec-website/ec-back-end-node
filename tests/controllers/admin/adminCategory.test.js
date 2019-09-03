@@ -5,26 +5,19 @@ const sinon = require('sinon')
 const should = chai.should()
 const { expect } = require('chai')
 const authorization = require('../../../config/authorization')
-
-authorization.checkIsLogin = sinon
-  .stub(authorization, 'checkIsLogin')
-  .callsFake(function(req, res, next) {
-    req.user = {
-      id: 1,
-      name: 'root'
-    }
-    return next()
-  })
-authorization.checkIsAdmin = sinon
-  .stub(authorization, 'checkIsAdmin')
-  .callsFake(function(req, res, next) {
-    return next()
-  })
-
 let app = require('../../../app')
 const db = require('../../../models')
 
 describe('#Admin Category', () => {
+  before(async () => {
+    sinon.stub(authorization, 'checkIsLogin').callsFake((req, res, next) => {
+      return next()
+    })
+    sinon.stub(authorization, 'checkIsAdmin').callsFake((req, res, next) => {
+      return next()
+    })
+  })
+
   describe('GET Categories', () => {
     before(async function() {
       await db.Category.destroy({ where: {}, truncate: true })
@@ -157,5 +150,10 @@ describe('#Admin Category', () => {
     after(async function() {
       await db.Category.destroy({ where: {}, truncate: true })
     })
+  })
+
+  after(async () => {
+    authorization.checkIsLogin.restore()
+    authorization.checkIsAdmin.restore()
   })
 })

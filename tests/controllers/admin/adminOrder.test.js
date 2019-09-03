@@ -4,11 +4,20 @@ const request = require('supertest')
 const sinon = require('sinon')
 const should = chai.should()
 const { expect } = require('chai')
-
+const authorization = require('../../../config/authorization')
 const app = require('../../../app')
 const db = require('../../../models')
 
 describe('#Admin Order', () => {
+  before(async () => {
+    sinon.stub(authorization, 'checkIsLogin').callsFake((req, res, next) => {
+      return next()
+    })
+    sinon.stub(authorization, 'checkIsAdmin').callsFake((req, res, next) => {
+      return next()
+    })
+  })
+
   describe('GET orders', () => {
     before(async function() {
       await db.Order.destroy({ where: {}, truncate: true })
@@ -82,5 +91,10 @@ describe('#Admin Order', () => {
     after(async function() {
       await db.Product.destroy({ where: {}, truncate: true })
     })
+  })
+
+  after(async () => {
+    authorization.checkIsLogin.restore()
+    authorization.checkIsAdmin.restore()
   })
 })
