@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/ac-ec-website/ec-back-end-node/blob/master/src/assets/ec-back-end-node-logo.png" alt="ec-back-end-node-logo"/>
+  <img src="https://github.com/ac-ec-website/ec-back-end-node/blob/master/ec-back-end-node-logo.png" alt="ec-back-end-node-logo"/>
 </p>
 
 <p align="center">
