@@ -19,9 +19,9 @@ const MerchantID = process.env.MERCHANT_ID
 const HashKey = process.env.HASH_KEY
 const HashIV = process.env.HASH_IV
 const PayGateWay = 'https://ccore.spgateway.com/MPG/mpg_gateway'
-const ReturnURL = URL + '/spgateway/callback?from=ReturnURL' // ::TODO::
+const ReturnURL = URL + '/spgateway/callback?from=ReturnURL' //
 const NotifyURL = URL + '/spgateway/callback?from=NotifyURL'
-const ClientBackURL = 'http://localhost:8080/#/order' // ::TODO::
+const ClientBackURL = 'https://ac-ec-website.github.io/ec-front-end-vue/dist/#/order'
 
 function genDataChain(TradeInfo) {
   let results = []
@@ -159,7 +159,7 @@ let paymentController = {
       })
     }
 
-    return res.redirect('http://localhost:8080/#/order')
+    return res.redirect('https://ac-ec-website.github.io/ec-front-end-vue/dist/#/order')
   }
 }
 

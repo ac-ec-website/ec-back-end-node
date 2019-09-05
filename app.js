@@ -15,7 +15,8 @@ if (process.env.NODE_ENV !== 'production') {
 const origin = [
   'http://localhost:8080',
   'http://localhost:3000',
-  'https://ec-website-api.herokuapp.com'
+  'https://ec-website-api.herokuapp.com',
+  'https://ac-ec-website.github.io'
 ]
 const corsOptions = {
   origin: origin,

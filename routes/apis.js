@@ -4,7 +4,13 @@ const router = express.Router()
 const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
 
-const { checkIsLogin, checkIsAdmin } = require('../config/authorization')
+const authorization = require('../config/authorization')
+const checkIsLogin = (req, res, next) => {
+  return authorization.checkIsLogin(req, res, next)
+}
+const checkIsAdmin = (req, res, next) => {
+  return authorization.checkIsAdmin(req, res, next)
+}
 
 const adminController = require('../controllers/api/adminController')
 const adminProduct = require('../controllers/api/adminProduct')
