@@ -23,6 +23,8 @@ const ReturnURL = URL + '/spgateway/callback?from=ReturnURL' //
 const NotifyURL = URL + '/spgateway/callback?from=NotifyURL'
 const ClientBackURL = 'https://ac-ec-website.github.io/ec-front-end-vue/dist/#/order'
 
+// const ClientBackURL = 'http://localhost:8080/#/order'
+
 function genDataChain(TradeInfo) {
   let results = []
   for (let kv of Object.entries(TradeInfo)) {
@@ -160,6 +162,8 @@ let paymentController = {
     }
 
     return res.redirect('https://ac-ec-website.github.io/ec-front-end-vue/dist/#/order')
+
+    // return res.redirect('http://localhost:8080/#/order')
   }
 }
 
