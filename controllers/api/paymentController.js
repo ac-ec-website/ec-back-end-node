@@ -23,6 +23,8 @@ const ReturnURL = URL + '/spgateway/callback?from=ReturnURL' //
 const NotifyURL = URL + '/spgateway/callback?from=NotifyURL'
 const ClientBackURL = 'https://ac-ec-website.github.io/ec-front-end-vue/dist/#/order'
 
+// const ClientBackURL = 'http://localhost:8080/#/order'
+
 function genDataChain(TradeInfo) {
   let results = []
   for (let kv of Object.entries(TradeInfo)) {
@@ -146,7 +148,7 @@ let paymentController = {
 
     const payment = await Payment.findOne({ where: { sn: data['Result']['MerchantOrderNo'] } })
 
-    if ((data.Status = 'SUCCESS')) {
+    if (data.Status === 'SUCCESS') {
       await order.update({
         ...req.body,
         payment_status: 1
@@ -155,11 +157,18 @@ let paymentController = {
         ...req.body,
         params: JSON.stringify(data),
         payment_method: data.Result.PaymentType,
-        payment_status: 1 //（0 - 尚未付款, 1 - 已付款）
+        payment_status: 1 //（0 - 尚未付款, 1 - 已付款, 2 - 付款失敗）
+      })
+    } else if (data.Status === 'MPG03009') {
+      await payment.update({
+        ...req.body,
+        payment_status: 2 //（0 - 尚未付款, 1 - 已付款, 2 - 付款失敗）
       })
     }
 
     return res.redirect('https://ac-ec-website.github.io/ec-front-end-vue/dist/#/order')
+
+    // return res.redirect('http://localhost:8080/#/order')
   }
 }
 
