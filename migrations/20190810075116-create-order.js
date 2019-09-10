@@ -11,6 +11,15 @@ module.exports = {
       sn: {
         type: Sequelize.STRING
       },
+      checkoutPrice: {
+        type: Sequelize.INTEGER
+      },
+      shipping_fee: {
+        type: Sequelize.INTEGER
+      },
+      discount_fee: {
+        type: Sequelize.INTEGER
+      },
       total_amount: {
         type: Sequelize.INTEGER
       },
