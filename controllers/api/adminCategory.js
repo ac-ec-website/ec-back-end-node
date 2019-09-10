@@ -1,46 +1,69 @@
 const db = require('../../models')
 const { Category } = db
+const adCatService = require('../../services/adCatService')
 
 const adminCategory = {
   getCategories: async (req, res) => {
-    const categories = await Category.findAll()
+    try {
+      const categories = await adCatService.getCategories()
 
-    return res.json({ categories })
+      return res.json({ categories })
+    } catch (error) {
+      return res.status(422).json(error)
+    }
   },
 
   getCategory: async (req, res) => {
-    const category = await Category.findByPk(req.params.id)
+    try {
+      const categoryId = req.params.id
+      const category = await adCatService.getCategory(categoryId)
 
-    return res.json({ category })
+      return res.json({ category })
+    } catch (error) {
+      return res.status(422).json(error)
+    }
   },
 
   postCategory: async (req, res) => {
-    if (!req.body.name) {
-      return res.json({ status: 'error', message: "name didn't exist" })
+    try {
+      if (!req.body.name) {
+        return res.json({ status: 'error', message: "name didn't exist" })
+      }
+
+      const name = req.body.name
+      const category = await adCatService.postCategory(name)
+
+      return res.json({ category, status: 'success', message: 'category was successfully created' })
+    } catch (error) {
+      return res.status(422).json(error)
     }
-
-    const categoryData = await Category.create({ name: req.body.name })
-    const category = await Category.findByPk(categoryData.id)
-
-    return res.json({ category, status: 'success', message: 'category was successfully created' })
   },
 
   putCategory: async (req, res) => {
-    if (!req.body.name) {
-      return res.json({ status: 'error', message: "name didn't exist" })
+    try {
+      if (!req.body.name) {
+        return res.json({ status: 'error', message: "name didn't exist" })
+      }
+
+      const categoryId = req.params.id
+      const data = { ...req.body }
+      const category = await adCatService.putCategory(categoryId, data)
+
+      return res.json({ category, status: 'success', message: 'category was successfully created' })
+    } catch (error) {
+      return res.status(422).json(error)
     }
-
-    const category = await Category.findByPk(req.params.id)
-    await category.update(req.body)
-
-    return res.json({ category, status: 'success', message: 'category was successfully created' })
   },
 
   deleteCategory: async (req, res) => {
-    const category = await Category.findByPk(req.params.id)
-    await category.destroy()
+    try {
+      const categoryId = req.params.id
+      await adCatService.deleteCategory(categoryId)
 
-    return res.json({ status: 'success', message: '' })
+      return res.json({ status: 'success', message: '' })
+    } catch (error) {
+      return res.status(422).json(error)
+    }
   }
 }
 
