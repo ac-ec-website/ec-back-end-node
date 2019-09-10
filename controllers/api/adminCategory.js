@@ -5,7 +5,7 @@ const adCatService = require('../../services/adCatService')
 const adminCategory = {
   getCategories: async (req, res) => {
     try {
-      const categories = await adCatService.getCategories()
+      const { categories } = await adCatService.getCategories()
 
       return res.json({ categories })
     } catch (error) {
@@ -16,7 +16,7 @@ const adminCategory = {
   getCategory: async (req, res) => {
     try {
       const categoryId = req.params.id
-      const category = await adCatService.getCategory(categoryId)
+      const { category } = await adCatService.getCategory(categoryId)
 
       return res.json({ category })
     } catch (error) {
@@ -31,7 +31,7 @@ const adminCategory = {
       }
 
       const name = req.body.name
-      const category = await adCatService.postCategory(name)
+      const { category } = await adCatService.postCategory(name)
 
       return res.json({ category, status: 'success', message: 'category was successfully created' })
     } catch (error) {
@@ -47,7 +47,7 @@ const adminCategory = {
 
       const categoryId = req.params.id
       const data = { ...req.body }
-      const category = await adCatService.putCategory(categoryId, data)
+      const { category } = await adCatService.putCategory(categoryId, data)
 
       return res.json({ category, status: 'success', message: 'category was successfully created' })
     } catch (error) {
