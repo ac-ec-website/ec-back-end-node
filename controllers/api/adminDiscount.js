@@ -1,46 +1,69 @@
 const db = require('../../models')
 const { Discount } = db
+const adDisService = require('../../services/adDisService')
 
 const adminDiscount = {
   getDiscounts: async (req, res) => {
-    const discounts = await Discount.findAll()
+    try {
+      const { discounts } = await adDisService.getDiscounts()
 
-    return res.json({ discounts })
+      return res.json({ discounts })
+    } catch (error) {
+      return res.status(422).json(error)
+    }
   },
 
   getDiscount: async (req, res) => {
-    const discount = await Discount.findByPk(req.params.id)
+    try {
+      const discountId = req.params.id
+      const { discount } = await adDisService.getDiscount(discountId)
 
-    return res.json({ discount })
+      return res.json({ discount })
+    } catch (error) {
+      return res.status(422).json(error)
+    }
   },
 
   postDiscount: async (req, res) => {
-    if (!req.body.name) {
-      return res.json({ status: 'error', message: "name didn't exist" })
+    try {
+      if (!req.body.name) {
+        return res.json({ status: 'error', message: "name didn't exist" })
+      }
+
+      const data = { ...req.body }
+      const { discount } = await adDisService.postDiscount(data)
+
+      return res.json({ discount, status: 'success', message: 'Discount was successfully created' })
+    } catch (error) {
+      return res.status(422).json(error)
     }
-
-    const discountData = await Discount.create(req.body)
-    const discount = await Discount.findByPk(discountData.id)
-
-    return res.json({ discount, status: 'success', message: 'Discount was successfully created' })
   },
 
   putDiscount: async (req, res) => {
-    if (!req.body.shipping_free) {
-      return res.json({ status: 'error', message: "shipping_free didn't exist" })
+    try {
+      if (!req.body.shipping_free) {
+        return res.json({ status: 'error', message: "shipping_free didn't exist" })
+      }
+
+      const discountId = req.params.id
+      const data = { ...req.body }
+      const { discount } = await adDisService.putDiscount(discountId, data)
+
+      return res.json({ discount, status: 'success', message: 'Discount was successfully created' })
+    } catch (error) {
+      return res.status(422).json(error)
     }
-
-    const discount = await Discount.findByPk(req.params.id)
-    await discount.update(req.body)
-
-    return res.json({ discount, status: 'success', message: 'Discount was successfully created' })
   },
 
   deleteDiscount: async (req, res) => {
-    const discount = await Discount.findByPk(req.params.id)
-    await discount.destroy()
+    try {
+      const discountId = req.params.id
+      await adDisService.deleteDiscount(discountId)
 
-    return res.json({ status: 'success', message: '' })
+      return res.json({ status: 'success', message: '' })
+    } catch (error) {
+      return res.status(422).json(error)
+    }
   }
 }
 
