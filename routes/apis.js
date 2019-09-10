@@ -53,8 +53,12 @@ router.post('/order', upload.none(), orderController.postOrder)
 router.get('/order', orderController.getOrder)
 
 // === 優惠券 API === //
-// 使用優惠券筆訂單
+// 使用優惠券
 router.post('/coupon', couponController.postCoupon)
+// 取得優惠券資訊
+router.get('/coupon', couponController.getCoupon)
+// 取消使用優惠券
+router.delete('/coupon', couponController.deleteCoupon)
 
 // === 款項 API === //
 router.get('/payment', paymentController.getPayment)
