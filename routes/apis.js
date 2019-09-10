@@ -24,6 +24,7 @@ const cartController = require('../controllers/api/cartController.js')
 const orderController = require('../controllers/api/orderController.js')
 const userController = require('../controllers/api/userController')
 const paymentController = require('../controllers/api/paymentController')
+const couponController = require('../controllers/api/couponController')
 
 // === 商品顯示 API === //
 // 取得所有商品資料
@@ -50,6 +51,10 @@ router.delete('/cart/:cartId/cartItem/:id', cartController.deleteItemFromCart)
 router.post('/order', upload.none(), orderController.postOrder)
 // 取得一筆訂單
 router.get('/order', orderController.getOrder)
+
+// === 優惠券 API === //
+// 使用優惠券筆訂單
+router.post('/coupon', couponController.postCoupon)
 
 // === 款項 API === //
 router.get('/payment', paymentController.getPayment)

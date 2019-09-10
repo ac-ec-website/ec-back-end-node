@@ -7,7 +7,10 @@
     "start": "set \"NODE_ENV=development\" && node app.js",
     "dev": "set \"NODE_ENV=development\" && nodemon app.js",
     "test": "set \"NODE_ENV=test\" && nyc mocha --exit --timeout 5000 --recursive \"tests/**/*.js\"",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "dev-ginger": "set \"NODE_ENV=ginger-dev\" && node app.js",
+    "test-local": "set \"NODE_ENV=ginger-test\" && nyc mocha --exit --timeout 5000 --recursive \"tests/**/*.js\"",
+    "mac-test": "export \"NODE_ENV=test\" && nyc mocha --exit --timeout 5000 --recursive \"tests/**/*.js\""
   },
   "keywords": [],
   "author": "",
