@@ -113,7 +113,7 @@ let paymentController = {
     const order = await Order.findByPk(req.session.orderId, {})
     const payment = await Payment.findByPk(req.session.paymentId, {})
 
-    const tradeInfo = getTradeInfo(order.total_amount, order.id, order.email)
+    const tradeInfo = getTradeInfo(order.checkoutPrice, order.id, order.email)
 
     await order.update({
       ...req.body,

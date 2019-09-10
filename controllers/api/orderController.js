@@ -8,6 +8,7 @@ const Order = db.Order
 const OrderItem = db.OrderItem
 const Payment = db.Payment
 const Shipping = db.Shipping
+const Coupon = db.Coupon
 
 const orderController = {
   postOrder: async (req, res) => {
@@ -47,7 +48,7 @@ const orderController = {
 
     // ===== Step 2-3 取得使用者選擇的配送方式 =====
     let shippingMethod = await cartData.shipping_method
-    let shippingFee = await cartData.shipping_fee
+    let shipping_fee = await cartData.shipping_fee
 
     // console.log('=== （Ｏ）配送方式 shippingMethod ===')
     // console.log(shippingMethod)
@@ -63,9 +64,37 @@ const orderController = {
     // console.log(total_amount)
     // console.log('=== （Ｏ）商品總價 total_amount ===')
 
+    // ===== Step 2-5 取得優惠券資訊 =====
+    let couponData = await Coupon.findOne({
+      where: { coupon_code: req.session.couponCode }
+    })
+    let coupon_discount_fee = 0
+
+    // 運費相關
+    if (couponData.type === 0 && couponData.shipping_free === 1) {
+      coupon_discount_fee = shipping_fee
+    }
+
+    // 折價相關
+    if (couponData.type === 1 && couponData.product_reduce !== null) {
+      coupon_discount_fee = couponData.product_reduce
+    }
+
+    // 打折相關
+    if (couponData.type === 2 && couponData.percent !== null) {
+      const discount = 1 - couponData.percent / 100
+      coupon_discount_fee = Math.round(total_amount * discount)
+    }
+
+    // ===== Step 2-6 取得結帳金額資訊 =====
+    const checkoutPrice = total_amount + shipping_fee - coupon_discount_fee
+
     // ===== Step 3 創建訂單 =====
     const orderData = await Order.create({
       sn: snNum,
+      checkoutPrice: checkoutPrice,
+      shipping_fee: shipping_fee,
+      discount_fee: coupon_discount_fee,
       total_amount: total_amount,
       name: req.body.orderCustomerName,
       email: req.body.orderCustomerEmail,
@@ -122,7 +151,7 @@ const orderController = {
     const paymentData = await Payment.create({
       params: null,
       sn: null,
-      total_amount: total_amount + shippingFee, // 付款合計（商品＋運費）
+      total_amount: total_amount + shipping_fee - coupon_discount_fee, // 付款合計（商品＋運費-折價）
       payment_method: null,
       payment_status: 0, //（0 - 尚未付款, 1 - 已付款）
       OrderId: tempOrderId
@@ -135,7 +164,7 @@ const orderController = {
     // ===== Step 6 建立與訂單有關的 Shipping =====
     const shippingData = await Shipping.create({
       sn: null,
-      shipping_fee: shippingFee,
+      shipping_fee: shipping_fee,
       shipping_method: shippingMethod,
       shipping_status: 0, //（0 - 尚未配送, 1 - 配送中, 2 - 已送達）
       name: req.body.orderRecipientName, // 從 前端 取得

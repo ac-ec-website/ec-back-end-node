@@ -2,6 +2,7 @@ const db = require('./../../models')
 const Cart = db.Cart
 const CartItem = db.CartItem
 const Product = db.Product
+const Coupon = db.Coupon
 
 const cartController = {
   // 取得單一購物車的資料
@@ -118,6 +119,8 @@ const cartController = {
 
     await cartItem.save()
     req.session.cartId = cart.id
+    // 自動清除先前的 coupon 資訊
+    req.session.couponCode = undefined
     req.session.save()
     res.json({
       status: 'success',
