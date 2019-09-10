@@ -34,7 +34,6 @@ describe('#Coupon Controller', () => {
             .end(function(err, res) {
               if (err) return done(err)
               expect(res.body.couponData.id).to.be.equal(1)
-              expect(res.body.couponData.limited_num).to.be.equal(9)
               expect(res.body.status).to.be.equal('success')
 
               done()
