@@ -2,6 +2,7 @@ const db = require('./../../models')
 const Cart = db.Cart
 const CartItem = db.CartItem
 const Product = db.Product
+const cartService = require('../../services/cartService')
 
 const cartController = {
   // 取得單一購物車的資料
@@ -92,38 +93,36 @@ const cartController = {
   },
 
   postCart: async (req, res) => {
-    if (!req.body.productId) {
-      return res.json({
-        status: 'error',
-        message: 'req.body 缺少 productId'
+    try {
+      if (!req.body.productId) {
+        return res.json({
+          status: 'error',
+          message: 'req.body 缺少 productId'
+        })
+      }
+
+      const cartId = req.session.cartId
+      const productInfo = {
+        productId: req.body.productId,
+        quantity: req.body.quantity
+      }
+
+      let { cart, cartItem } = await cartService.postCart(cartId, productInfo)
+
+      req.session.cartId = cart.id
+      req.session.save()
+
+      res.json({
+        status: 'success',
+        cart,
+        cartItem
+      })
+    } catch (error) {
+      console.log(error.message)
+      res.sendStatus(500).json({
+        status: 'error'
       })
     }
-
-    let [cart, isCartNew] = await Cart.findOrCreate({
-      where: {
-        id: req.session.cartId || 0
-      }
-    })
-
-    let [cartItem, isCartItemNew] = await CartItem.findOrCreate({
-      where: {
-        CartId: cart.id,
-        ProductId: req.body.productId
-      }
-    })
-
-    isCartItemNew
-      ? (cartItem.quantity = parseInt(req.body.quantity) || 1)
-      : (cartItem.quantity = cartItem.quantity + (parseInt(req.body.quantity) || 1))
-
-    await cartItem.save()
-    req.session.cartId = cart.id
-    req.session.save()
-    res.json({
-      status: 'success',
-      cart,
-      cartItem
-    })
   },
   // 更新購物車資料
   putCart: async (req, res) => {
