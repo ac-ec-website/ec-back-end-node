@@ -1,0 +1,121 @@
+const db = require('./../../models')
+// const Cart = db.Cart
+// const CartItem = db.CartItem
+// const Product = db.Product
+const Coupon = db.Coupon
+
+const couponController = {
+  postCoupon: async (req, res) => {
+    try {
+      // 檢查 couponCode 是否為空，則回應請輸入 couponCode
+      if (!req.body.couponCode) {
+        return res.json({
+          status: 'error',
+          message: '請輸入 couponCode'
+        })
+      }
+
+      const couponData = await Coupon.findOne({
+        where: { coupon_code: req.body.couponCode }
+      })
+
+      // 若 couponData 為空，則回應查無此優惠券，請再次確認
+      if (!couponData) {
+        return res.json({
+          status: 'error-notFound',
+          message: '查無此優惠券，請再次確認'
+        })
+      }
+
+      // 檢查優惠券數量
+      if (couponData.limited_num < 1) {
+        return res.json({
+          status: 'error-cantBeUsed',
+          message: '該優惠券已被使用完畢 哭哭QQ'
+        })
+      }
+
+      // 優惠券使用後，數量減ㄧ
+      couponData.limited_num -= 1
+      couponData.save()
+      req.session.couponCode = req.body.couponCode
+
+      return res.json({
+        couponData,
+        status: 'success',
+        message: `成功使用 [${couponData.name}] 優惠券`
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  getCoupon: async (req, res) => {
+    try {
+      // 判斷 req.session.couponCode 是否為空
+      if (!req.session.couponCode || req.session.couponCode === undefined) {
+        return res.json({
+          status: 'error',
+          message: '目前沒有 couponCode'
+        })
+      }
+
+      const couponData = await Coupon.findOne({
+        where: { coupon_code: req.session.couponCode }
+      })
+
+      // 若 couponData 為空，則回應查無此優惠券，請再次確認
+      if (!couponData) {
+        return res.json({
+          status: 'error-notFound',
+          message: '查無此優惠券，請再次確認'
+        })
+      }
+
+      return res.json({
+        couponData,
+        status: 'success',
+        message: `成功取得 [${couponData.name}] 優惠券資訊`
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  deleteCoupon: async (req, res) => {
+    try {
+      // 判斷 req.session.couponCode 是否為空
+      if (!req.session.couponCode) {
+        return res.json({
+          status: 'error',
+          message: '目前沒有 couponCode'
+        })
+      }
+
+      const couponData = await Coupon.findOne({
+        where: { coupon_code: req.session.couponCode }
+      })
+
+      // 若 couponData 為空，則回應查無此優惠券，請再次確認
+      if (!couponData) {
+        return res.json({
+          status: 'error-notFound',
+          message: '查無此優惠券，請再次確認'
+        })
+      }
+
+      // 取消使用優惠券後，數量加ㄧ
+      couponData.limited_num += 1
+      couponData.save()
+      req.session.couponCode = undefined
+
+      return res.json({
+        couponData,
+        status: 'success',
+        message: `取消使用 [${couponData.name}] 優惠券`
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+
+module.exports = couponController

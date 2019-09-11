@@ -1,5 +1,3 @@
-process.env.NODE_ENV = 'test'
-
 const request = require('supertest')
 const { expect } = require('chai')
 
@@ -61,6 +59,7 @@ describe('#Cart Controller', () => {
     before(async function() {
       // 在所有測試開始前會執行的程式碼區塊
       await db.Cart.destroy({ where: {}, truncate: true })
+      await db.CartItem.destroy({ where: {}, truncate: true })
     })
 
     it('（Ｏ）成功更新購物車的配送資訊 - 住家宅配', done => {

@@ -98,7 +98,7 @@ const paymentService = {
     const order = await Order.findByPk(orderId, {})
     const payment = await Payment.findByPk(paymentId, {})
 
-    const tradeInfo = getTradeInfo(order.total_amount, order.id, order.email)
+    const tradeInfo = getTradeInfo(order.checkoutPrice, order.id, order.email)
     await order.update({
       sn: tradeInfo.MerchantOrderNo
     })

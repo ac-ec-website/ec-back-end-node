@@ -110,6 +110,8 @@ const cartController = {
       let { cart, cartItem } = await cartService.postCart(cartId, productInfo)
 
       req.session.cartId = cart.id
+      // 自動清除先前的 coupon 資訊
+      req.session.couponCode = undefined
       req.session.save()
 
       res.json({
