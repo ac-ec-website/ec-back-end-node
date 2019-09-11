@@ -1,31 +1,43 @@
 const db = require('../../models')
 const { Order, Coupon, Discount, Shipping } = db
+const adOrdService = require('../../services/adOrdService')
 
 const adminOrder = {
   getOrders: async (req, res) => {
-    const orders = await Order.findAll({ include: [Shipping, 'items'] })
+    try {
+      const { orders } = await adOrdService.getOrders()
 
-    return res.json({ orders })
+      return res.json({ orders })
+    } catch (error) {
+      return res.status(422).json(error)
+    }
   },
 
   getOrder: async (req, res) => {
-    const order = await Order.findOne({
-      where: { id: req.params.id },
-      include: [Coupon, Discount, Shipping, 'items']
-    })
+    try {
+      const orderId = req.params.id
+      const { order } = await adOrdService.getOrder(orderId)
 
-    return res.json({ order })
+      return res.json({ order })
+    } catch (error) {
+      return res.status(422).json(error)
+    }
   },
 
   putOrder: async (req, res) => {
-    if (!req.body.shipping_status || !req.body.payment_status) {
-      return res.json({ status: 'error', message: "status didn't exist" })
+    try {
+      if (!req.body.shipping_status || !req.body.payment_status) {
+        return res.json({ status: 'error', message: "status didn't exist" })
+      }
+
+      const orderId = req.params.id
+      const data = { ...req.body }
+      const { order } = await adOrdService.putOrder(orderId, data)
+
+      return res.json({ order, status: 'success', message: 'status was successfully created' })
+    } catch (error) {
+      return res.status(422).json(error)
     }
-
-    const order = await Order.findByPk(req.params.id)
-    await order.update(req.body)
-
-    return res.json({ order, status: 'success', message: 'status was successfully update' })
   }
 }
 
