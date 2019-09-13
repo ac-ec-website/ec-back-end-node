@@ -25,9 +25,7 @@ let paymentController = {
       return res.json({ order, tradeInfo })
     } catch (error) {
       console.log(error.message)
-      res.sendStatus(500).json({
-        status: 'error'
-      })
+      res.sendStatus(500)
     }
   },
   spgatewayCallback: async (req, res) => {
@@ -49,9 +47,7 @@ let paymentController = {
       // return res.redirect('http://localhost:8080/#/order')
     } catch (error) {
       console.log(error.message)
-      res.sendStatus(500).json({
-        status: 'error'
-      })
+      res.sendStatus(500)
     }
   }
 }
