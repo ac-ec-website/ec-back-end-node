@@ -1,42 +1,46 @@
-const db = require('./../../models')
-const Product = db.Product
-const Cart = db.Cart
-const Category = db.Category
+const productService = require('../../services/productService')
+const cartService = require('../../services/cartService')
+const categoryService = require('../../services/categoryService')
 
 const productController = {
   // 取得所有商品的資料
   getProducts: async (req, res) => {
-    const products = await Product.findAll({
-      include: [
-        {
-          model: Category
-        }
-      ]
-    })
-    const cart = await Cart.findByPk(req.session.cartId, { include: 'items' }).then(cart => {
+    try {
+      const products = await productService.getAllProducts()
+
+      const cartId = req.session.cartId
+      let cart = await cartService.getCart(cartId)
       cart = cart || { items: [] }
-      return cart
-    })
 
-    const categories = await Category.findAll()
+      const categories = await categoryService.getAllCategories()
 
-    return res.json({
-      products,
-      cart,
-      categories
-    })
+      return res.json({
+        products,
+        cart,
+        categories
+      })
+    } catch (error) {
+      console.log(error.message)
+      res.sendStatus(500)
+    }
   },
   getProduct: async (req, res) => {
-    const product = await Product.findByPk(req.params.id)
-    const cart = await Cart.findByPk(req.session.cartId, { include: 'items' }).then(cart => {
-      cart = cart || { items: [] }
-      return cart
-    })
+    try {
+      const productId = req.params.id
+      const product = await productService.getProduct(productId)
 
-    return res.json({
-      product,
-      cart
-    })
+      const cartId = req.session.cartId
+      let cart = await cartService.getCart(cartId)
+      cart = cart || { items: [] }
+
+      return res.json({
+        product,
+        cart
+      })
+    } catch (error) {
+      console.log(error.message)
+      res.sendStatus(500)
+    }
   }
 }
 

@@ -4,6 +4,11 @@ const CartItem = db.CartItem
 const Product = db.Product
 
 const cartService = {
+  getCart: async cartId => {
+    const cart = await Cart.findByPk(cartId, { include: 'items' })
+
+    return cart
+  },
   postCart: async (cartId, productInfo) => {
     let [cart, isCartNew] = await Cart.findOrCreate({
       where: {

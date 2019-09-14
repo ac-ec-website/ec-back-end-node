@@ -121,9 +121,7 @@ const cartController = {
       })
     } catch (error) {
       console.log(error.message)
-      res.sendStatus(500).json({
-        status: 'error'
-      })
+      res.sendStatus(500)
     }
   },
   // 更新購物車資料
