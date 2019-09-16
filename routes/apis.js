@@ -11,6 +11,10 @@ const checkIsLogin = (req, res, next) => {
 const checkIsAdmin = (req, res, next) => {
   return authorization.checkIsAdmin(req, res, next)
 }
+const stubFotTest = require('../config/stubForTest')
+const stubSession = (req, res, next) => {
+  return stubFotTest.stubSession(req, res, next)
+}
 
 const adminController = require('../controllers/api/adminController')
 const adminProduct = require('../controllers/api/adminProduct')
@@ -26,6 +30,7 @@ const userController = require('../controllers/api/userController')
 const paymentController = require('../controllers/api/paymentController')
 const couponController = require('../controllers/api/couponController')
 
+router.use(stubSession)
 // === 商品顯示 API === //
 // 取得所有商品資料
 router.get('/products', productController.getProducts)
