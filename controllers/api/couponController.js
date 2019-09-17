@@ -12,7 +12,7 @@ const couponController = {
         })
       }
 
-      let { couponData } = await couponService.postCoupon(couponCode)
+      let couponData = await couponService.postCoupon(couponCode)
 
       // 若 couponData 為空，則回應查無此優惠券，請再次確認
       if (!couponData) {
@@ -23,7 +23,7 @@ const couponController = {
       }
 
       // 檢查優惠券數量
-      if (couponData.limited_num < 1) {
+      if (couponData.limited_num === 0) {
         return res.json({
           status: 'error-cantBeUsed',
           message: '該優惠券已被使用完畢 哭哭QQ'
@@ -31,6 +31,7 @@ const couponController = {
       }
 
       req.session.couponCode = couponCode
+      req.session.save()
 
       return res.json({
         couponData,
@@ -44,7 +45,7 @@ const couponController = {
   },
   deleteCoupon: async (req, res) => {
     try {
-      const couponCode = req.body.couponCode
+      const couponCode = req.session.couponCode
 
       if (!couponCode) {
         return res.json({
@@ -53,7 +54,7 @@ const couponController = {
         })
       }
 
-      let { couponData } = await couponService.deleteCoupon(couponCode)
+      let couponData = await couponService.deleteCoupon(couponCode)
 
       // 若 couponData 為空，則回應查無此優惠券，請再次確認
       if (!couponData) {
@@ -64,6 +65,7 @@ const couponController = {
       }
 
       req.session.couponCode = undefined
+      req.session.save()
 
       return res.json({
         couponData,
@@ -77,7 +79,7 @@ const couponController = {
   },
   getCoupon: async (req, res) => {
     try {
-      const couponCode = req.body.couponCode
+      const couponCode = req.session.couponCode
 
       // 判斷 req.session.couponCode 是否為空
       if (!couponCode || couponCode === undefined) {
@@ -87,7 +89,7 @@ const couponController = {
         })
       }
 
-      let { couponData } = await couponService.getCoupon(couponCode)
+      let couponData = await couponService.getCoupon(couponCode)
 
       // 若 couponData 為空，則回應查無此優惠券，請再次確認
       if (!couponData) {

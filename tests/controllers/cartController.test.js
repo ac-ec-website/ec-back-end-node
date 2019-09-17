@@ -333,7 +333,7 @@ describe('#Cart Controller', () => {
         .end(function(err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('success')
-          expect(res.body.message).to.be.equal('已刪除成功')
+          expect(res.body.message).to.be.equal('商品已刪除成功')
 
           done()
         })

@@ -103,34 +103,26 @@ describe('#Coupon Controller', () => {
         id: 1,
         type: 1,
         coupon_code: '1111',
-        limited_num: 1
+        limited_num: 2
       })
     })
 
     it('（Ｏ）成功使用優惠券', done => {
       var agent = request.agent(app)
       agent
-        .post('/api/cart')
-        .send({ productId: 1 })
+        .post('/api/coupon')
+        .send('couponCode=1111')
         .set('Accept', 'application/json')
         .expect(200)
         .end(function(err, res) {
           if (err) return done(err)
 
-          agent
-            .post('/api/coupon')
-            .send('couponCode=1111')
-            .set('Accept', 'application/json')
-            .expect(200)
-            .end(function(err, res) {
-              if (err) return done(err)
+          expect(res.body.couponData.limited_num).to.be.equal(1)
+          expect(res.body.status).to.be.equal('success')
 
-              expect(res.body.couponData.limited_num).to.be.equal(0)
-              expect(res.body.status).to.be.equal('success')
-
-              done()
-            })
+          done()
         })
+      // })
     })
 
     it('（Ｘ）優惠券無法使用 - 數量不足 ', done => {
@@ -232,40 +224,32 @@ describe('#Coupon Controller', () => {
         id: 1,
         type: 1,
         coupon_code: '1111',
-        limited_num: 1
+        limited_num: 2
       })
     })
 
     it('（Ｏ）取消使用優惠券', done => {
       var agent = request.agent(app)
+
       agent
-        .post('/api/cart')
-        .send({ productId: 1 })
+        .post('/api/coupon')
+        .send('couponCode=1111')
         .set('Accept', 'application/json')
         .expect(200)
         .end(function(err, res) {
           if (err) return done(err)
 
           agent
-            .post('/api/coupon')
-            .send('couponCode=1111')
+            .delete('/api/coupon')
             .set('Accept', 'application/json')
             .expect(200)
             .end(function(err, res) {
               if (err) return done(err)
 
-              agent
-                .delete('/api/coupon')
-                .set('Accept', 'application/json')
-                .expect(200)
-                .end(function(err, res) {
-                  if (err) return done(err)
+              expect(res.body.couponData.limited_num).to.be.equal(2)
+              expect(res.body.status).to.be.equal('success')
 
-                  expect(res.body.couponData.limited_num).to.be.equal(1)
-                  expect(res.body.status).to.be.equal('success')
-
-                  done()
-                })
+              done()
             })
         })
     })

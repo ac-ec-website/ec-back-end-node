@@ -143,8 +143,8 @@ const cartController = {
         cartItem
       })
     } catch (error) {
-      console.log(error.message)
-      res.sendStatus(500)
+      console.log('error', error)
+      return res.sendStatus(500)
     }
   },
   // 更新購物車資料
