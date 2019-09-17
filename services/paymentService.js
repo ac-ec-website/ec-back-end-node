@@ -48,9 +48,9 @@ function create_mpg_sha_encrypt(TradeInfo) {
 }
 
 function getTradeInfo(Amt, Desc, email) {
-  console.log('===== getTradeInfo =====')
-  console.log(Amt, Desc, email)
-  console.log('==========')
+  // console.log('===== getTradeInfo =====')
+  // console.log(Amt, Desc, email)
+  // console.log('==========')
 
   data = {
     MerchantID: MerchantID, // 商店代號
@@ -68,15 +68,15 @@ function getTradeInfo(Amt, Desc, email) {
     ClientBackURL: ClientBackURL // 支付取消返回商店網址
   }
 
-  console.log('===== getTradeInfo: data =====')
-  console.log(data)
+  // console.log('===== getTradeInfo: data =====')
+  // console.log(data)
 
   mpg_aes_encrypt = create_mpg_aes_encrypt(data)
   mpg_sha_encrypt = create_mpg_sha_encrypt(mpg_aes_encrypt)
 
-  console.log('===== getTradeInfo: mpg_aes_encrypt, mpg_sha_encrypt =====')
-  console.log(mpg_aes_encrypt)
-  console.log(mpg_sha_encrypt)
+  // console.log('===== getTradeInfo: mpg_aes_encrypt, mpg_sha_encrypt =====')
+  // console.log(mpg_aes_encrypt)
+  // console.log(mpg_sha_encrypt)
 
   tradeInfo = {
     MerchantID: MerchantID, // 商店代號
@@ -87,8 +87,8 @@ function getTradeInfo(Amt, Desc, email) {
     MerchantOrderNo: data.MerchantOrderNo
   }
 
-  console.log('===== getTradeInfo: tradeInfo =====')
-  console.log(tradeInfo)
+  // console.log('===== getTradeInfo: tradeInfo =====')
+  // console.log(tradeInfo)
 
   return tradeInfo
 }
@@ -112,10 +112,10 @@ const paymentService = {
   spgatewayCallback: async tradeInfo => {
     const data = JSON.parse(create_mpg_aes_decrypt(tradeInfo))
 
-    console.log('===== spgatewayCallback: create_mpg_aes_decrypt、data =====')
+    // console.log('===== spgatewayCallback: create_mpg_aes_decrypt、data =====')
 
     // 回傳的資料內容
-    console.log('回傳內容', data)
+    // console.log('回傳內容', data)
 
     const order = await Order.findOne({ where: { sn: data['Result']['MerchantOrderNo'] } })
 

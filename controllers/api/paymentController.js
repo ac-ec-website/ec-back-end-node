@@ -14,9 +14,9 @@ const paymentService = require('../../services/paymentService')
 let paymentController = {
   getPayment: async (req, res) => {
     try {
-      console.log('===== getPayment =====')
-      console.log(req.session.orderId)
-      console.log('==========')
+      // console.log('===== getPayment =====')
+      // console.log(req.session.orderId)
+      // console.log('==========')
 
       const orderId = req.session.orderId
       const paymentId = req.session.paymentId
@@ -30,14 +30,14 @@ let paymentController = {
   },
   spgatewayCallback: async (req, res) => {
     try {
-      console.log('===== spgatewayCallback =====')
-      console.log(req.method)
-      console.log(req.query)
-      console.log(req.body)
-      console.log('==========')
+      // console.log('===== spgatewayCallback =====')
+      // console.log(req.method)
+      // console.log(req.query)
+      // console.log(req.body)
+      // console.log('==========')
 
-      console.log('===== spgatewayCallback: TradeInfo =====')
-      console.log(req.body.TradeInfo)
+      // console.log('===== spgatewayCallback: TradeInfo =====')
+      // console.log(req.body.TradeInfo)
 
       const tradeInfo = req.body.TradeInfo
       await paymentService.spgatewayCallback(tradeInfo)

@@ -1,105 +1,97 @@
-const db = require('../../models')
-const User = db.User
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+const adminService = require('../../services/adminService')
 
 const adminController = {
   signUp: async (req, res) => {
-    if (!req.body.name || !req.body.email || !req.body.password || !req.body.passwordCheck) {
-      return res.json({
-        status: 'error',
-        message: '所有欄位都要填寫'
-      })
-    }
-    if (req.body.password !== req.body.passwordCheck) {
-      return res.json({
-        status: 'error',
-        message: '兩次密碼輸入不同！'
-      })
-    }
+    try {
+      if (!req.body.name || !req.body.email || !req.body.password || !req.body.passwordCheck) {
+        return res.json({
+          status: 'error',
+          message: '所有欄位都要填寫'
+        })
+      }
+      if (req.body.password !== req.body.passwordCheck) {
+        return res.json({
+          status: 'error',
+          message: '兩次密碼輸入不同！'
+        })
+      }
+      const userName = req.body.name
+      const userEmail = req.body.email
+      const userPassword = req.body.password
+      const { status, message, newUser } = await adminService.signUp(
+        userName,
+        userEmail,
+        userPassword
+      )
 
-    const user = await User.findOne({
-      where: { email: req.body.email }
-    })
-    if (user) {
       return res.json({
-        status: 'error',
-        message: '信箱重複！'
+        status,
+        message,
+        user: newUser
       })
+    } catch (error) {
+      console.log(error.message)
+      res.sendStatus(500)
     }
-
-    const salt = bcrypt.genSaltSync(10)
-    let newUser = await User.create({
-      name: req.body.name,
-      email: req.body.email,
-      password: bcrypt.hashSync(req.body.password, salt),
-      address: '天龍市忠孝東路走九遍87號',
-      role: 'user'
-    })
-
-    return res.json({
-      status: 'success',
-      message: '成功註冊帳號！',
-      user: newUser
-    })
   },
 
   signIn: async (req, res) => {
-    if (!req.body.email || !req.body.password) {
-      return res.json({
-        status: 'error',
-        message: '所有欄位都要填寫'
-      })
-    }
-
-    const user = await User.findOne({
-      where: {
-        email: req.body.email
+    try {
+      if (!req.body.email || !req.body.password) {
+        return res.json({
+          status: 'error',
+          message: '所有欄位都要填寫'
+        })
       }
-    })
 
-    if (!user) {
-      return res.json({
-        status: 'error',
-        message: '帳號錯誤'
-      })
-    }
-    if (!bcrypt.compareSync(req.body.password, user.password)) {
-      return res.json({
-        status: 'error',
-        message: '密碼錯誤'
-      })
-    }
+      const userEmail = req.body.email
+      const userPassword = req.body.password
+      const { status, message, token, user } = await adminService.signIn(userEmail, userPassword)
 
-    const payload = user.dataValues
-    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' })
-    return res.json({
-      status: 'success',
-      message: 'ok',
-      token,
-      user
-    })
+      return res.json({
+        status,
+        message,
+        token,
+        user
+      })
+    } catch (error) {
+      console.log(error.message)
+      res.sendStatus(500)
+    }
   },
 
   getUsers: async (req, res) => {
-    const user = await User.findAll({})
-    return res.json({
-      user
-    })
+    try {
+      const user = await adminService.getUsers()
+      return res.json({
+        user
+      })
+    } catch (error) {
+      console.log(error.message)
+      res.sendStatus(500)
+    }
   },
 
   putUser: async (req, res) => {
-    if (!req.body.id || !req.body.role) {
+    try {
+      if (!req.body.id || !req.body.role) {
+        return res.json({
+          status: 'error',
+          message: 'Cannot find id and role'
+        })
+      }
+
+      const userId = req.body.id
+      const userRole = req.body.role
+      const user = await adminService.putUser(userId, userRole)
+
       return res.json({
-        status: 'error',
-        message: 'Cannot find id and role'
+        user
       })
+    } catch (error) {
+      console.log(error.message)
+      res.sendStatus(500)
     }
-    await User.update({ role: req.body.role }, { where: { id: req.body.id } })
-    const user = await User.findOne({ where: { id: req.body.id } })
-    return res.json({
-      user
-    })
   }
 }
 
