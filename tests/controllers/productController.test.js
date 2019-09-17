@@ -50,6 +50,7 @@ describe('#Product Controller', () => {
         .expect(200)
         .end(function(err, res) {
           if (err) return done(err)
+
           expect(res.body.product.id).to.be.equal(1)
           expect(res.body.product.name).to.be.equal('product1')
 

@@ -8,20 +8,26 @@ const productController = {
     try {
       const products = await productService.getAllProducts()
 
+      let cart
       const cartId = req.session.cartId
-      let cart = await cartService.getCart(cartId)
-      cart = cart || { items: [] }
+
+      if (cartId === undefined) {
+        cart = { items: [] }
+      } else {
+        cart = await cartService.getCart(cartId)
+      }
 
       const categories = await categoryService.getAllCategories()
 
       return res.json({
         products,
         cart,
-        categories
+        categories,
+        status: 'success'
       })
     } catch (error) {
-      console.log(error.message)
-      res.sendStatus(500)
+      console.log('error', error)
+      return res.sendStatus(500)
     }
   },
   getProduct: async (req, res) => {
@@ -29,17 +35,23 @@ const productController = {
       const productId = req.params.id
       const product = await productService.getProduct(productId)
 
+      let cart
       const cartId = req.session.cartId
-      let cart = await cartService.getCart(cartId)
-      cart = cart || { items: [] }
+
+      if (cartId === undefined) {
+        cart = { items: [] }
+      } else {
+        cart = await cartService.getCart(cartId)
+      }
 
       return res.json({
         product,
-        cart
+        cart,
+        status: 'success'
       })
     } catch (error) {
-      console.log(error.message)
-      res.sendStatus(500)
+      console.log('error', error)
+      return res.sendStatus(500)
     }
   }
 }
