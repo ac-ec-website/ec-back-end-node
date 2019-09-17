@@ -1,22 +1,18 @@
-const db = require('./../../models')
-const Cart = db.Cart
-const CartItem = db.CartItem
-const Product = db.Product
 const cartService = require('../../services/cartService')
 
 const cartController = {
   // 取得單一購物車的資料
   getCart: async (req, res) => {
     try {
-      const cart = await Cart.findOne({
-        where: { id: req.session.cartId },
-        include: [{ model: Product, as: 'items' }]
-      })
+      if (!req.session.cartId) {
+        return res.json({
+          status: 'error',
+          message: '目前無 cartId 資料'
+        })
+      }
 
-      const total_amount =
-        cart.items.length > 0
-          ? cart.items.map(d => d.sell_price * d.CartItem.quantity).reduce((a, b) => a + b)
-          : 0
+      const cartId = req.session.cartId
+      const { cart, total_amount } = await cartService.getCart(cartId)
 
       return res.json({
         cart,
@@ -25,73 +21,100 @@ const cartController = {
         message: '成功取得購物車的資料'
       })
     } catch (error) {
-      if (!req.session.cartId) {
-        return res.json({
-          status: 'error',
-          message: '目前尚無 cartId'
-        })
-      }
+      console.log('error', error)
+      return res.sendStatus(500)
     }
   },
   // 增加購物車內商品數量
   addItemToCart: async (req, res) => {
     try {
-      const cartItem = await CartItem.findAll({
-        where: { CartId: req.params.cartId, id: req.params.id }
-      })
+      const cartId = req.params.cartId
+      const cartItemId = req.params.id
 
-      cartItem[0].quantity += 1
-      cartItem[0].save()
+      if (!cartId || !cartItemId) {
+        return res.json({
+          status: 'error',
+          message: '目前無 cartId 資料或無 cartItemId 資料'
+        })
+      }
 
-      await res.json({
+      const cartItem = await cartService.addItemToCart(cartId, cartItemId)
+
+      if (cartItem === undefined) {
+        return res.json({
+          cartItem,
+          status: 'error',
+          message: '目前 cartItem 不存在，請重新確認'
+        })
+      }
+
+      return res.json({
         cartItem,
         status: 'success',
         message: '成功增加購物車的商品數量'
       })
     } catch (error) {
-      console.log(error)
+      console.log('error', error)
+      return res.sendStatus(500)
     }
   },
   // 減少購物車內商品數量
   subItemFromCart: async (req, res) => {
     try {
-      const cartItem = await CartItem.findAll({
-        where: { CartId: req.params.cartId, id: req.params.id }
-      })
+      const cartId = req.params.cartId
+      const cartItemId = req.params.id
 
-      if (cartItem[0].quantity > 1) {
-        cartItem[0].quantity -= 1
-        cartItem[0].save()
-      } else {
-        cartItem[0].quantity = 0
-        cartItem[0].save()
+      if (!cartId || !cartItemId) {
+        return res.json({
+          status: 'error',
+          message: '目前無 cartId 資料或無 cartItemId 資料'
+        })
       }
 
-      await res.json({
+      const cartItem = await cartService.subItemFromCart(cartId, cartItemId)
+
+      if (cartItem === undefined) {
+        return res.json({
+          cartItem,
+          status: 'error',
+          message: '目前 cartItem 不存在，請重新確認'
+        })
+      }
+
+      return res.json({
         cartItem,
         status: 'success',
         message: '成功減少購物車的商品數量'
       })
     } catch (error) {
-      console.log(error)
+      console.log('error', error)
+      return res.sendStatus(500)
     }
   },
   // 刪除購物車內的商品
   deleteItemFromCart: async (req, res) => {
     try {
-      const cartItem = await CartItem.destroy({
-        where: { CartId: req.params.cartId, id: req.params.id }
-      })
+      const cartId = req.params.cartId
+      const cartItemId = req.params.id
 
-      await res.json({
+      if (!cartId || !cartItemId) {
+        return res.json({
+          status: 'error',
+          message: '目前無 cartId 資料或無 cartItemId 資料'
+        })
+      }
+
+      await cartService.deleteItemFromCart(cartId, cartItemId)
+
+      return res.json({
         status: 'success',
-        message: '已刪除成功'
+        message: '商品已刪除成功'
       })
     } catch (error) {
-      console.log(error)
+      console.log('error', error)
+      return res.sendStatus(500)
     }
   },
-
   postCart: async (req, res) => {
     try {
       if (!req.body.productId) {
@@ -135,21 +158,10 @@ const cartController = {
       }
 
       let shippingFee = 0
+      const shippingMethod = req.body.shipping_method
+      const cartId = req.session.cartId
 
-      if (req.body.shipping_method === '住家宅配') {
-        shippingFee = 60
-      }
-
-      if (req.body.shipping_method === '其他') {
-        shippingFee = 100
-      }
-
-      await Cart.update(
-        { shipping_method: req.body.shipping_method, shipping_fee: shippingFee },
-        { where: { id: req.session.cartId } }
-      )
-
-      const cart = await Cart.findOne({ where: { id: req.session.cartId } })
+      const cart = await cartService.putCart(shippingMethod, shippingFee, cartId)
 
       return res.json({
         cart,
@@ -157,7 +169,8 @@ const cartController = {
         message: '已更新購物車資料(配送方式)'
       })
     } catch (error) {
-      console.log(error)
+      console.log('error', error)
+      return res.sendStatus(500)
     }
   }
 }

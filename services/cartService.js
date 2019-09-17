@@ -1,13 +1,60 @@
 const db = require('../models')
 const Cart = db.Cart
 const CartItem = db.CartItem
-const Product = db.Product
 
 const cartService = {
   getCart: async cartId => {
     const cart = await Cart.findByPk(cartId, { include: 'items' })
 
-    return cart
+    const total_amount =
+      cart.items.length > 0
+        ? cart.items.map(d => d.sell_price * d.CartItem.quantity).reduce((a, b) => a + b)
+        : 0
+
+    return {
+      cart,
+      total_amount
+    }
+  },
+  addItemToCart: async (cartId, cartItemId) => {
+    const cartItem = await CartItem.findAll({
+      where: { CartId: cartId, id: cartItemId }
+    })
+
+    if (cartItem[0] === undefined) {
+      return
+    }
+
+    cartItem[0].quantity += 1
+    cartItem[0].save()
+
+    return { cartItem }
+  },
+  subItemFromCart: async (cartId, cartItemId) => {
+    const cartItem = await CartItem.findAll({
+      where: { CartId: cartId, id: cartItemId }
+    })
+
+    if (cartItem[0] === undefined) {
+      return
+    }
+
+    if (cartItem[0].quantity > 1) {
+      cartItem[0].quantity -= 1
+      cartItem[0].save()
+    } else {
+      cartItem[0].quantity = 0
+      cartItem[0].save()
+    }
+
+    return { cartItem }
+  },
+  deleteItemFromCart: async (cartId, cartItemId) => {
+    await CartItem.destroy({
+      where: { CartId: cartId, id: cartItemId }
+    })
+
+    return
   },
   postCart: async (cartId, productInfo) => {
     let [cart, isCartNew] = await Cart.findOrCreate({
@@ -32,6 +79,24 @@ const cartService = {
       cart,
       cartItem
     }
+  },
+  putCart: async (shippingMethod, shippingFee, cartId) => {
+    if (shippingMethod === '住家宅配') {
+      shippingFee = 60
+    }
+
+    if (shippingMethod === '其他') {
+      shippingFee = 100
+    }
+
+    await Cart.update(
+      { shipping_method: shippingMethod, shipping_fee: shippingFee },
+      { where: { id: cartId } }
+    )
+
+    const cart = await Cart.findOne({ where: { id: cartId } })
+
+    return { cart }
   }
 }
 
