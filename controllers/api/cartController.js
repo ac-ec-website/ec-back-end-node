@@ -12,7 +12,12 @@ const cartController = {
       }
 
       const cartId = req.session.cartId
-      const { cart, total_amount } = await cartService.getCart(cartId)
+      const cart = await cartService.getCart(cartId)
+
+      const total_amount =
+        cart.items.length > 0
+          ? cart.items.map(d => d.sell_price * d.CartItem.quantity).reduce((a, b) => a + b)
+          : 0
 
       return res.json({
         cart,
