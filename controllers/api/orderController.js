@@ -56,7 +56,12 @@ const orderController = {
         })
       }
 
-      const { cart, total_amount } = await cartService.getCart(tempCartId)
+      const cart = await cartService.getCart(tempCartId)
+
+      const total_amount =
+        cart.items.length > 0
+          ? cart.items.map(d => d.sell_price * d.CartItem.quantity).reduce((a, b) => a + b)
+          : 0
 
       let shippingMethod = await cart.shipping_method
       let shipping_fee = await cart.shipping_fee
@@ -67,7 +72,7 @@ const orderController = {
       let CouponId
 
       if (couponCode !== undefined) {
-        let { couponData } = await couponService.getCoupon(couponCode)
+        let couponData = await couponService.getCoupon(couponCode)
 
         CouponId = couponData.id
         coupon_discount_fee = await couponService.getCouponDiscountFee(couponData)

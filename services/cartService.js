@@ -10,15 +10,7 @@ const cartService = {
       include: [{ model: Product, as: 'items' }]
     })
 
-    const total_amount =
-      cart.items.length > 0
-        ? cart.items.map(d => d.sell_price * d.CartItem.quantity).reduce((a, b) => a + b)
-        : 0
-
-    return {
-      cart,
-      total_amount
-    }
+    return cart
   },
   addItemToCart: async (cartId, cartItemId) => {
     const cartItem = await CartItem.findAll({
