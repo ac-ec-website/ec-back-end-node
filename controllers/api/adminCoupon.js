@@ -9,7 +9,8 @@ const adminCoupon = {
 
       return res.json({ coupons })
     } catch (error) {
-      return res.status(422).json(error)
+      console.log('error', error)
+      return res.sendStatus(500)
     }
   },
 
@@ -20,7 +21,8 @@ const adminCoupon = {
 
       return res.json({ coupon })
     } catch (error) {
-      return res.status(422).json(error)
+      console.log('error', error)
+      return res.sendStatus(500)
     }
   },
 
@@ -35,7 +37,8 @@ const adminCoupon = {
 
       return res.json({ coupon, status: 'success', message: 'coupon was successfully created' })
     } catch (error) {
-      return res.status(422).json(error)
+      console.log('error', error)
+      return res.sendStatus(500)
     }
   },
 
@@ -51,7 +54,8 @@ const adminCoupon = {
 
       return res.json({ coupon, status: 'success', message: 'coupon was successfully created' })
     } catch (error) {
-      return res.status(422).json(error)
+      console.log('error', error)
+      return res.sendStatus(500)
     }
   },
 
@@ -62,7 +66,8 @@ const adminCoupon = {
 
       return res.json({ status: 'success', message: '' })
     } catch (error) {
-      return res.status(422).json(error)
+      console.log('error', error)
+      return res.sendStatus(500)
     }
   }
 }

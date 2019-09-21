@@ -9,7 +9,8 @@ const adminOrder = {
 
       return res.json({ orders })
     } catch (error) {
-      return res.status(422).json(error)
+      console.log('error', error)
+      return res.sendStatus(500)
     }
   },
 
@@ -20,7 +21,8 @@ const adminOrder = {
 
       return res.json({ order })
     } catch (error) {
-      return res.status(422).json(error)
+      console.log('error', error)
+      return res.sendStatus(500)
     }
   },
 
@@ -36,7 +38,8 @@ const adminOrder = {
 
       return res.json({ order, status: 'success', message: 'status was successfully created' })
     } catch (error) {
-      return res.status(422).json(error)
+      console.log('error', error)
+      return res.sendStatus(500)
     }
   }
 }
