@@ -8,7 +8,6 @@ module.exports = {
       'Users',
       [
         {
-          id: 1,
           name: 'root',
           email: 'root@example.com',
           password: bcrypt.hashSync('123', salt),
@@ -18,7 +17,6 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          id: 2,
           name: 'user1',
           email: 'user1@example.com',
           password: bcrypt.hashSync('123', salt),

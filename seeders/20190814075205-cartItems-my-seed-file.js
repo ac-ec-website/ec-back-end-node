@@ -6,7 +6,6 @@ module.exports = {
       'CartItems',
       [
         {
-          id: 1,
           quantity: 3,
           CartId: 1,
           ProductId: 1,
@@ -14,7 +13,6 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          id: 2,
           quantity: 5,
           CartId: 1,
           ProductId: 2,
@@ -22,7 +20,6 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          id: 3,
           quantity: 10,
           CartId: 2,
           ProductId: 3,
@@ -30,7 +27,6 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          id: 4,
           quantity: 30,
           CartId: 2,
           ProductId: 5,
@@ -38,7 +34,6 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          id: 5,
           quantity: 8,
           CartId: 3,
           ProductId: 4,

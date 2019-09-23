@@ -6,7 +6,6 @@ module.exports = {
       'Payments',
       [
         {
-          id: 1,
           params: null,
           sn: null,
           total_amount: 8580,
@@ -17,7 +16,6 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          id: 2,
           params: null,
           sn: null,
           total_amount: 12392,

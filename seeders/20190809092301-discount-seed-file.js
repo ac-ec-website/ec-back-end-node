@@ -6,7 +6,6 @@ module.exports = {
       'Discounts',
       [
         {
-          id: 1,
           type: 1,
           name: '十周年慶',
           description: '周年慶跳樓大折扣',
@@ -20,7 +19,6 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          id: 2,
           type: 2,
           name: '聖誕特價',
           description: '聖誕節超划算方案',
@@ -34,7 +32,6 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          id: 3,
           type: 0,
           name: '聖誕老公公到你家',
           description: '聖誕節配送方案',

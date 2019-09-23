@@ -6,7 +6,6 @@ module.exports = {
       'Coupons',
       [
         {
-          id: 1,
           type: 2,
           name: '發大財',
           coupon_code: '8888',
@@ -20,7 +19,6 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          id: 2,
           type: 1,
           name: '單身快樂',
           coupon_code: '1111',
@@ -34,7 +32,6 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          id: 3,
           type: 0,
           name: '至尊皇家',
           coupon_code: 'vip',

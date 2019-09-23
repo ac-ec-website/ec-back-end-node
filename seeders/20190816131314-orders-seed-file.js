@@ -8,7 +8,6 @@ module.exports = {
       'Orders',
       [
         {
-          id: 1,
           name: 'Wanaka',
           sn: faker.random.number(),
           phone: faker.phone.phoneNumber(),
@@ -28,7 +27,6 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          id: 2,
           name: 'Jerry',
           sn: faker.random.number(),
           phone: faker.phone.phoneNumber(),
