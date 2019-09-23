@@ -113,7 +113,7 @@ const orderController = {
       // ===== Step 7 將 tempOrderId, paymentData.id 存入 res.session =====
       req.session.orderId = tempOrderId
       req.session.paymentId = paymentData.id
-      req.session.save()
+      await req.session.save()
 
       res.json({
         orderData,

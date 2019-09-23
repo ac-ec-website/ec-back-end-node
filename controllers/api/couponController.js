@@ -31,7 +31,7 @@ const couponController = {
       }
 
       req.session.couponCode = couponCode
-      req.session.save()
+      await req.session.save()
 
       return res.json({
         couponData,
@@ -65,7 +65,7 @@ const couponController = {
       }
 
       req.session.couponCode = undefined
-      req.session.save()
+      await req.session.save()
 
       return res.json({
         couponData,
