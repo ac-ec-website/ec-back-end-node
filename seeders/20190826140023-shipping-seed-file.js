@@ -8,7 +8,6 @@ module.exports = {
       'Shippings',
       [
         {
-          id: 1,
           sn: null,
           shipping_fee: 60,
           shipping_method: '住家宅配',
@@ -22,7 +21,6 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          id: 2,
           sn: null,
           shipping_fee: 60,
           shipping_method: '住家宅配',

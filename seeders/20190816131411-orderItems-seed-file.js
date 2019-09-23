@@ -6,7 +6,6 @@ module.exports = {
       'OrderItems',
       [
         {
-          id: 1,
           quantity: 3,
           price: 460,
           OrderId: 1,
@@ -15,7 +14,6 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          id: 2,
           quantity: 5,
           price: 520,
           OrderId: 1,
@@ -24,7 +22,6 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          id: 3,
           quantity: 10,
           price: 460,
           OrderId: 1,
@@ -33,7 +30,6 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          id: 4,
           quantity: 30,
           price: 320,
           OrderId: 2,
@@ -42,7 +38,6 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          id: 5,
           quantity: 8,
           price: 349,
           OrderId: 2,
