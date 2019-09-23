@@ -22,7 +22,7 @@ const cartService = {
     }
 
     cartItem[0].quantity += 1
-    cartItem[0].save()
+    await cartItem[0].save()
 
     return cartItem
   },
@@ -37,10 +37,10 @@ const cartService = {
 
     if (cartItem[0].quantity > 1) {
       cartItem[0].quantity -= 1
-      cartItem[0].save()
+      await cartItem[0].save()
     } else {
       cartItem[0].quantity = 0
-      cartItem[0].save()
+      await cartItem[0].save()
     }
 
     return cartItem

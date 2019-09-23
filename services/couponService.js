@@ -19,7 +19,7 @@ const couponService = {
 
     // 優惠券使用後，數量減ㄧ
     couponData.limited_num -= 1
-    couponData.save()
+    await couponData.save()
 
     return couponData
   },
@@ -35,7 +35,7 @@ const couponService = {
 
     // 取消使用優惠券後，數量加ㄧ
     couponData.limited_num += 1
-    couponData.save()
+    await couponData.save()
 
     return couponData
   },
