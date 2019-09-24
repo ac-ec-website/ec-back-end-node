@@ -16,7 +16,7 @@ const userController = {
         user: {}
       })
     } catch (error) {
-      console.log('error', error)
+      console.log('getCurrentUser error', error)
       return res.sendStatus(500)
     }
   }
