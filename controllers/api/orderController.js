@@ -1,15 +1,3 @@
-const db = require('../../models')
-const faker = require('faker')
-const snNum = faker.random.number() // 新增訂單使用
-const Product = db.Product
-const Cart = db.Cart
-const CartItem = db.CartItem
-const Order = db.Order
-const OrderItem = db.OrderItem
-const Payment = db.Payment
-const Shipping = db.Shipping
-const Coupon = db.Coupon
-
 const orderService = require('../../services/orderService')
 const cartService = require('../../services/cartService')
 const couponService = require('../../services/couponService')
@@ -124,7 +112,7 @@ const orderController = {
         message: '成功新增一筆訂單'
       })
     } catch (error) {
-      console.log('error', error)
+      console.log('訂單創建 error', error)
       return res.sendStatus(500)
     }
   },
@@ -150,7 +138,7 @@ const orderController = {
         message: '成功取得單一訂單的資料'
       })
     } catch (error) {
-      console.log('error', error)
+      console.log('取得訂單 error', error)
       return res.sendStatus(500)
     }
   }
