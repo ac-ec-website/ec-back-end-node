@@ -1,15 +1,6 @@
 require('dotenv').config()
 
 const paymentService = require('../../services/paymentService')
-// const nodemailer = require('nodemailer')
-
-// const transporter = nodemailer.createTransport({
-//   service: 'gmail',
-//   auth: {
-//     user: '',
-//     pass: ''
-//   }
-// })
 
 let paymentController = {
   getPayment: async (req, res) => {

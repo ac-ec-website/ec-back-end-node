@@ -26,7 +26,7 @@ const cartController = {
         message: '成功取得購物車的資料'
       })
     } catch (error) {
-      console.log('error', error)
+      console.log('取得購物車 error', error)
       return res.sendStatus(500)
     }
   },
@@ -148,7 +148,7 @@ const cartController = {
         cartItem
       })
     } catch (error) {
-      console.log('error', error)
+      console.log('加入購物車 error', error)
       return res.sendStatus(500)
     }
   },
@@ -174,7 +174,7 @@ const cartController = {
         message: '已更新購物車資料(配送方式)'
       })
     } catch (error) {
-      console.log('error', error)
+      console.log('更新購物車 error', error)
       return res.sendStatus(500)
     }
   }
