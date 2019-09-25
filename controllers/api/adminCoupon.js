@@ -9,7 +9,7 @@ const adminCoupon = {
 
       return res.json({ coupons })
     } catch (error) {
-      console.log('error', error)
+      console.log('取得後台優惠券 error', error)
       return res.sendStatus(500)
     }
   },
@@ -21,7 +21,7 @@ const adminCoupon = {
 
       return res.json({ coupon })
     } catch (error) {
-      console.log('error', error)
+      console.log('單一後台優惠券 error', error)
       return res.sendStatus(500)
     }
   },
@@ -37,7 +37,7 @@ const adminCoupon = {
 
       return res.json({ coupon, status: 'success', message: 'coupon was successfully created' })
     } catch (error) {
-      console.log('error', error)
+      console.log('新增後台優惠券 error', error)
       return res.sendStatus(500)
     }
   },
@@ -54,7 +54,7 @@ const adminCoupon = {
 
       return res.json({ coupon, status: 'success', message: 'coupon was successfully created' })
     } catch (error) {
-      console.log('error', error)
+      console.log('更新後台優惠券 error', error)
       return res.sendStatus(500)
     }
   },
@@ -66,7 +66,7 @@ const adminCoupon = {
 
       return res.json({ status: 'success', message: '' })
     } catch (error) {
-      console.log('error', error)
+      console.log('刪除後台優惠券 error', error)
       return res.sendStatus(500)
     }
   }

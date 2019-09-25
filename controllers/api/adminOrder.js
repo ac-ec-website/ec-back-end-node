@@ -10,7 +10,7 @@ const adminOrder = {
 
       return res.json({ orders })
     } catch (error) {
-      console.log('error', error)
+      console.log('取得後台訂單 error', error)
       return res.sendStatus(500)
     }
   },
@@ -22,7 +22,7 @@ const adminOrder = {
 
       return res.json({ order })
     } catch (error) {
-      console.log('error', error)
+      console.log('單一後台訂單 error', error)
       return res.sendStatus(500)
     }
   },
@@ -59,7 +59,7 @@ const adminOrder = {
 
       return res.json({ order, status: 'success', message: 'status was successfully created' })
     } catch (error) {
-      console.log('error', error)
+      console.log('更新後台訂單 error', error)
       return res.sendStatus(500)
     }
   }
