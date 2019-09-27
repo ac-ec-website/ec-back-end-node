@@ -1,8 +1,6 @@
 const db = require('../../models')
 const { Category, Product } = db
 const adProService = require('../../services/adProService')
-const imgur = require('imgur-node-api')
-const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
 const adminProduct = {
   getProducts: async (req, res) => {
@@ -11,7 +9,8 @@ const adminProduct = {
 
       return res.json({ products })
     } catch (error) {
-      return res.status(422).json(error)
+      console.log('取得後台商品 error', error)
+      return res.sendStatus(500)
     }
   },
 
@@ -22,7 +21,8 @@ const adminProduct = {
 
       return res.json({ product })
     } catch (error) {
-      return res.status(422).json(error)
+      console.log('單一後台商品 error', error)
+      return res.sendStatus(500)
     }
   },
 
@@ -38,7 +38,8 @@ const adminProduct = {
 
       return res.json({ product, status: 'success', message: 'Product was successfully created' })
     } catch (error) {
-      return res.status(422).json(error)
+      console.log('新增後台商品 error', error)
+      return res.sendStatus(500)
     }
   },
 
@@ -55,7 +56,8 @@ const adminProduct = {
 
       return res.json({ product, status: 'success', message: 'Product was successfully created' })
     } catch (error) {
-      return res.status(422).json(error)
+      console.log('更新後台商品 error', error)
+      return res.sendStatus(500)
     }
   },
 
@@ -66,7 +68,8 @@ const adminProduct = {
 
       return res.json({ status: 'success', message: '' })
     } catch (error) {
-      return res.status(422).json(error)
+      console.log('刪除後台商品 error', error)
+      return res.sendStatus(500)
     }
   }
 }

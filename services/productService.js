@@ -4,13 +4,7 @@ const Category = db.Category
 
 const productService = {
   getAllProducts: async () => {
-    const products = await Product.findAll({
-      include: [
-        {
-          model: Category
-        }
-      ]
-    })
+    const products = await Product.findAll({ include: [{ model: Category }] })
 
     return products
   },

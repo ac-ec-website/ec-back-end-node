@@ -9,7 +9,8 @@ const adminCategory = {
 
       return res.json({ categories })
     } catch (error) {
-      return res.status(422).json(error)
+      console.log('取得後台分類 error', error)
+      return res.sendStatus(500)
     }
   },
 
@@ -20,7 +21,8 @@ const adminCategory = {
 
       return res.json({ category })
     } catch (error) {
-      return res.status(422).json(error)
+      console.log('單一後台分類 error', error)
+      return res.sendStatus(500)
     }
   },
 
@@ -35,7 +37,8 @@ const adminCategory = {
 
       return res.json({ category, status: 'success', message: 'category was successfully created' })
     } catch (error) {
-      return res.status(422).json(error)
+      console.log('新增後台分類 error', error)
+      return res.sendStatus(500)
     }
   },
 
@@ -51,7 +54,8 @@ const adminCategory = {
 
       return res.json({ category, status: 'success', message: 'category was successfully created' })
     } catch (error) {
-      return res.status(422).json(error)
+      console.log('更新後台分類 error', error)
+      return res.sendStatus(500)
     }
   },
 
@@ -62,7 +66,8 @@ const adminCategory = {
 
       return res.json({ status: 'success', message: '' })
     } catch (error) {
-      return res.status(422).json(error)
+      console.log('刪除後台分類 error', error)
+      return res.sendStatus(500)
     }
   }
 }

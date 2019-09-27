@@ -31,7 +31,7 @@ const couponController = {
       }
 
       req.session.couponCode = couponCode
-      req.session.save()
+      await req.session.save()
 
       return res.json({
         couponData,
@@ -39,7 +39,7 @@ const couponController = {
         message: `成功使用 [${couponData.name}] 優惠券`
       })
     } catch (error) {
-      console.log('error', error)
+      console.log('使用優惠券 error', error)
       return res.sendStatus(500)
     }
   },
@@ -65,7 +65,7 @@ const couponController = {
       }
 
       req.session.couponCode = undefined
-      req.session.save()
+      await req.session.save()
 
       return res.json({
         couponData,
@@ -73,7 +73,7 @@ const couponController = {
         message: `取消使用 [${couponData.name}] 優惠券`
       })
     } catch (error) {
-      console.log('error', error)
+      console.log('取消使用優惠券 error', error)
       return res.sendStatus(500)
     }
   },
@@ -105,7 +105,7 @@ const couponController = {
         message: `成功取得 [${couponData.name}] 優惠券資訊`
       })
     } catch (error) {
-      console.log('error', error)
+      console.log('取得優惠券 error', error)
       return res.sendStatus(500)
     }
   }

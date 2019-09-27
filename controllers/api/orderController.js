@@ -1,18 +1,7 @@
-const db = require('../../models')
-const faker = require('faker')
-const snNum = faker.random.number() // 新增訂單使用
-const Product = db.Product
-const Cart = db.Cart
-const CartItem = db.CartItem
-const Order = db.Order
-const OrderItem = db.OrderItem
-const Payment = db.Payment
-const Shipping = db.Shipping
-const Coupon = db.Coupon
-
 const orderService = require('../../services/orderService')
 const cartService = require('../../services/cartService')
 const couponService = require('../../services/couponService')
+const emailNotify = require('../emailNotify')
 
 const orderController = {
   postOrder: async (req, res) => {
@@ -113,7 +102,7 @@ const orderController = {
       // ===== Step 7 將 tempOrderId, paymentData.id 存入 res.session =====
       req.session.orderId = tempOrderId
       req.session.paymentId = paymentData.id
-      req.session.save()
+      await req.session.save()
 
       res.json({
         orderData,
@@ -123,8 +112,16 @@ const orderController = {
         status: 'success',
         message: '成功新增一筆訂單'
       })
+
+      // 訂單成立 Email
+      const buyerEmail = orderCustomerEmail
+      const emailSubject = `[GPW 電商網站系統信]：您的訂單已成立！`
+      const emailContent = `<h4>${orderCustomerName} 你好</h4>
+      <p>您的訂單已成立，本次訂單金額為 $ ${checkoutPrice} 元，若有任何問題，歡迎隨時與我們聯繫，感謝！</p>`
+
+      emailNotify.sendEmail(buyerEmail, emailSubject, emailContent)
     } catch (error) {
-      console.log('error', error)
+      console.log('訂單創建 error', error)
       return res.sendStatus(500)
     }
   },
@@ -142,6 +139,16 @@ const orderController = {
 
       const { order, payment, shipping } = await orderService.getOrder(orderId)
 
+      if (order.payment_status === '1') {
+        // 訂單付款成功 Email
+        const buyerEmail = order.email
+        const emailSubject = `[GPW 電商網站系統信]：您的訂單 #${order.id} 已成功付款！`
+        const emailContent = `<h4>${order.name} 你好</h4>
+      <p>您的訂單已成功付款，本次訂單金額為 $ ${order.checkoutPrice} 元，若有任何問題，歡迎隨時與我們聯繫，感謝！</p>`
+
+        emailNotify.sendEmail(buyerEmail, emailSubject, emailContent)
+      }
+
       return res.json({
         order,
         payment,
@@ -150,7 +157,7 @@ const orderController = {
         message: '成功取得單一訂單的資料'
       })
     } catch (error) {
-      console.log('error', error)
+      console.log('取得訂單 error', error)
       return res.sendStatus(500)
     }
   }

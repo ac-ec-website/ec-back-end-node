@@ -6,7 +6,6 @@ module.exports = {
       'Products',
       [
         {
-          id: 1,
           name: '【草本養護】癢癢退散洗毛精-汪汪專用 500ml',
           image:
             'https://shoplineimg.com/55dbc8f4e36c8e492800000f/5cbd56f2754a4d0032420105/400x.webp?source_format=png',
@@ -22,7 +21,6 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          id: 2,
           name: '【草本養護】沁檸蘭草防蚤洗毛精-汪汪專用 500ml',
           image:
             'https://shoplineimg.com/55dbc8f4e36c8e492800000f/5d5508867e4b3000172dbd1f/400x.webp?source_format=png',
@@ -37,7 +35,6 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          id: 3,
           name: '【口腔對策】得寸淨齒舒口水',
           image:
             'https://shoplineimg.com/55dbc8f4e36c8e492800000f/5cee3567abc6ef003539467e/400x.webp?source_format=png',
@@ -53,7 +50,6 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          id: 4,
           name: '【植淨日常】草本速淨潔膚水',
           image:
             'https://shoplineimg.com/55dbc8f4e36c8e492800000f/5cbd5624eb31e500179bde44/400x.webp?source_format=png',
@@ -69,7 +65,6 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          id: 5,
           name: '【口腔對策】喵口回春潔牙凝膠',
           image:
             'https://shoplineimg.com/55dbc8f4e36c8e492800000f/5cbd6211a6bc46002316fafe/400x.webp?source_format=png',
@@ -85,7 +80,6 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          id: 6,
           name: '【口腔對策】狗齒清新潔牙凝膠',
           image:
             'https://shoplineimg.com/55dbc8f4e36c8e492800000f/5cbd6229eddabe00239b2cfd/400x.webp?source_format=png',
