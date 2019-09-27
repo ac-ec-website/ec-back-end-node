@@ -30,7 +30,7 @@ const adminController = {
         user: newUser
       })
     } catch (error) {
-      console.log(error.message)
+      console.log('signUp error', error)
       res.sendStatus(500)
     }
   },
@@ -55,7 +55,7 @@ const adminController = {
         user
       })
     } catch (error) {
-      console.log(error.message)
+      console.log('signIn error', error)
       res.sendStatus(500)
     }
   },
@@ -67,7 +67,7 @@ const adminController = {
         user
       })
     } catch (error) {
-      console.log(error.message)
+      console.log('getUsers error', error)
       res.sendStatus(500)
     }
   },
@@ -89,7 +89,7 @@ const adminController = {
         user
       })
     } catch (error) {
-      console.log(error.message)
+      console.log('putUser error', error)
       res.sendStatus(500)
     }
   }

@@ -26,7 +26,7 @@ const productController = {
         status: 'success'
       })
     } catch (error) {
-      console.log('error', error)
+      console.log('getProducts error', error)
       return res.sendStatus(500)
     }
   },
@@ -50,7 +50,7 @@ const productController = {
         status: 'success'
       })
     } catch (error) {
-      console.log('error', error)
+      console.log('getProduct error', error)
       return res.sendStatus(500)
     }
   }

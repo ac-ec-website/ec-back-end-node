@@ -3,17 +3,22 @@ const User = db.User
 
 const userController = {
   getCurrentUser: async (req, res) => {
-    if (req.user) {
+    try {
+      if (req.user) {
+        return res.json({
+          status: 'success',
+          user: req.user
+        })
+      }
       return res.json({
-        status: 'success',
-        user: req.user
+        status: 'forbidden',
+        message: 'No user data',
+        user: {}
       })
+    } catch (error) {
+      console.log('getCurrentUser error', error)
+      return res.sendStatus(500)
     }
-    return res.json({
-      status: 'forbidden',
-      message: 'No user data',
-      user: {}
-    })
   }
 }
 
