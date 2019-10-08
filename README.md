@@ -30,10 +30,11 @@ EC-Back-End-Node 是一個使用 Node.js + Express + MySQL/PostgreSQL 建立的�
 - 整合 mocha / chai / sinon / supertest 完成單元測試（Model / Request）
 - 整合 nyc / coveralls 檢視測試結果覆蓋率
 - 整合 Travis CI 實踐自動化測試（CI）
-- 整合 Heroku 實踐自動化部屬（CD）
+- 整合 Heroku 實踐自動化部署（CD）
 - 串接第三方藍新金流，快速接入多種支付方式
 - 透過 cors 實作前後端分離跨域 session，訪客不需要登入即可完成購物
 - 採用 JSON Web Tokens 實作跨域認證
+- 整合 Google API / OAuth 2.0 / nodemailer 實現 Email 通知功能
 - 採用 multer 對接前後端檔案程式
 - 整合 imgur API，實作上傳圖片功能
 - 採用 bcrypt 處理使用者密碼
@@ -41,7 +42,7 @@ EC-Back-End-Node 是一個使用 Node.js + Express + MySQL/PostgreSQL 建立的�
 
 ## DB Structure - 資料庫架構規劃
 
-- 關聯式資料庫（素材準備中）
+- [關聯式資料庫](https://drive.google.com/file/d/1iew3PydNLLM34ey08dD6ZX9e3M-EPgc8/view)
 
 ## API Reference - 格式範例
 
@@ -51,8 +52,8 @@ EC-Back-End-Node 是一個使用 Node.js + Express + MySQL/PostgreSQL 建立的�
 
 ## Environment SetUp - 環境建置
 
-1. [Node.js](https://nodejs.org/en/)
-2. [MySQL](https://www.mysql.com/) / [PostgreSQL](https://www.postgresql.org/)
+- [Node.js](https://nodejs.org/en/)
+- [MySQL](https://www.mysql.com/) / [PostgreSQL](https://www.postgresql.org/)
 
 ## Installing - 專案安裝流程
 
@@ -82,7 +83,7 @@ cd ec-back-end-node
 //.env.example --> .env
 GMAIL_ACCOUNT=
 GMAIL_PASSWORD=
-URL=你部屬這個專案的網址
+URL=你部署這個專案的網址
 MERCHANT_ID=你的藍新金流商店 ID
 HASH_KEY=你的藍新金流商店 HASH_KEY
 HASH_IV=你的藍新金流商店 HASH_IV
@@ -120,10 +121,29 @@ npm run test
 
 現在，你可開啟任一瀏覽器瀏覽器輸入 [http://localhost:3000](http://localhost:3000) 開始查看囉！
 
-## Contributor - 專案開發人員
+## Contributor and Responsibility - 開發人員與職責分工
 
 [Pierce Shih](https://github.com/pierceshih15)
 
+1. 負責團隊資源協調與協作機制建立，實踐各階段的產品開發目標
+2. 負責前後端購物車、訂單創建、瀏覽訂單、優惠券、Email 通知功能開發
+3. 負責專案核心分支管理，協助團隊 PR 審核
+4. 協同團隊確立專案規格（User Story, Wireframe, ERD Model）
+5. 協同團隊建立資料庫架構、種子資料與 Heroku 部署
+6. 協同團隊串接第三方藍新金流
+
 [Zhen Yi](https://github.com/asd8116)
 
+1. 負責前後端後台功能開發，包含管理員 CRUD - 商品管理、商品分類管理、訂單管理、優惠券管理、特價活動管理、用戶權限管理
+2. 負責專案分支管理，協助團隊 PR 審核
+3. 協同團隊確立專案規格（User Story, Wireframe, ERD Model）
+4. 協同團隊建立資料庫架構、種子資料與 Heroku 部署
+5. 協同團隊串接第三方藍新金流
+
 [Ginger 敬杰](https://github.com/Lianginger)
+
+1. 負責前後端前台使用者商品頁面開發、後台管理員身份驗證、自動化測試等功能開發
+2. 負責專案分支管理，協助團隊 PR 審核
+3. 協同團隊確立專案規格（User Story, Wireframe, ERD Model）
+4. 協同團隊建立資料庫架構、種子資料與 Heroku 部署
+5. 協同團隊串接第三方藍新金流
