@@ -68,7 +68,7 @@ const orderService = {
       let qyt = null
       cartItemData.forEach(item => {
         // 若該購物車內商品的 id 等於目前的產品 id，則回傳其數量使用
-        if (item.dataValues.ProductId == d.id) {
+        if (item.dataValues.ProductId === d.id) {
           // console.log('回傳的商品數量', item.dataValues.quantity)
           return (qyt = item.dataValues.quantity)
         }

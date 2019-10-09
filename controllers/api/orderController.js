@@ -64,7 +64,11 @@ const orderController = {
         let couponData = await couponService.getCoupon(couponCode)
 
         CouponId = couponData.id
-        coupon_discount_fee = await couponService.getCouponDiscountFee(couponData)
+        coupon_discount_fee = await couponService.getCouponDiscountFee(
+          couponData,
+          shipping_fee,
+          total_amount
+        )
       }
 
       // ===== Step 4 取得結帳金額資訊 =====

@@ -52,7 +52,7 @@ function getTradeInfo(Amt, Desc, email) {
   // console.log(Amt, Desc, email)
   // console.log('==========')
 
-  data = {
+  const data = {
     MerchantID: MerchantID, // 商店代號
     RespondType: 'JSON', // 回傳格式
     TimeStamp: Date.now(), // 時間戳記
@@ -71,14 +71,14 @@ function getTradeInfo(Amt, Desc, email) {
   // console.log('===== getTradeInfo: data =====')
   // console.log(data)
 
-  mpg_aes_encrypt = create_mpg_aes_encrypt(data)
-  mpg_sha_encrypt = create_mpg_sha_encrypt(mpg_aes_encrypt)
+  const mpg_aes_encrypt = create_mpg_aes_encrypt(data)
+  const mpg_sha_encrypt = create_mpg_sha_encrypt(mpg_aes_encrypt)
 
   // console.log('===== getTradeInfo: mpg_aes_encrypt, mpg_sha_encrypt =====')
   // console.log(mpg_aes_encrypt)
   // console.log(mpg_sha_encrypt)
 
-  tradeInfo = {
+  const tradeInfo = {
     MerchantID: MerchantID, // 商店代號
     TradeInfo: mpg_aes_encrypt, // 加密後參數
     TradeSha: mpg_sha_encrypt,

@@ -49,8 +49,6 @@ const cartService = {
     await CartItem.destroy({
       where: { CartId: cartId, id: cartItemId }
     })
-
-    return
   },
   postCart: async (cartId, productInfo) => {
     let [cart, isCartNew] = await Cart.findOrCreate({
