@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   )
-  Discount.associate = function(models) {
+  Discount.associate = function (models) {
     Discount.hasMany(models.Order)
   }
   return Discount

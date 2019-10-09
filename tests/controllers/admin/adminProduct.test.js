@@ -1,8 +1,5 @@
-const assert = require('assert')
-const chai = require('chai')
 const request = require('supertest')
 const sinon = require('sinon')
-const should = chai.should()
 const { expect } = require('chai')
 const authorization = require('../../../config/authorization')
 const app = require('../../../app')
@@ -19,7 +16,7 @@ describe('#Admin Product', () => {
   })
 
   describe('GET products', () => {
-    before(async function() {
+    before(async function () {
       await db.Product.destroy({ where: {}, truncate: true })
 
       await db.Product.create({ name: 'product1' })
@@ -31,7 +28,7 @@ describe('#Admin Product', () => {
         .get('/api/admin/products')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.products.length).to.be.equal(2)
           done()
@@ -43,20 +40,20 @@ describe('#Admin Product', () => {
         .get('/api/admin/products/1')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.product.name).to.be.equal('product1')
           done()
         })
     })
 
-    after(async function() {
+    after(async function () {
       await db.Product.destroy({ where: {}, truncate: true })
     })
   })
 
   describe('POST product', () => {
-    before(async function() {
+    before(async function () {
       await db.Product.destroy({ where: {}, truncate: true })
     })
 
@@ -66,7 +63,7 @@ describe('#Admin Product', () => {
         .send('')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('error')
           done()
@@ -79,20 +76,20 @@ describe('#Admin Product', () => {
         .send('name=product1')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('success')
           done()
         })
     })
 
-    after(async function() {
+    after(async function () {
       await db.Product.destroy({ where: {}, truncate: true })
     })
   })
 
   describe('PUT product', () => {
-    before(async function() {
+    before(async function () {
       await db.Product.destroy({ where: {}, truncate: true })
 
       await db.Product.create({})
@@ -104,7 +101,7 @@ describe('#Admin Product', () => {
         .send('')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('error')
           done()
@@ -117,20 +114,20 @@ describe('#Admin Product', () => {
         .send('name=product1')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('success')
           done()
         })
     })
 
-    after(async function() {
+    after(async function () {
       await db.Product.destroy({ where: {}, truncate: true })
     })
   })
 
   describe('DELETE product', () => {
-    before(async function() {
+    before(async function () {
       await db.Product.destroy({ where: {}, truncate: true })
 
       await db.Product.create({})
@@ -140,14 +137,14 @@ describe('#Admin Product', () => {
       request(app)
         .delete('/api/admin/products/1')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('success')
           done()
         })
     })
 
-    after(async function() {
+    after(async function () {
       await db.Product.destroy({ where: {}, truncate: true })
     })
   })

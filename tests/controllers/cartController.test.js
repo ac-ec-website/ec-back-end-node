@@ -6,7 +6,7 @@ const db = require('../../models')
 
 describe('#Cart Controller', () => {
   describe('GET Cart - 查看購物車內容', () => {
-    before(async function() {
+    before(async function () {
       // 在所有測試開始前會執行的程式碼區塊
       await db.Cart.destroy({ where: {}, truncate: true })
     })
@@ -18,14 +18,14 @@ describe('#Cart Controller', () => {
         .send({ productId: 1 })
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
 
           agent
             .get('/api/cart')
             .set('Accept', 'application/json')
             .expect(200)
-            .end(function(err, res) {
+            .end(function (err, res) {
               if (err) return done(err)
               expect(res.body.cart.id).to.be.equal(1)
               expect(res.body.status).to.be.equal('success')
@@ -41,7 +41,7 @@ describe('#Cart Controller', () => {
         .get('/api/cart')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('error')
 
@@ -49,14 +49,14 @@ describe('#Cart Controller', () => {
         })
     })
 
-    after(async function() {
+    after(async function () {
       // 在所有測試結束後會執行的程式碼區塊
       await db.Cart.destroy({ where: {}, truncate: true })
       await db.CartItem.destroy({ where: {}, truncate: true })
     })
   })
   describe('PUT Cart - 更新購物車的配送資訊', () => {
-    before(async function() {
+    before(async function () {
       // 在所有測試開始前會執行的程式碼區塊
       await db.Cart.destroy({ where: {}, truncate: true })
       await db.CartItem.destroy({ where: {}, truncate: true })
@@ -69,7 +69,7 @@ describe('#Cart Controller', () => {
         .send({ productId: 1 })
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
 
           agent
@@ -77,7 +77,7 @@ describe('#Cart Controller', () => {
             .send('shipping_method=住家宅配')
             .set('Accept', 'application/json')
             .expect(200)
-            .end(function(err, res) {
+            .end(function (err, res) {
               if (err) return done(err)
               expect(res.body.cart.id).to.be.equal(1)
               expect(res.body.cart.shipping_method).to.be.equal('住家宅配')
@@ -96,7 +96,7 @@ describe('#Cart Controller', () => {
         .send({ productId: 1 })
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
 
           agent
@@ -104,7 +104,7 @@ describe('#Cart Controller', () => {
             .send('shipping_method=其他')
             .set('Accept', 'application/json')
             .expect(200)
-            .end(function(err, res) {
+            .end(function (err, res) {
               if (err) return done(err)
               expect(res.body.cart.id).to.be.equal(2)
               expect(res.body.cart.shipping_method).to.be.equal('其他')
@@ -123,7 +123,7 @@ describe('#Cart Controller', () => {
         .send({ productId: 1 })
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
 
           agent
@@ -131,7 +131,7 @@ describe('#Cart Controller', () => {
             .send('')
             .set('Accept', 'application/json')
             .expect(200)
-            .end(function(err, res) {
+            .end(function (err, res) {
               if (err) return done(err)
               expect(res.body.status).to.be.equal('error')
               expect(res.body.message).to.be.equal('請填寫配送方式')
@@ -141,14 +141,14 @@ describe('#Cart Controller', () => {
         })
     })
 
-    after(async function() {
+    after(async function () {
       // 在所有測試結束後會執行的程式碼區塊
       await db.Cart.destroy({ where: {}, truncate: true })
       await db.CartItem.destroy({ where: {}, truncate: true })
     })
   })
   describe('POST /api/cart/1/cartItem/1/add - 增加購物車商品數量', () => {
-    before(async function() {
+    before(async function () {
       // 在所有測試開始前會執行的程式碼區塊
       await db.Product.destroy({ where: {}, truncate: true })
       await db.Cart.destroy({ where: {}, truncate: true })
@@ -170,7 +170,7 @@ describe('#Cart Controller', () => {
         .send('')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.cartItem[0].ProductId).to.be.equal(1)
           expect(res.body.cartItem[0].CartId).to.be.equal(1)
@@ -181,7 +181,7 @@ describe('#Cart Controller', () => {
         })
     })
 
-    after(async function() {
+    after(async function () {
       // 在所有測試結束後會執行的程式碼區塊
       await db.Product.destroy({ where: {}, truncate: true })
       await db.Cart.destroy({ where: {}, truncate: true })
@@ -190,7 +190,7 @@ describe('#Cart Controller', () => {
   })
 
   describe('POST /api/cart  - 新增購物車內的商品', () => {
-    beforeEach(async function() {
+    beforeEach(async function () {
       // 在所有測試開始前會執行的程式碼區塊
       await db.Cart.destroy({ where: {}, truncate: true })
       await db.CartItem.destroy({ where: {}, truncate: true })
@@ -202,7 +202,7 @@ describe('#Cart Controller', () => {
         .send('')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('error')
           expect(res.body.message).to.be.equal('req.body 缺少 productId')
@@ -216,7 +216,7 @@ describe('#Cart Controller', () => {
         .send({ productId: 23, quantity: 77 })
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('success')
           expect(res.body.cart.id).to.be.equal(1)
@@ -233,7 +233,7 @@ describe('#Cart Controller', () => {
         .send({ productId: 19, quantity: 13 })
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('success')
           expect(res.body.cart.id).to.be.equal(1)
@@ -246,7 +246,7 @@ describe('#Cart Controller', () => {
             .send({ productId: 19, quantity: 17 })
             .set('Accept', 'application/json')
             .expect(200)
-            .end(function(err, res) {
+            .end(function (err, res) {
               if (err) return done(err)
               expect(res.body.status).to.be.equal('success')
               expect(res.body.cart.id).to.be.equal(1)
@@ -259,7 +259,7 @@ describe('#Cart Controller', () => {
         })
     })
 
-    afterEach(async function() {
+    afterEach(async function () {
       // 在所有測試結束後會執行的程式碼區塊
       await db.Cart.destroy({ where: {}, truncate: true })
       await db.CartItem.destroy({ where: {}, truncate: true })
@@ -267,7 +267,7 @@ describe('#Cart Controller', () => {
   })
 
   describe('POST /api/cart/1/cartItem/1/sub - 減少購物車商品數量', () => {
-    before(async function() {
+    before(async function () {
       // 在所有測試開始前會執行的程式碼區塊
       await db.Product.destroy({ where: {}, truncate: true })
       await db.Cart.destroy({ where: {}, truncate: true })
@@ -289,7 +289,7 @@ describe('#Cart Controller', () => {
         .send('')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.cartItem[0].ProductId).to.be.equal(1)
           expect(res.body.cartItem[0].CartId).to.be.equal(1)
@@ -300,7 +300,7 @@ describe('#Cart Controller', () => {
         })
     })
 
-    after(async function() {
+    after(async function () {
       // 在所有測試結束後會執行的程式碼區塊
       await db.Product.destroy({ where: {}, truncate: true })
       await db.Cart.destroy({ where: {}, truncate: true })
@@ -308,7 +308,7 @@ describe('#Cart Controller', () => {
     })
   })
   describe('DELETE /api/cart/1/cartItem/1 - 刪除購物車內的商品', () => {
-    before(async function() {
+    before(async function () {
       // 在所有測試開始前會執行的程式碼區塊
       await db.Product.destroy({ where: {}, truncate: true })
       await db.Cart.destroy({ where: {}, truncate: true })
@@ -330,7 +330,7 @@ describe('#Cart Controller', () => {
         .send('')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('success')
           expect(res.body.message).to.be.equal('商品已刪除成功')
@@ -339,7 +339,7 @@ describe('#Cart Controller', () => {
         })
     })
 
-    after(async function() {
+    after(async function () {
       // 在所有測試結束後會執行的程式碼區塊
       await db.Product.destroy({ where: {}, truncate: true })
       await db.Cart.destroy({ where: {}, truncate: true })

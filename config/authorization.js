@@ -17,8 +17,8 @@ const checkIsLogin = async (req, res, next) => {
   }
 
   try {
-    var jwt_payload = jwt.verify(req.token, process.env.JWT_SECRET)
-    const user = await User.findByPk(jwt_payload.id)
+    const jwtPayload = jwt.verify(req.token, process.env.JWT_SECRET)
+    const user = await User.findByPk(jwtPayload.id)
     req.user = user
     next()
   } catch (err) {

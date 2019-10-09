@@ -1,6 +1,3 @@
-const db = require('../../models')
-const User = db.User
-
 const userController = {
   getCurrentUser: async (req, res) => {
     try {

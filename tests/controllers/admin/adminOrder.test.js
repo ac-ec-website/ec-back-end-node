@@ -1,8 +1,5 @@
-const assert = require('assert')
-const chai = require('chai')
 const request = require('supertest')
 const sinon = require('sinon')
-const should = chai.should()
 const { expect } = require('chai')
 const authorization = require('../../../config/authorization')
 const app = require('../../../app')
@@ -19,7 +16,7 @@ describe('#Admin Order', () => {
   })
 
   describe('GET orders', () => {
-    before(async function() {
+    before(async function () {
       await db.Order.destroy({ where: {}, truncate: true })
 
       await db.Order.create({ name: 'order1' })
@@ -31,7 +28,7 @@ describe('#Admin Order', () => {
         .get('/api/admin/orders')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.orders.length).to.be.equal(2)
           done()
@@ -43,20 +40,20 @@ describe('#Admin Order', () => {
         .get('/api/admin/orders/1')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.order.name).to.be.equal('order1')
           done()
         })
     })
 
-    after(async function() {
+    after(async function () {
       await db.Order.destroy({ where: {}, truncate: true })
     })
   })
 
   describe('PUT order', () => {
-    before(async function() {
+    before(async function () {
       await db.Order.destroy({ where: {}, truncate: true })
 
       await db.Order.create({})
@@ -68,7 +65,7 @@ describe('#Admin Order', () => {
         .send('')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('error')
           done()
@@ -81,14 +78,14 @@ describe('#Admin Order', () => {
         .send('shipping_status=1&payment_status=1')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('success')
           done()
         })
     })
 
-    after(async function() {
+    after(async function () {
       await db.Product.destroy({ where: {}, truncate: true })
     })
   })

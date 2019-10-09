@@ -51,7 +51,7 @@ const couponService = {
 
     return couponData
   },
-  getCouponDiscountFee: async couponData => {
+  getCouponDiscountFee: async (couponData, shipping_fee, total_amount) => {
     let coupon_discount_fee = 0
     // 運費相關
     if (couponData.type === 0 && couponData.shipping_free === 1) {

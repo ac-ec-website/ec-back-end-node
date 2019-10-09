@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   )
-  Cart.associate = function(models) {
+  Cart.associate = function (models) {
     Cart.belongsToMany(models.Product, {
       as: 'items',
       through: {

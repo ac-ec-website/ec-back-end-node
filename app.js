@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const path = require('path')
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -37,7 +38,7 @@ app.use(
 app.use(cors(corsOptions))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-app.use('/upload', express.static(__dirname + '/upload'))
+app.use('/upload', express.static(path.join(__dirname, '/upload')))
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`)

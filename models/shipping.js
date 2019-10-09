@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   )
-  Shipping.associate = function(models) {
+  Shipping.associate = function (models) {
     Shipping.belongsTo(models.Order)
   }
   return Shipping

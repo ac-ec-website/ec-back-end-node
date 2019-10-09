@@ -40,8 +40,8 @@ const orderService = {
       address: orderCustomerAddress,
       order_status: 1, // (0 - 已取消, 1 - 處理中）
       remark: orderRemark,
-      shipping_status: 0, //（0 - 尚未配送, 1 - 配送中, 2 - 已送達）
-      payment_status: 0, //（0 - 尚未付款, 1 - 已付款）
+      shipping_status: 0, // （0 - 尚未配送, 1 - 配送中, 2 - 已送達）
+      payment_status: 0, // （0 - 尚未付款, 1 - 已付款）
       UserId: null,
       CouponId: CouponId,
       DiscountId: null
@@ -55,8 +55,8 @@ const orderService = {
 
     const tempOrderId = await orderData.id
 
-    const orderItem = await cart.items.map(async d => {
-      const data = await OrderItem.create({
+    await cart.items.map(async d => {
+      await OrderItem.create({
         price: d.sell_price,
         quantity: await getQyt(d),
         OrderId: tempOrderId,
@@ -64,11 +64,11 @@ const orderService = {
       })
     })
 
-    function getQyt(d) {
+    function getQyt (d) {
       let qyt = null
       cartItemData.forEach(item => {
         // 若該購物車內商品的 id 等於目前的產品 id，則回傳其數量使用
-        if (item.dataValues.ProductId == d.id) {
+        if (item.dataValues.ProductId === d.id) {
           // console.log('回傳的商品數量', item.dataValues.quantity)
           return (qyt = item.dataValues.quantity)
         }
@@ -82,7 +82,7 @@ const orderService = {
       sn: null,
       total_amount: checkoutPrice, // 付款合計（商品＋運費-折價）
       payment_method: null,
-      payment_status: 0, //（0 - 尚未付款, 1 - 已付款）
+      payment_status: 0, // （0 - 尚未付款, 1 - 已付款）
       OrderId: tempOrderId
     })
 
@@ -91,7 +91,7 @@ const orderService = {
       sn: null,
       shipping_fee: shipping_fee,
       shipping_method: shippingMethod,
-      shipping_status: 0, //（0 - 尚未配送, 1 - 配送中, 2 - 已送達）
+      shipping_status: 0, // （0 - 尚未配送, 1 - 配送中, 2 - 已送達）
       name: orderRecipientName, // 從 前端 取得
       phone: orderRecipientPhone, // 從 前端 取得
       address: orderRecipientAddress, // 從 前端 取得

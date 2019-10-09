@@ -1,5 +1,3 @@
-const db = require('../../models')
-const { Category } = db
 const adCatService = require('../../services/adCatService')
 
 const adminCategory = {
