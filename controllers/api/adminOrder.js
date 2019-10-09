@@ -1,5 +1,3 @@
-const db = require('../../models')
-const { Order, Coupon, Discount, Shipping } = db
 const adOrdService = require('../../services/adOrdService')
 const emailNotify = require('../emailNotify')
 

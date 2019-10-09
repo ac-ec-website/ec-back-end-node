@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   )
-  CartItem.associate = function(models) {
+  CartItem.associate = function (models) {
     // associations can be defined here
   }
   return CartItem

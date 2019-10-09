@@ -14,7 +14,7 @@ const NotifyURL = URL + '/spgateway/callback?from=NotifyURL'
 const ClientBackURL = 'https://ac-ec-website.github.io/ec-front-end-vue/dist/#/order'
 // const ClientBackURL = 'http://localhost:8080/#/order'
 
-function genDataChain(TradeInfo) {
+function genDataChain (TradeInfo) {
   let results = []
   for (let kv of Object.entries(TradeInfo)) {
     results.push(`${kv[0]}=${kv[1]}`)
@@ -22,13 +22,13 @@ function genDataChain(TradeInfo) {
   return results.join('&')
 }
 
-function create_mpg_aes_encrypt(TradeInfo) {
+function create_mpg_aes_encrypt (TradeInfo) {
   let encrypt = crypto.createCipheriv('aes256', HashKey, HashIV)
   let enc = encrypt.update(genDataChain(TradeInfo), 'utf8', 'hex')
   return enc + encrypt.final('hex')
 }
 
-function create_mpg_aes_decrypt(TradeInfo) {
+function create_mpg_aes_decrypt (TradeInfo) {
   let decrypt = crypto.createDecipheriv('aes256', HashKey, HashIV)
   decrypt.setAutoPadding(false)
   let text = decrypt.update(TradeInfo, 'hex', 'utf8')
@@ -37,7 +37,7 @@ function create_mpg_aes_decrypt(TradeInfo) {
   return result
 }
 
-function create_mpg_sha_encrypt(TradeInfo) {
+function create_mpg_sha_encrypt (TradeInfo) {
   let sha = crypto.createHash('sha256')
   let plainText = `HashKey=${HashKey}&${TradeInfo}&HashIV=${HashIV}`
 
@@ -47,7 +47,7 @@ function create_mpg_sha_encrypt(TradeInfo) {
     .toUpperCase()
 }
 
-function getTradeInfo(Amt, Desc, email) {
+function getTradeInfo (Amt, Desc, email) {
   // console.log('===== getTradeInfo =====')
   // console.log(Amt, Desc, email)
   // console.log('==========')
@@ -128,11 +128,11 @@ const paymentService = {
       await payment.update({
         params: JSON.stringify(data),
         payment_method: data.Result.PaymentType,
-        payment_status: 1 //（0 - 尚未付款, 1 - 已付款, 2 - 付款失敗）
+        payment_status: 1 // （0 - 尚未付款, 1 - 已付款, 2 - 付款失敗）
       })
     } else if (data.Status === 'MPG03009') {
       await payment.update({
-        payment_status: 2 //（0 - 尚未付款, 1 - 已付款, 2 - 付款失敗）
+        payment_status: 2 // （0 - 尚未付款, 1 - 已付款, 2 - 付款失敗）
       })
     }
   }

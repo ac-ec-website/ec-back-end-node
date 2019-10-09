@@ -21,12 +21,20 @@ const adProService = {
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID)
       imgur.upload(file.path, async (err, img) => {
-        const product = await Product.create({
-          ...data,
-          image: file ? img.data.link : null
-        })
+        if (err) {
+          console.log('上傳商品圖片 error', err)
+        }
 
-        return { product }
+        try {
+          const product = await Product.create({
+            ...data,
+            image: file ? img.data.link : null
+          })
+
+          return { product }
+        } catch (error) {
+          console.log('新增商品資訊 error', error)
+        }
       })
     } else {
       const product = await Product.create({
@@ -42,13 +50,20 @@ const adProService = {
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID)
       imgur.upload(file.path, async (err, img) => {
-        const product = await Product.findByPk(productId)
-        await product.update({
-          ...data,
-          image: file ? img.data.link : product.image
-        })
+        if (err) {
+          console.log('上傳商品圖片 error', err)
+        }
+        try {
+          const product = await Product.findByPk(productId)
+          await product.update({
+            ...data,
+            image: file ? img.data.link : product.image
+          })
 
-        return { product }
+          return { product }
+        } catch (error) {
+          console.log('更新商品資訊 error', error)
+        }
       })
     } else {
       const product = await Product.findByPk(productId)

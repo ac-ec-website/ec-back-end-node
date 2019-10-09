@@ -1,8 +1,5 @@
-const assert = require('assert')
-const chai = require('chai')
 const request = require('supertest')
 const sinon = require('sinon')
-const should = chai.should()
 const { expect } = require('chai')
 const bcrypt = require('bcrypt')
 const authorization = require('../../../config/authorization')
@@ -11,7 +8,7 @@ const db = require('../../../models')
 
 describe('#AdminController', () => {
   describe('後台註冊 POST /api/admin/signup', () => {
-    before(async function() {
+    before(async function () {
       await db.User.destroy({ where: {}, truncate: true })
       await db.User.create({ email: 'user23@example.com' })
     })
@@ -22,7 +19,7 @@ describe('#AdminController', () => {
         .send('')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('error')
           expect(res.body.message).to.be.equal('所有欄位都要填寫')
@@ -41,7 +38,7 @@ describe('#AdminController', () => {
         })
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('error')
           expect(res.body.message).to.be.equal('兩次密碼輸入不同！')
@@ -60,7 +57,7 @@ describe('#AdminController', () => {
         })
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('error')
           expect(res.body.message).to.be.equal('信箱重複！')
@@ -79,7 +76,7 @@ describe('#AdminController', () => {
         })
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('success')
           expect(res.body.message).to.be.equal('成功註冊帳號！')
@@ -88,13 +85,13 @@ describe('#AdminController', () => {
         })
     })
 
-    after(async function() {
+    after(async function () {
       await db.User.destroy({ where: {}, truncate: true })
     })
   })
 
   describe('後台登入 POST /api/admin/signin', () => {
-    before(async function() {
+    before(async function () {
       await db.User.destroy({ where: {}, truncate: true })
       const salt = bcrypt.genSaltSync(10)
       await db.User.create({
@@ -109,7 +106,7 @@ describe('#AdminController', () => {
         .send('')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('error')
           expect(res.body.message).to.be.equal('所有欄位都要填寫')
@@ -126,7 +123,7 @@ describe('#AdminController', () => {
         })
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('error')
           expect(res.body.message).to.be.equal('帳號錯誤')
@@ -143,7 +140,7 @@ describe('#AdminController', () => {
         })
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('error')
           expect(res.body.message).to.be.equal('密碼錯誤')
@@ -157,7 +154,7 @@ describe('#AdminController', () => {
         .send({ email: 'user@example.com', password: '12345678' })
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('success')
           expect(res.body.message).to.be.equal('ok')
@@ -166,13 +163,13 @@ describe('#AdminController', () => {
         })
     })
 
-    after(async function() {
+    after(async function () {
       await db.User.destroy({ where: {}, truncate: true })
     })
   })
 
   describe('更改使用者權限 PUT /api/admin/user', () => {
-    before(async function() {
+    before(async function () {
       sinon.stub(authorization, 'checkIsLogin').callsFake((req, res, next) => {
         return next()
       })
@@ -181,7 +178,6 @@ describe('#AdminController', () => {
       })
       await db.User.destroy({ where: {}, truncate: true })
 
-      const salt = bcrypt.genSaltSync(10)
       await db.User.create({
         id: 1,
         role: 'user'
@@ -194,7 +190,7 @@ describe('#AdminController', () => {
         .send('')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('error')
           expect(res.body.message).to.be.equal('Cannot find id and role')
@@ -211,7 +207,7 @@ describe('#AdminController', () => {
         })
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.user.id).to.be.equal(1)
           expect(res.body.user.role).to.be.equal('admin')
@@ -219,7 +215,7 @@ describe('#AdminController', () => {
         })
     })
 
-    after(async function() {
+    after(async function () {
       authorization.checkIsLogin.restore()
       authorization.checkIsAdmin.restore()
       await db.User.destroy({ where: {}, truncate: true })

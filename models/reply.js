@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   )
-  Reply.associate = function(models) {
+  Reply.associate = function (models) {
     Reply.belongsTo(models.Product)
     Reply.belongsTo(models.Order)
   }

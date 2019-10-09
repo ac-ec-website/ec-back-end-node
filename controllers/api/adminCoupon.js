@@ -1,5 +1,3 @@
-const db = require('../../models')
-const { Coupon } = db
 const adCouService = require('../../services/adCouService')
 
 const adminCoupon = {

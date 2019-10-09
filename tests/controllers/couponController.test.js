@@ -6,7 +6,7 @@ const db = require('../../models')
 
 describe('#Coupon Controller', () => {
   describe('GET Coupon - 查看優惠券內容', () => {
-    before(async function() {
+    before(async function () {
       // 在所有測試開始前會執行的程式碼區塊
       await db.Coupon.destroy({ where: {}, truncate: true })
       await db.Coupon.create({
@@ -24,14 +24,14 @@ describe('#Coupon Controller', () => {
         .send('couponCode=1111')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
 
           agent
             .get('/api/coupon')
             .set('Accept', 'application/json')
             .expect(200)
-            .end(function(err, res) {
+            .end(function (err, res) {
               if (err) return done(err)
               expect(res.body.couponData.id).to.be.equal(1)
               expect(res.body.status).to.be.equal('success')
@@ -48,14 +48,14 @@ describe('#Coupon Controller', () => {
         .send('')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
 
           agent
             .get('/api/coupon')
             .set('Accept', 'application/json')
             .expect(200)
-            .end(function(err, res) {
+            .end(function (err, res) {
               if (err) return done(err)
               expect(res.body.status).to.be.equal('error')
 
@@ -71,14 +71,14 @@ describe('#Coupon Controller', () => {
         .send('couponCode=undefined')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
 
           agent
             .get('/api/coupon')
             .set('Accept', 'application/json')
             .expect(200)
-            .end(function(err, res) {
+            .end(function (err, res) {
               if (err) return done(err)
               expect(res.body.status).to.be.equal('error')
 
@@ -87,13 +87,13 @@ describe('#Coupon Controller', () => {
         })
     })
 
-    after(async function() {
+    after(async function () {
       // 在所有測試結束後會執行的程式碼區塊
       await db.Coupon.destroy({ where: {}, truncate: true })
     })
   })
   describe('POST /api/coupon - 使用優惠券', () => {
-    beforeEach(async function() {
+    beforeEach(async function () {
       // 在所有測試開始前會執行的程式碼區塊
       await db.Cart.destroy({ where: {}, truncate: true })
       await db.CartItem.destroy({ where: {}, truncate: true })
@@ -114,7 +114,7 @@ describe('#Coupon Controller', () => {
         .send('couponCode=1111')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
 
           expect(res.body.couponData.limited_num).to.be.equal(1)
@@ -132,7 +132,7 @@ describe('#Coupon Controller', () => {
         .send({ productId: 1 })
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
 
           agent
@@ -140,7 +140,7 @@ describe('#Coupon Controller', () => {
             .send('couponCode=1111')
             .set('Accept', 'application/json')
             .expect(200)
-            .end(function(err, res) {
+            .end(function (err, res) {
               if (err) return done(err)
 
               agent
@@ -148,7 +148,7 @@ describe('#Coupon Controller', () => {
                 .send('couponCode=1111')
                 .set('Accept', 'application/json')
                 .expect(200)
-                .end(function(err, res) {
+                .end(function (err, res) {
                   if (err) return done(err)
                   expect(res.body.status).to.be.equal('error-cantBeUsed')
 
@@ -165,7 +165,7 @@ describe('#Coupon Controller', () => {
         .send({ productId: 1 })
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
 
           agent
@@ -173,7 +173,7 @@ describe('#Coupon Controller', () => {
             .send('couponCode=')
             .set('Accept', 'application/json')
             .expect(200)
-            .end(function(err, res) {
+            .end(function (err, res) {
               if (err) return done(err)
               expect(res.body.status).to.be.equal('error')
 
@@ -189,7 +189,7 @@ describe('#Coupon Controller', () => {
         .send({ productId: 1 })
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
 
           agent
@@ -197,7 +197,7 @@ describe('#Coupon Controller', () => {
             .send('couponCode=1112')
             .set('Accept', 'application/json')
             .expect(200)
-            .end(function(err, res) {
+            .end(function (err, res) {
               if (err) return done(err)
               expect(res.body.status).to.be.equal('error-notFound')
 
@@ -206,7 +206,7 @@ describe('#Coupon Controller', () => {
         })
     })
 
-    afterEach(async function() {
+    afterEach(async function () {
       // 在所有測試結束後會執行的程式碼區塊
       await db.Cart.destroy({ where: {}, truncate: true })
       await db.CartItem.destroy({ where: {}, truncate: true })
@@ -214,7 +214,7 @@ describe('#Coupon Controller', () => {
     })
   })
   describe('DELETE /api/coupon - 取消使用優惠券', () => {
-    beforeEach(async function() {
+    beforeEach(async function () {
       // 在所有測試開始前會執行的程式碼區塊
       await db.Cart.destroy({ where: {}, truncate: true })
       await db.CartItem.destroy({ where: {}, truncate: true })
@@ -236,14 +236,14 @@ describe('#Coupon Controller', () => {
         .send('couponCode=1111')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
 
           agent
             .delete('/api/coupon')
             .set('Accept', 'application/json')
             .expect(200)
-            .end(function(err, res) {
+            .end(function (err, res) {
               if (err) return done(err)
 
               expect(res.body.couponData.limited_num).to.be.equal(2)
@@ -261,7 +261,7 @@ describe('#Coupon Controller', () => {
         .send({ productId: 1 })
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
 
           agent
@@ -269,14 +269,14 @@ describe('#Coupon Controller', () => {
             .send('couponCode=')
             .set('Accept', 'application/json')
             .expect(200)
-            .end(function(err, res) {
+            .end(function (err, res) {
               if (err) return done(err)
 
               agent
                 .delete('/api/coupon')
                 .set('Accept', 'application/json')
                 .expect(200)
-                .end(function(err, res) {
+                .end(function (err, res) {
                   if (err) return done(err)
                   expect(res.body.status).to.be.equal('error')
 
@@ -286,7 +286,7 @@ describe('#Coupon Controller', () => {
         })
     })
 
-    afterEach(async function() {
+    afterEach(async function () {
       // 在所有測試結束後會執行的程式碼區塊
       await db.Cart.destroy({ where: {}, truncate: true })
       await db.CartItem.destroy({ where: {}, truncate: true })

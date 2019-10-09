@@ -9,7 +9,7 @@ const db = require('../../models')
 
 describe('#User Controller', () => {
   describe('No user data', () => {
-    before(async function() {
+    before(async function () {
       // 在所有測試開始前會執行的程式碼區塊
       sinon.stub(authorization, 'checkIsLogin').callsFake((req, res, next) => {
         return next()
@@ -22,7 +22,7 @@ describe('#User Controller', () => {
         .get('/api/get_current_user')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('forbidden')
 
@@ -30,7 +30,7 @@ describe('#User Controller', () => {
         })
     })
 
-    after(async function() {
+    after(async function () {
       // 在所有測試結束後會執行的程式碼區塊
       authorization.checkIsLogin.restore()
       await db.User.destroy({ where: {}, truncate: true })
@@ -38,7 +38,7 @@ describe('#User Controller', () => {
   })
 
   describe('Login and get CurrentUser', () => {
-    before(async function() {
+    before(async function () {
       // 在所有測試開始前會執行的程式碼區塊
       sinon.stub(authorization, 'checkIsLogin').callsFake((req, res, next) => {
         req.user = { id: 1 }
@@ -52,7 +52,7 @@ describe('#User Controller', () => {
         .get('/api/get_current_user')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('success')
           expect(res.body.user.id).to.be.equal(1)
@@ -61,7 +61,7 @@ describe('#User Controller', () => {
         })
     })
 
-    after(async function() {
+    after(async function () {
       // 在所有測試結束後會執行的程式碼區塊
       authorization.checkIsLogin.restore()
       await db.User.destroy({ where: {}, truncate: true })

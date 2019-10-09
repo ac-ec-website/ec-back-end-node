@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   )
-  Order.associate = function(models) {
+  Order.associate = function (models) {
     Order.belongsToMany(models.Product, {
       as: 'items',
       through: {

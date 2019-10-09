@@ -1,10 +1,6 @@
-var chai = require('chai')
-var sinon = require('sinon')
+const chai = require('chai')
 chai.use(require('sinon-chai'))
-const request = require('supertest')
 const { expect } = require('chai')
-
-const app = require('../../app')
 const db = require('../../models')
 const CouponModel = require('../../models/coupon')
 
@@ -12,7 +8,6 @@ const {
   sequelize,
   dataTypes,
   checkModelName,
-  checkUniqueIndex,
   checkPropertyExists
 } = require('sequelize-test-helpers')
 

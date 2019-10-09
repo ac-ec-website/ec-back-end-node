@@ -20,7 +20,7 @@ module.exports = {
           sn: null,
           total_amount: 12392,
           payment_method: null,
-          payment_status: 0, //（0 - 尚未付款, 1 - 已付款）
+          payment_status: 0, // （0 - 尚未付款, 1 - 已付款）
           OrderId: 2,
           createdAt: new Date(),
           updatedAt: new Date()

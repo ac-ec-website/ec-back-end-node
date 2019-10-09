@@ -1,10 +1,6 @@
-var chai = require('chai')
-var sinon = require('sinon')
+const chai = require('chai')
 chai.use(require('sinon-chai'))
-const request = require('supertest')
 const { expect } = require('chai')
-
-const app = require('../../app')
 const db = require('../../models')
 const ProductModel = require('../../models/product')
 
@@ -12,7 +8,6 @@ const {
   sequelize,
   dataTypes,
   checkModelName,
-  checkUniqueIndex,
   checkPropertyExists
 } = require('sequelize-test-helpers')
 
@@ -38,7 +33,6 @@ describe('# Product Model', () => {
   context('Associations', () => {
     const Cart = 'Cart'
     const Order = 'Order'
-    const CartItem = 'CartItem'
 
     before(() => {
       Product.associate({ Cart })

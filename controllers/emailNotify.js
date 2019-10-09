@@ -13,7 +13,8 @@ const emailNotify = {
     oauth2Client.setCredentials({
       refresh_token: process.env.refreshToken
     })
-    const accessToken = oauth2Client.getAccessToken()
+
+    // const accessToken = oauth2Client.getAccessToken()
 
     const smtpTransport = nodemailer.createTransport({
       service: 'gmail',

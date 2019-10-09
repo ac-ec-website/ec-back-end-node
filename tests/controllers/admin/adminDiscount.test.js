@@ -1,8 +1,5 @@
-const assert = require('assert')
-const chai = require('chai')
 const request = require('supertest')
 const sinon = require('sinon')
-const should = chai.should()
 const { expect } = require('chai')
 const authorization = require('../../../config/authorization')
 const app = require('../../../app')
@@ -19,7 +16,7 @@ describe('#Admin Discount', () => {
   })
 
   describe('GET Discounts', () => {
-    before(async function() {
+    before(async function () {
       await db.Discount.destroy({ where: {}, truncate: true })
 
       await db.Discount.create({ name: 'Discount1' })
@@ -31,7 +28,7 @@ describe('#Admin Discount', () => {
         .get('/api/admin/discounts')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.discounts.length).to.be.equal(2)
           done()
@@ -43,20 +40,20 @@ describe('#Admin Discount', () => {
         .get('/api/admin/discounts/1')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.discount.name).to.be.equal('Discount1')
           done()
         })
     })
 
-    after(async function() {
+    after(async function () {
       await db.Discount.destroy({ where: {}, truncate: true })
     })
   })
 
   describe('POST Discount', () => {
-    before(async function() {
+    before(async function () {
       await db.Discount.destroy({ where: {}, truncate: true })
     })
 
@@ -66,7 +63,7 @@ describe('#Admin Discount', () => {
         .send('')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('error')
           done()
@@ -79,20 +76,20 @@ describe('#Admin Discount', () => {
         .send('name=Discount1')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('success')
           done()
         })
     })
 
-    after(async function() {
+    after(async function () {
       await db.Discount.destroy({ where: {}, truncate: true })
     })
   })
 
   describe('PUT Discount', () => {
-    before(async function() {
+    before(async function () {
       await db.Discount.destroy({ where: {}, truncate: true })
 
       await db.Discount.create({})
@@ -104,7 +101,7 @@ describe('#Admin Discount', () => {
         .send('')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('error')
           done()
@@ -117,20 +114,20 @@ describe('#Admin Discount', () => {
         .send('name=Discount1&shipping_free=1')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('success')
           done()
         })
     })
 
-    after(async function() {
+    after(async function () {
       await db.Discount.destroy({ where: {}, truncate: true })
     })
   })
 
   describe('DELETE Discount', () => {
-    before(async function() {
+    before(async function () {
       await db.Discount.destroy({ where: {}, truncate: true })
 
       await db.Discount.create({})
@@ -140,14 +137,14 @@ describe('#Admin Discount', () => {
       request(app)
         .delete('/api/admin/discounts/1')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('success')
           done()
         })
     })
 
-    after(async function() {
+    after(async function () {
       await db.Discount.destroy({ where: {}, truncate: true })
     })
   })

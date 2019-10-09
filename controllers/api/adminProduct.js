@@ -1,5 +1,3 @@
-const db = require('../../models')
-const { Category, Product } = db
 const adProService = require('../../services/adProService')
 
 const adminProduct = {

@@ -1,8 +1,6 @@
-const assert = require('assert')
-const chai = require('chai')
 const request = require('supertest')
 const sinon = require('sinon')
-const should = chai.should()
+
 const { expect } = require('chai')
 const stubForTest = require('../../config/stubForTest')
 let app = require('../../app')
@@ -20,7 +18,7 @@ describe('#Payment Controller', () => {
   })
 
   describe('GET /payment', () => {
-    before(async function() {
+    before(async function () {
       await db.Payment.destroy({ where: {}, truncate: true })
       await db.Order.destroy({ where: {}, truncate: true })
 
@@ -37,7 +35,7 @@ describe('#Payment Controller', () => {
         .get('/api/payment')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.order.email).to.be.equal('root@example.com')
           done()
@@ -49,21 +47,21 @@ describe('#Payment Controller', () => {
         .get('/api/payment')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.tradeInfo.MerchantID).to.be.equal(process.env.MERCHANT_ID)
           done()
         })
     })
 
-    after(async function() {
+    after(async function () {
       await db.Payment.destroy({ where: {}, truncate: true })
       await db.Order.destroy({ where: {}, truncate: true })
     })
   })
 
   describe('POST /spgateway/callback 交易成功', () => {
-    before(async function() {
+    before(async function () {
       await db.Payment.destroy({ where: {}, truncate: true })
       await db.Order.destroy({ where: {}, truncate: true })
 
@@ -83,7 +81,7 @@ describe('#Payment Controller', () => {
         })
         .set('Accept', 'application/json')
         .expect(302)
-        .end(async function(err, res) {
+        .end(async function (err, res) {
           if (err) return done(err)
           const order = await db.Order.findByPk(1, {})
           const payment = await db.Payment.findByPk(1, {})
@@ -93,14 +91,14 @@ describe('#Payment Controller', () => {
         })
     })
 
-    after(async function() {
+    after(async function () {
       await db.Payment.destroy({ where: {}, truncate: true })
       await db.Order.destroy({ where: {}, truncate: true })
     })
   })
 
   describe('POST /spgateway/callback 交易失敗', () => {
-    before(async function() {
+    before(async function () {
       await db.Payment.destroy({ where: {}, truncate: true })
       await db.Order.destroy({ where: {}, truncate: true })
 
@@ -120,7 +118,7 @@ describe('#Payment Controller', () => {
         })
         .set('Accept', 'application/json')
         .expect(302)
-        .end(async function(err, res) {
+        .end(async function (err, res) {
           if (err) return done(err)
           const order = await db.Order.findByPk(1, {})
           const payment = await db.Payment.findByPk(1, {})
@@ -130,7 +128,7 @@ describe('#Payment Controller', () => {
         })
     })
 
-    after(async function() {
+    after(async function () {
       await db.Payment.destroy({ where: {}, truncate: true })
       await db.Order.destroy({ where: {}, truncate: true })
     })

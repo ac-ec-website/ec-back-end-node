@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   )
-  Coupon.associate = function(models) {
+  Coupon.associate = function (models) {
     Coupon.hasMany(models.Order)
   }
   return Coupon

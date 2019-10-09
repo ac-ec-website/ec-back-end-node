@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   )
-  OrderItem.associate = function(models) {
+  OrderItem.associate = function (models) {
     // associations can be defined here
   }
   return OrderItem

@@ -11,7 +11,7 @@ const salt = bcrypt.genSaltSync(10)
 
 describe('#Authorization', () => {
   describe('Check user is login', () => {
-    before(async function() {
+    before(async function () {
       await db.User.destroy({ where: {}, truncate: true })
       await db.User.create({
         email: 'root@example.com',
@@ -26,7 +26,7 @@ describe('#Authorization', () => {
         .send({ email: 'root@example.com', password: '12345678' })
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           const token = res.body.token
 
@@ -35,7 +35,7 @@ describe('#Authorization', () => {
             .set('authorization', `Bearer ${token}`)
             .set('Accept', 'application/json')
             .expect(200)
-            .end(function(err, res) {
+            .end(function (err, res) {
               if (err) return done(err)
               expect(res.body.user.email).to.be.equal('root@example.com')
 
@@ -51,15 +51,14 @@ describe('#Authorization', () => {
         .send({ email: 'root@example.com', password: '12345678' })
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
-          const token = res.body.token
 
           agent
             .get('/api/get_current_user')
             .set('Accept', 'application/json')
             .expect(200)
-            .end(function(err, res) {
+            .end(function (err, res) {
               if (err) return done(err)
               expect(res.body.status).to.be.equal('forbidden')
               expect(res.body.message).to.be.equal('headers 未設定 JWT token')
@@ -76,16 +75,15 @@ describe('#Authorization', () => {
         .send({ email: 'root@example.com', password: '12345678' })
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
-          const token = res.body.token
 
           agent
             .get('/api/get_current_user')
             .set('authorization', `Bearer 123`)
             .set('Accept', 'application/json')
             .expect(200)
-            .end(function(err, res) {
+            .end(function (err, res) {
               if (err) return done(err)
               expect(res.body.status).to.be.equal('forbidden')
               expect(res.body.message).to.be.equal(
@@ -97,13 +95,13 @@ describe('#Authorization', () => {
         })
     })
 
-    after(async function() {
+    after(async function () {
       await db.User.destroy({ where: {}, truncate: true })
     })
   })
 
   describe('Check user role is Admin', () => {
-    before(async function() {
+    before(async function () {
       sinon.stub(authorization, 'checkIsLogin').callsFake((req, res, next) => {
         req.user = { role: 'admin' }
         return next()
@@ -117,7 +115,7 @@ describe('#Authorization', () => {
         .get('/api/admin/users')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.user[0].name).to.be.equal('Tom')
 
@@ -125,14 +123,14 @@ describe('#Authorization', () => {
         })
     })
 
-    after(async function() {
+    after(async function () {
       authorization.checkIsLogin.restore()
       await db.User.destroy({ where: {}, truncate: true })
     })
   })
 
   describe('Check user role is not Admin', () => {
-    before(async function() {
+    before(async function () {
       sinon.stub(authorization, 'checkIsLogin').callsFake((req, res, next) => {
         req.user = { role: 'user' }
         return next()
@@ -146,7 +144,7 @@ describe('#Authorization', () => {
         .get('/api/admin/users')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('error')
           expect(res.body.message).to.be.equal('訪問權限不夠')
@@ -155,14 +153,14 @@ describe('#Authorization', () => {
         })
     })
 
-    after(async function() {
+    after(async function () {
       authorization.checkIsLogin.restore()
       await db.User.destroy({ where: {}, truncate: true })
     })
   })
 
   describe('req.user 沒有資料', () => {
-    before(async function() {
+    before(async function () {
       sinon.stub(authorization, 'checkIsLogin').callsFake((req, res, next) => {
         return next()
       })
@@ -174,7 +172,7 @@ describe('#Authorization', () => {
         .get('/api/admin/users')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function(err, res) {
+        .end(function (err, res) {
           if (err) return done(err)
           expect(res.body.status).to.be.equal('error')
           expect(res.body.message).to.be.equal('請重新登入')
@@ -183,7 +181,7 @@ describe('#Authorization', () => {
         })
     })
 
-    after(async function() {
+    after(async function () {
       authorization.checkIsLogin.restore()
       await db.User.destroy({ where: {}, truncate: true })
     })
