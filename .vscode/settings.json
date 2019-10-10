@@ -7,13 +7,25 @@
   "editor.wordWrap": "on",
   "liveServer.settings.donotShowInfoMsg": true,
   "window.zoomLevel": 0,
-  "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
+  // Prettier
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
-  "prettier.printWidth": 100,
+  "prettier.printWidth": 120,
   "prettier.singleQuote": true,
-  "prettier.semi": false
+  "prettier.semi": false,
+  "standard.autoFixOnSave": true,
+  "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+  // Vetur
+  "vetur.format.defaultFormatterOptions": {
+    "prettyhtml": {
+      "printWidth": 100,
+    },
+    "prettier": {
+      "singleQuote": true,
+      "semi": false,
+      "proseWrap": "never",
+      "printWidth": 140
+    }
+  },
 }
