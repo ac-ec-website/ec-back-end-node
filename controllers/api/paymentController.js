@@ -2,7 +2,7 @@ require('dotenv').config()
 
 const paymentService = require('../../services/paymentService')
 
-let paymentController = {
+const paymentController = {
   getPayment: async (req, res) => {
     try {
       // console.log('===== getPayment =====')

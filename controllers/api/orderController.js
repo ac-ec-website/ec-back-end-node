@@ -52,8 +52,8 @@ const orderController = {
           ? cart.items.map(d => d.sell_price * d.CartItem.quantity).reduce((a, b) => a + b)
           : 0
 
-      let shippingMethod = await cart.shipping_method
-      let shipping_fee = await cart.shipping_fee
+      const shippingMethod = await cart.shipping_method
+      const shipping_fee = await cart.shipping_fee
 
       // ===== Step 3 取得優惠券相關資訊 =====
       const couponCode = req.session.couponCode
@@ -61,7 +61,7 @@ const orderController = {
       let CouponId
 
       if (couponCode !== undefined) {
-        let couponData = await couponService.getCoupon(couponCode)
+        const couponData = await couponService.getCoupon(couponCode)
 
         CouponId = couponData.id
         coupon_discount_fee = await couponService.getCouponDiscountFee(
@@ -119,7 +119,7 @@ const orderController = {
 
       // 訂單成立 Email
       const buyerEmail = orderCustomerEmail
-      const emailSubject = `[GPW 電商網站系統信]：您的訂單已成立！`
+      const emailSubject = '[GPW 電商網站系統信]：您的訂單已成立！'
       const emailContent = `<h4>${orderCustomerName} 你好</h4>
       <p>您的訂單已成立，本次訂單金額為 $ ${checkoutPrice} 元，若有任何問題，歡迎隨時與我們聯繫，感謝！</p>`
 

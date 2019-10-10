@@ -3,7 +3,7 @@ const db = require('../models')
 const User = db.User
 
 const checkIsLogin = async (req, res, next) => {
-  const header = req.headers['authorization']
+  const header = req.headers.authorization
   if (typeof header !== 'undefined') {
     const bearer = header.split(' ')
     const token = bearer[1]

@@ -12,7 +12,7 @@ const couponController = {
         })
       }
 
-      let couponData = await couponService.postCoupon(couponCode)
+      const couponData = await couponService.postCoupon(couponCode)
 
       // 若 couponData 為空，則回應查無此優惠券，請再次確認
       if (!couponData) {
@@ -54,7 +54,7 @@ const couponController = {
         })
       }
 
-      let couponData = await couponService.deleteCoupon(couponCode)
+      const couponData = await couponService.deleteCoupon(couponCode)
 
       // 若 couponData 為空，則回應查無此優惠券，請再次確認
       if (!couponData) {
@@ -89,7 +89,7 @@ const couponController = {
         })
       }
 
-      let couponData = await couponService.getCoupon(couponCode)
+      const couponData = await couponService.getCoupon(couponCode)
 
       // 若 couponData 為空，則回應查無此優惠券，請再次確認
       if (!couponData) {

@@ -16,7 +16,7 @@ const adminService = {
     }
 
     const salt = bcrypt.genSaltSync(10)
-    let newUser = await User.create({
+    const newUser = await User.create({
       name: userName,
       email: userEmail,
       password: bcrypt.hashSync(userPassword, salt),

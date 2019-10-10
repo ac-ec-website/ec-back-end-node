@@ -15,31 +15,31 @@ const ClientBackURL = 'https://ac-ec-website.github.io/ec-front-end-vue/dist/#/o
 // const ClientBackURL = 'http://localhost:8080/#/order'
 
 function genDataChain (TradeInfo) {
-  let results = []
-  for (let kv of Object.entries(TradeInfo)) {
+  const results = []
+  for (const kv of Object.entries(TradeInfo)) {
     results.push(`${kv[0]}=${kv[1]}`)
   }
   return results.join('&')
 }
 
 function create_mpg_aes_encrypt (TradeInfo) {
-  let encrypt = crypto.createCipheriv('aes256', HashKey, HashIV)
-  let enc = encrypt.update(genDataChain(TradeInfo), 'utf8', 'hex')
+  const encrypt = crypto.createCipheriv('aes256', HashKey, HashIV)
+  const enc = encrypt.update(genDataChain(TradeInfo), 'utf8', 'hex')
   return enc + encrypt.final('hex')
 }
 
 function create_mpg_aes_decrypt (TradeInfo) {
-  let decrypt = crypto.createDecipheriv('aes256', HashKey, HashIV)
+  const decrypt = crypto.createDecipheriv('aes256', HashKey, HashIV)
   decrypt.setAutoPadding(false)
-  let text = decrypt.update(TradeInfo, 'hex', 'utf8')
-  let plainText = text + decrypt.final('utf8')
-  let result = plainText.replace(/[\x00-\x20]+/g, '')
+  const text = decrypt.update(TradeInfo, 'hex', 'utf8')
+  const plainText = text + decrypt.final('utf8')
+  let result = plainText.replace(/[\x00-\x20]+/g, '') // eslint-disable-line
   return result
 }
 
 function create_mpg_sha_encrypt (TradeInfo) {
-  let sha = crypto.createHash('sha256')
-  let plainText = `HashKey=${HashKey}&${TradeInfo}&HashIV=${HashIV}`
+  const sha = crypto.createHash('sha256')
+  const plainText = `HashKey=${HashKey}&${TradeInfo}&HashIV=${HashIV}`
 
   return sha
     .update(plainText)
@@ -117,9 +117,9 @@ const paymentService = {
     // 回傳的資料內容
     // console.log('回傳內容', data)
 
-    const order = await Order.findOne({ where: { sn: data['Result']['MerchantOrderNo'] } })
+    const order = await Order.findOne({ where: { sn: data.Result.MerchantOrderNo } })
 
-    const payment = await Payment.findOne({ where: { sn: data['Result']['MerchantOrderNo'] } })
+    const payment = await Payment.findOne({ where: { sn: data.Result.MerchantOrderNo } })
 
     if (data.Status === 'SUCCESS') {
       await order.update({
