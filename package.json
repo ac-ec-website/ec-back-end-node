@@ -33,7 +33,7 @@
     "nodemailer": "^6.3.0",
     "nyc": "^14.1.1",
     "pg": "^7.12.1",
-    "sequelize": "^5.13.0",
+    "sequelize": "^5.19.5",
     "sequelize-cli": "^5.5.0",
     "sequelize-test-helpers": "^1.1.2",
     "sinon": "^7.4.1",

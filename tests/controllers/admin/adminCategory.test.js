@@ -1,8 +1,9 @@
+/* eslint-env mocha */
 const request = require('supertest')
 const sinon = require('sinon')
 const { expect } = require('chai')
 const authorization = require('../../../config/authorization')
-let app = require('../../../app')
+const app = require('../../../app')
 const db = require('../../../models')
 
 describe('#Admin Category', () => {
