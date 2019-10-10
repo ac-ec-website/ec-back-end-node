@@ -5,13 +5,24 @@
 <p align="center">
   <a href="https://travis-ci.org/ac-ec-website/ec-back-end-node"><img src="https://travis-ci.org/ac-ec-website/ec-back-end-node.svg?branch=master" alt="Build Status"></a>
   <a href="https://coveralls.io/github/ac-ec-website/ec-back-end-node"><img src="https://coveralls.io/repos/github/ac-ec-website/ec-back-end-node/badge.svg" alt="Coverage Status"></a>
+  <a href="https://standardjs.com/"><img src="https://img.shields.io/badge/code_style-standard-brightgreen.svg" alt="Standard - JavaScript Style Guide"></a>
 </p>
 
 # EC-Back-End-Node
 
 EC-Back-End-Node 是一個使用 Node.js + Express + MySQL/PostgreSQL 建立的電子商務後端專案，部署於 Heroku，以 RESTFul API 滿足電商網站不同資料的互動需求，搭配 [EC-Front-End-Vue](https://github.com/ac-ec-website/ec-front-end-vue) 前端專案，打造一個全方位的電商網站。
 
-## 專案緣起
+## 目錄
+
+- [Initial - 專案緣起](#Initial---專案緣起)
+- [Features - 專案功能](#Features---專案功能)
+- [DB Structure - 資料庫架構規劃](#DB-Structure---資料庫架構規劃)
+- [API Reference - 格式範例](#API-Reference---格式範例)
+- [Environment SetUp - 環境建置](#Environment-SetUp---環境建置)
+- [Installing - 專案安裝流程](#Installing---專案安裝流程)
+- [Contributor and Responsibility - 開發人員與職責分工](#Contributor-and-Responsibility---開發人員與職責分工)
+
+## Initial - 專案緣起
 
 專案緣起於 Alpha Camp 畢業專題發想，由團隊共同決議要選擇「電商平台」為主題，打造一個前後端分離的作品，期望透過技術解決傳統店家要拓展線上通路進入門檻過高的問題，包含網站開發、金流串接...等等。
 
@@ -35,6 +46,7 @@ EC-Back-End-Node 是一個使用 Node.js + Express + MySQL/PostgreSQL 建立的�
 - 透過 cors 實作前後端分離跨域 session，訪客不需要登入即可完成購物
 - 採用 JSON Web Tokens 實作跨域認證
 - 整合 Google API / OAuth 2.0 / nodemailer 實現 Email 通知功能
+- 整合 Librato 監控伺服器 API 運行狀態
 - 採用 multer 對接前後端檔案程式
 - 整合 imgur API，實作上傳圖片功能
 - 採用 bcrypt 處理使用者密碼
