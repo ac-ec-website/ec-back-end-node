@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 process.env.NODE_ENV = 'test'
 
 const request = require('supertest')
@@ -80,7 +81,7 @@ describe('#Authorization', () => {
 
           agent
             .get('/api/get_current_user')
-            .set('authorization', `Bearer 123`)
+            .set('authorization', 'Bearer 123')
             .set('Accept', 'application/json')
             .expect(200)
             .end(function (err, res) {

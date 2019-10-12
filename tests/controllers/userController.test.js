@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 process.env.NODE_ENV = 'test'
 
 const request = require('supertest')

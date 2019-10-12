@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 const request = require('supertest')
 const { expect } = require('chai')
 

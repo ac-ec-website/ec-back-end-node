@@ -51,13 +51,13 @@ const cartService = {
     })
   },
   postCart: async (cartId, productInfo) => {
-    let [cart] = await Cart.findOrCreate({
+    const [cart] = await Cart.findOrCreate({
       where: {
         id: cartId || 0
       }
     })
 
-    let [cartItem, isCartItemNew] = await CartItem.findOrCreate({
+    const [cartItem, isCartItemNew] = await CartItem.findOrCreate({
       where: {
         CartId: cart.id,
         ProductId: productInfo.productId

@@ -7,7 +7,7 @@ module.exports = {
       [
         {
           name: '【草本養護】癢癢退散洗毛精-汪汪專用 500ml',
-          image: 'https://i.imgur.com/h6lQMo1.png ',
+          image: 'https://i.imgur.com/h6lQMo1.png',
           description:
             '針對狗狗細緻肌膚打造溫和草本防護調理配方，舒緩皮膚敏感、幫助調節肌膚皮脂分泌。',
           stock_quantity: 50,

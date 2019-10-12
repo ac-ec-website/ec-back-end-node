@@ -1,9 +1,10 @@
+/* eslint-env mocha */
 const request = require('supertest')
 const sinon = require('sinon')
 
 const { expect } = require('chai')
 const stubForTest = require('../../config/stubForTest')
-let app = require('../../app')
+const app = require('../../app')
 const db = require('../../models')
 
 describe('#Payment Controller', () => {

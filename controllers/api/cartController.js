@@ -135,7 +135,7 @@ const cartController = {
         quantity: req.body.quantity
       }
 
-      let { cart, cartItem } = await cartService.postCart(cartId, productInfo)
+      const { cart, cartItem } = await cartService.postCart(cartId, productInfo)
 
       req.session.cartId = cart.id
       // 自動清除先前的 coupon 資訊
@@ -162,7 +162,7 @@ const cartController = {
         })
       }
 
-      let shippingFee = 0
+      const shippingFee = 0
       const shippingMethod = req.body.shipping_method
       const cartId = req.session.cartId
 
