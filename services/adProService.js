@@ -28,7 +28,8 @@ const adProService = {
         try {
           const product = await Product.create({
             ...data,
-            image: file ? img.data.link : null
+            image: file ? img.data.link : null,
+            CategoryId: data.categoryId
           })
 
           return { product }
@@ -39,7 +40,8 @@ const adProService = {
     } else {
       const product = await Product.create({
         ...data,
-        image: null
+        image: null,
+        CategoryId: data.categoryId
       })
 
       return { product }
@@ -57,7 +59,8 @@ const adProService = {
           const product = await Product.findByPk(productId)
           await product.update({
             ...data,
-            image: file ? img.data.link : product.image
+            image: file ? img.data.link : product.image,
+            CategoryId: data.categoryId
           })
 
           return { product }
@@ -69,7 +72,8 @@ const adProService = {
       const product = await Product.findByPk(productId)
       await product.update({
         ...data,
-        image: product.image
+        image: product.image,
+        CategoryId: data.categoryId
       })
 
       return { product }
