@@ -22,13 +22,13 @@ function genDataChain (TradeInfo) {
   return results.join('&')
 }
 
-function create_mpg_aes_encrypt (TradeInfo) {
+function createMpgAesEncrypt (TradeInfo) {
   const encrypt = crypto.createCipheriv('aes256', HashKey, HashIV)
   const enc = encrypt.update(genDataChain(TradeInfo), 'utf8', 'hex')
   return enc + encrypt.final('hex')
 }
 
-function create_mpg_aes_decrypt (TradeInfo) {
+function createMpgAesDecrypt (TradeInfo) {
   const decrypt = crypto.createDecipheriv('aes256', HashKey, HashIV)
   decrypt.setAutoPadding(false)
   const text = decrypt.update(TradeInfo, 'hex', 'utf8')
@@ -37,7 +37,7 @@ function create_mpg_aes_decrypt (TradeInfo) {
   return result
 }
 
-function create_mpg_sha_encrypt (TradeInfo) {
+function createMpgShaEncrypt (TradeInfo) {
   const sha = crypto.createHash('sha256')
   const plainText = `HashKey=${HashKey}&${TradeInfo}&HashIV=${HashIV}`
 
@@ -71,17 +71,17 @@ function getTradeInfo (Amt, Desc, email) {
   // console.log('===== getTradeInfo: data =====')
   // console.log(data)
 
-  const mpg_aes_encrypt = create_mpg_aes_encrypt(data)
-  const mpg_sha_encrypt = create_mpg_sha_encrypt(mpg_aes_encrypt)
+  const mpgAesEncrypt = createMpgAesEncrypt(data)
+  const mpgShaEncrypt = createMpgShaEncrypt(mpgAesEncrypt)
 
-  // console.log('===== getTradeInfo: mpg_aes_encrypt, mpg_sha_encrypt =====')
-  // console.log(mpg_aes_encrypt)
-  // console.log(mpg_sha_encrypt)
+  // console.log('===== getTradeInfo: mpgAesEncrypt, mpgShaEncrypt =====')
+  // console.log(mpgAesEncrypt)
+  // console.log(mpgShaEncrypt)
 
   const tradeInfo = {
     MerchantID: MerchantID, // 商店代號
-    TradeInfo: mpg_aes_encrypt, // 加密後參數
-    TradeSha: mpg_sha_encrypt,
+    TradeInfo: mpgAesEncrypt, // 加密後參數
+    TradeSha: mpgShaEncrypt,
     Version: 1.5, // 串接程式版本
     PayGateWay: PayGateWay,
     MerchantOrderNo: data.MerchantOrderNo
@@ -110,9 +110,9 @@ const paymentService = {
     return { order, tradeInfo }
   },
   spgatewayCallback: async tradeInfo => {
-    const data = JSON.parse(create_mpg_aes_decrypt(tradeInfo))
+    const data = JSON.parse(createMpgAesDecrypt(tradeInfo))
 
-    // console.log('===== spgatewayCallback: create_mpg_aes_decrypt、data =====')
+    // console.log('===== spgatewayCallback: createMpgAesDecrypt、data =====')
 
     // 回傳的資料內容
     // console.log('回傳內容', data)
