@@ -27,7 +27,7 @@ const adminOrder = {
 
   putOrder: async (req, res) => {
     try {
-      if (!req.body.shipping_status || !req.body.payment_status) {
+      if (!req.body.shippingStatus || !req.body.paymentStatus) {
         return res.json({ status: 'error', message: "status didn't exist" })
       }
 

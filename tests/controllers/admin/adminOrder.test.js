@@ -76,7 +76,7 @@ describe('#Admin Order', () => {
     it('successfully update', done => {
       request(app)
         .put('/api/admin/orders/1')
-        .send('shipping_status=1&payment_status=1')
+        .send('shippingStatus=1&paymentStatus=1')
         .set('Accept', 'application/json')
         .expect(200)
         .end(function (err, res) {
