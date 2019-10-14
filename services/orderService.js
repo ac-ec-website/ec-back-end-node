@@ -11,9 +11,9 @@ const Shipping = db.Shipping
 const orderService = {
   postOrder: async (
     checkoutPrice,
-    shipping_fee,
-    coupon_discount_fee,
-    total_amount,
+    shippingFee,
+    couponDiscountFee,
+    totalAmount,
     orderCustomerName,
     orderCustomerEmail,
     orderCustomerPhone,
@@ -31,9 +31,9 @@ const orderService = {
     const orderData = await Order.create({
       sn: snNum,
       checkoutPrice: checkoutPrice,
-      shipping_fee: shipping_fee,
-      discount_fee: coupon_discount_fee,
-      total_amount: total_amount,
+      shipping_fee: shippingFee,
+      discount_fee: couponDiscountFee,
+      total_amount: totalAmount,
       name: orderCustomerName,
       email: orderCustomerEmail,
       phone: orderCustomerPhone,
@@ -89,7 +89,7 @@ const orderService = {
     // ===== Step 4 建立與訂單有關的 Shipping =====
     const shippingData = await Shipping.create({
       sn: null,
-      shipping_fee: shipping_fee,
+      shipping_fee: shippingFee,
       shipping_method: shippingMethod,
       shipping_status: 0, // （0 - 尚未配送, 1 - 配送中, 2 - 已送達）
       name: orderRecipientName, // 從 前端 取得

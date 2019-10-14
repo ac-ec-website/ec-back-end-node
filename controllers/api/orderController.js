@@ -16,12 +16,7 @@ const orderController = {
       const orderRemark = req.body.orderRemark
 
       // ===== Step 1 檢查客戶資料是否填寫完整 =====
-      if (
-        !orderCustomerName ||
-        !orderCustomerEmail ||
-        !orderCustomerPhone ||
-        !orderCustomerAddress
-      ) {
+      if (!orderCustomerName || !orderCustomerEmail || !orderCustomerPhone || !orderCustomerAddress) {
         return res.json({
           status: 'error',
           message: '請填寫訂單客戶資料欄位'
@@ -47,45 +42,33 @@ const orderController = {
 
       const cart = await cartService.getCart(tempCartId)
 
-      const total_amount =
-        cart.items.length > 0
-          ? cart.items.map(d => d.sell_price * d.CartItem.quantity).reduce((a, b) => a + b)
-          : 0
+      const totalAmount =
+        cart.items.length > 0 ? cart.items.map(d => d.sell_price * d.CartItem.quantity).reduce((a, b) => a + b) : 0
 
       const shippingMethod = await cart.shipping_method
-      const shipping_fee = await cart.shipping_fee
+      const shippingFee = await cart.shipping_fee
 
       // ===== Step 3 取得優惠券相關資訊 =====
       const couponCode = req.session.couponCode
-      let coupon_discount_fee = 0
+      let couponDiscountFee = 0
       let CouponId
 
       if (couponCode !== undefined) {
         const couponData = await couponService.getCoupon(couponCode)
 
         CouponId = couponData.id
-        coupon_discount_fee = await couponService.getCouponDiscountFee(
-          couponData,
-          shipping_fee,
-          total_amount
-        )
+        couponDiscountFee = await couponService.getCouponDiscountFee(couponData, shippingFee, totalAmount)
       }
 
       // ===== Step 4 取得結帳金額資訊 =====
-      const checkoutPrice = total_amount + shipping_fee - coupon_discount_fee
+      const checkoutPrice = totalAmount + shippingFee - couponDiscountFee
 
       // ===== Step 5 創建訂單 =====
-      const {
-        orderData,
-        orderItemData,
-        paymentData,
-        shippingData,
-        tempOrderId
-      } = await orderService.postOrder(
+      const { orderData, orderItemData, paymentData, shippingData, tempOrderId } = await orderService.postOrder(
         checkoutPrice,
-        shipping_fee,
-        coupon_discount_fee,
-        total_amount,
+        shippingFee,
+        couponDiscountFee,
+        totalAmount,
         orderCustomerName,
         orderCustomerEmail,
         orderCustomerPhone,

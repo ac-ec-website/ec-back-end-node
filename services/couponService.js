@@ -51,25 +51,25 @@ const couponService = {
 
     return couponData
   },
-  getCouponDiscountFee: async (couponData, shipping_fee, total_amount) => {
-    let coupon_discount_fee = 0
+  getCouponDiscountFee: async (couponData, shippingFee, totalAmount) => {
+    let couponDiscountFee = 0
     // 運費相關
     if (couponData.type === 0 && couponData.shipping_free === 1) {
-      coupon_discount_fee = shipping_fee
+      couponDiscountFee = shippingFee
     }
 
     // 折價相關
     if (couponData.type === 1 && couponData.product_reduce !== null) {
-      coupon_discount_fee = couponData.product_reduce
+      couponDiscountFee = couponData.product_reduce
     }
 
     // 打折相關
     if (couponData.type === 2 && couponData.percent !== null) {
       const discount = 1 - couponData.percent / 100
-      coupon_discount_fee = Math.round(total_amount * discount)
+      couponDiscountFee = Math.round(totalAmount * discount)
     }
 
-    return coupon_discount_fee
+    return couponDiscountFee
   }
 }
 
