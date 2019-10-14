@@ -19,7 +19,12 @@ const adOrdService = {
 
   putOrder: async (orderId, data) => {
     const order = await Order.findByPk(orderId)
-    await order.update(data)
+    await order.update({
+      payment_status: data.paymentStatus,
+      shipping_status: data.shippingStatus
+    })
+
+    // await order.update(data)
 
     return { order }
   }
