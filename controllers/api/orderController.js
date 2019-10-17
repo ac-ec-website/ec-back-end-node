@@ -1,6 +1,7 @@
 const orderService = require('../../services/orderService')
 const cartService = require('../../services/cartService')
 const couponService = require('../../services/couponService')
+const discountService = require('../../services/discountService')
 const emailNotify = require('../emailNotify')
 
 const orderController = {
@@ -60,10 +61,18 @@ const orderController = {
         couponDiscountFee = await couponService.getCouponDiscountFee(couponData, shippingFee, totalAmount)
       }
 
-      // ===== Step 4 取得結帳金額資訊 =====
+      // ===== Step 4 取得優惠活動資訊 =====
+      const discountData = await discountService.getDiscounts(cart, totalAmount)
+
+      const discountId = discountData.id
+      if (discountId) {
+        couponDiscountFee = await discountService.getDiscountFee(discountData, shippingFee, totalAmount)
+      }
+
+      // ===== Step 5 取得結帳金額資訊 =====
       const checkoutPrice = totalAmount + shippingFee - couponDiscountFee
 
-      // ===== Step 5 創建訂單 =====
+      // ===== Step 6 創建訂單 =====
       const { orderData, orderItemData, paymentData, shippingData, tempOrderId } = await orderService.postOrder(
         checkoutPrice,
         shippingFee,
@@ -80,15 +89,17 @@ const orderController = {
         orderRecipientAddress,
         shippingMethod,
         cart,
-        tempCartId
+        tempCartId,
+        discountId
       )
 
-      // ===== Step 6 設定 req.session.cartId 為 undefined，避免購物車重複使用，同時，不影響 productController getProducts =====
+      // ===== Step 7 設定 req.session.cartId 為 undefined，避免購物車重複使用，同時，不影響 productController getProducts =====
       req.session.cartId = undefined
 
-      // ===== Step 7 將 tempOrderId, paymentData.id 存入 res.session =====
+      // ===== Step 8 將 tempOrderId, paymentData.id 存入 res.session =====
       req.session.orderId = tempOrderId
       req.session.paymentId = paymentData.id
+      req.session.discountId = discountId
       await req.session.save()
 
       res.json({

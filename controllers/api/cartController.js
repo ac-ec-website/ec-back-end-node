@@ -1,4 +1,5 @@
 const cartService = require('../../services/cartService')
+const discountService = require('../../services/discountService')
 
 const cartController = {
   // 取得單一購物車的資料
@@ -17,9 +18,12 @@ const cartController = {
       const totalAmount =
         cart.items.length > 0 ? cart.items.map(d => d.sell_price * d.CartItem.quantity).reduce((a, b) => a + b) : 0
 
+      const discountData = await discountService.getDiscounts(cart, totalAmount)
+
       return res.json({
         cart,
         totalAmount,
+        discountData,
         status: 'success',
         message: '成功取得購物車的資料'
       })
