@@ -29,6 +29,7 @@ const orderController = require('../controllers/api/orderController.js')
 const userController = require('../controllers/api/userController')
 const paymentController = require('../controllers/api/paymentController')
 const couponController = require('../controllers/api/couponController')
+const discountController = require('../controllers/api/discountController')
 
 router.use(stubSession)
 // === 商品顯示 API === //
@@ -64,6 +65,10 @@ router.post('/coupon', couponController.postCoupon)
 router.get('/coupon', couponController.getCoupon)
 // 取消使用優惠券
 router.delete('/coupon', couponController.deleteCoupon)
+
+// === 特價活動 API === //
+// 取得特價活動資訊
+router.get('/discount', discountController.getDiscount)
 
 // === 款項 API === //
 router.get('/payment', paymentController.getPayment)
