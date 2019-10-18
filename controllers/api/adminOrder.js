@@ -55,7 +55,7 @@ const adminOrder = {
         emailNotify.sendEmail(buyerEmail, emailSubject, emailContent)
       }
 
-      return res.json({ order, status: 'success', message: 'status was successfully created' })
+      return res.json({ order, status: 'success', message: 'Order was successfully updated' })
     } catch (error) {
       console.log('更新後台訂單 error', error)
       return res.sendStatus(500)

@@ -32,9 +32,9 @@ const adminProduct = {
 
       const { file } = req
       const data = { ...req.body }
-      const { product } = await adProService.postProduct(file, data)
+      await adProService.postProduct(file, data)
 
-      return res.json({ product, status: 'success', message: 'Product was successfully created' })
+      return res.json({ status: 'success', message: 'Product was successfully created' })
     } catch (error) {
       console.log('新增後台商品 error', error)
       return res.sendStatus(500)
@@ -50,9 +50,9 @@ const adminProduct = {
       const productId = req.params.id
       const { file } = req
       const data = { ...req.body }
-      const { product } = await adProService.putProduct(productId, file, data)
+      await adProService.putProduct(productId, file, data)
 
-      return res.json({ product, status: 'success', message: 'Product was successfully created' })
+      return res.json({ status: 'success', message: 'Product was successfully updated' })
     } catch (error) {
       console.log('更新後台商品 error', error)
       return res.sendStatus(500)

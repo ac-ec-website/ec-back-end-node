@@ -33,7 +33,7 @@ const adminCoupon = {
       const data = { ...req.body }
       const { coupon } = await adCouService.postCoupon(data)
 
-      return res.json({ coupon, status: 'success', message: 'coupon was successfully created' })
+      return res.json({ coupon, status: 'success', message: 'Coupon was successfully created' })
     } catch (error) {
       console.log('新增後台優惠券 error', error)
       return res.sendStatus(500)
@@ -50,7 +50,7 @@ const adminCoupon = {
       const data = { ...req.body }
       const { coupon } = await adCouService.putCoupon(couponId, data)
 
-      return res.json({ coupon, status: 'success', message: 'coupon was successfully created' })
+      return res.json({ coupon, status: 'success', message: 'Coupon was successfully updated' })
     } catch (error) {
       console.log('更新後台優惠券 error', error)
       return res.sendStatus(500)

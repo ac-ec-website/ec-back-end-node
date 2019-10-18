@@ -33,7 +33,7 @@ const adminCategory = {
       const name = req.body.name
       const { category } = await adCatService.postCategory(name)
 
-      return res.json({ category, status: 'success', message: 'category was successfully created' })
+      return res.json({ category, status: 'success', message: 'Category was successfully created' })
     } catch (error) {
       console.log('新增後台分類 error', error)
       return res.sendStatus(500)
@@ -50,7 +50,7 @@ const adminCategory = {
       const data = { ...req.body }
       const { category } = await adCatService.putCategory(categoryId, data)
 
-      return res.json({ category, status: 'success', message: 'category was successfully created' })
+      return res.json({ category, status: 'success', message: 'Category was successfully updated' })
     } catch (error) {
       console.log('更新後台分類 error', error)
       return res.sendStatus(500)

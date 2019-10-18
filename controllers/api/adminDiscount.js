@@ -50,7 +50,7 @@ const adminDiscount = {
       const data = { ...req.body }
       const { discount } = await adDisService.putDiscount(discountId, data)
 
-      return res.json({ discount, status: 'success', message: 'Discount was successfully created' })
+      return res.json({ discount, status: 'success', message: 'Discount was successfully updated' })
     } catch (error) {
       console.log('更新後台特價活動 error', error)
       return res.sendStatus(500)
