@@ -10,6 +10,21 @@ describe('#Cart Controller', () => {
     before(async function () {
       // 在所有測試開始前會執行的程式碼區塊
       await db.Cart.destroy({ where: {}, truncate: true })
+      await db.Discount.destroy({ where: {}, truncate: true })
+      await db.Product.destroy({ where: {}, truncate: true })
+
+      await db.Product.create({ name: 'product1', sell_price: 500 })
+      await db.Product.create({ name: 'product2', sell_price: 350 })
+      await db.Discount.create({
+        id: 1,
+        type: 1,
+        target_price: 500,
+        percent: null,
+        product_reduce: 30,
+        shipping_free: null,
+        start_date: '2019-09-01T00:00:00.000Z',
+        end_date: '2020-10-20T13:00:00.000Z'
+      })
     })
 
     it('（Ｏ）取得單一購物車資料', done => {
@@ -50,10 +65,62 @@ describe('#Cart Controller', () => {
         })
     })
 
+    it('（Ｏ）取得單一購物車資料，而且適用特價活動', done => {
+      var agent = request.agent(app)
+      agent
+        .post('/api/cart')
+        .send({ productId: 1, quantity: 1 })
+        .set('Accept', 'application/json')
+        .expect(200)
+        .end(function (err, res) {
+          if (err) return done(err)
+
+          agent
+            .get('/api/cart')
+            .set('Accept', 'application/json')
+            .expect(200)
+            .end(function (err, res) {
+              if (err) return done(err)
+              expect(res.body.cart.id).to.be.equal(2)
+              expect(res.body.discountData.product_reduce).to.be.equal(30)
+              expect(res.body.status).to.be.equal('success')
+
+              done()
+            })
+        })
+    })
+
+    it('（Ｏ）取得單一購物車資料，但不適用特價活動', done => {
+      var agent = request.agent(app)
+      agent
+        .post('/api/cart')
+        .send({ productId: 2, quantity: 1 })
+        .set('Accept', 'application/json')
+        .expect(200)
+        .end(function (err, res) {
+          if (err) return done(err)
+
+          agent
+            .get('/api/cart')
+            .set('Accept', 'application/json')
+            .expect(200)
+            .end(function (err, res) {
+              if (err) return done(err)
+              expect(res.body.cart.id).to.be.equal(3)
+              expect(res.body.discountData.id).to.be.equal(undefined)
+              expect(res.body.status).to.be.equal('success')
+
+              done()
+            })
+        })
+    })
+
     after(async function () {
       // 在所有測試結束後會執行的程式碼區塊
       await db.Cart.destroy({ where: {}, truncate: true })
       await db.CartItem.destroy({ where: {}, truncate: true })
+      await db.Product.destroy({ where: {}, truncate: true })
+      await db.Discount.destroy({ where: {}, truncate: true })
     })
   })
   describe('PUT Cart - 更新購物車的配送資訊', () => {

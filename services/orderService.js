@@ -25,7 +25,8 @@ const orderService = {
     orderRecipientAddress,
     shippingMethod,
     cart,
-    tempCartId
+    tempCartId,
+    discountId
   ) => {
     // ===== Step 1 創建訂單 =====
     const orderData = await Order.create({
@@ -44,7 +45,7 @@ const orderService = {
       payment_status: 0, // （0 - 尚未付款, 1 - 已付款）
       UserId: null,
       CouponId: CouponId,
-      DiscountId: null
+      DiscountId: discountId
     })
 
     // ===== Step 2 建立與訂單有關的 OrderItem =====
