@@ -8,12 +8,12 @@ const db = require('../../models')
 
 describe('#Product Controller', () => {
   describe('GET /api/products', () => {
-    before(async function () {
+    before(async function() {
       // 在所有測試開始前會執行的程式碼區塊
       await db.Product.destroy({ where: {}, truncate: true })
 
-      await db.Product.create({ name: 'product1' })
-      await db.Product.create({ name: 'product2' })
+      await db.Product.create({ name: 'product1', product_status: true, stock_quantity: 10 })
+      await db.Product.create({ name: 'product2', product_status: true, stock_quantity: 10 })
     })
 
     it('取得所有產品', done => {
@@ -21,7 +21,7 @@ describe('#Product Controller', () => {
         .get('/api/products')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function (err, res) {
+        .end(function(err, res) {
           if (err) return done(err)
           expect(res.body.products.length).to.be.equal(2)
           expect(res.body.products[0].name).to.be.equal('product1')
@@ -31,14 +31,14 @@ describe('#Product Controller', () => {
         })
     })
 
-    after(async function () {
+    after(async function() {
       // 在所有測試結束後會執行的程式碼區塊
       await db.Product.destroy({ where: {}, truncate: true })
     })
   })
 
   describe('GET /api/products with cartId', () => {
-    before(async function () {
+    before(async function() {
       // 在所有測試開始前會執行的程式碼區塊
       sinon.stub(stubForTest, 'stubSession').callsFake((req, res, next) => {
         req.session.cartId = 1
@@ -50,8 +50,8 @@ describe('#Product Controller', () => {
       await db.Product.destroy({ where: {}, truncate: true })
       await db.Cart.destroy({ where: {}, truncate: true })
 
-      await db.Product.create({ name: 'product1' })
-      await db.Product.create({ name: 'product2' })
+      await db.Product.create({ name: 'product1', product_status: true, stock_quantity: 10 })
+      await db.Product.create({ name: 'product2', product_status: true, stock_quantity: 10 })
       await db.Cart.create({ id: 1 })
     })
 
@@ -60,7 +60,7 @@ describe('#Product Controller', () => {
         .get('/api/products')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function (err, res) {
+        .end(function(err, res) {
           if (err) return done(err)
           expect(res.body.products.length).to.be.equal(2)
           expect(res.body.products[0].name).to.be.equal('product1')
@@ -71,7 +71,7 @@ describe('#Product Controller', () => {
         })
     })
 
-    after(async function () {
+    after(async function() {
       // 在所有測試結束後會執行的程式碼區塊
       stubForTest.stubSession.restore()
       await db.Product.destroy({ where: {}, truncate: true })
@@ -80,11 +80,11 @@ describe('#Product Controller', () => {
   })
 
   describe('GET /api/products/:id', () => {
-    before(async function () {
+    before(async function() {
       // 在所有測試開始前會執行的程式碼區塊
       await db.Product.destroy({ where: {}, truncate: true })
 
-      await db.Product.create({ name: 'product1' })
+      await db.Product.create({ name: 'product1', product_status: true, stock_quantity: 10 })
     })
 
     it('取得特定產品資訊', done => {
@@ -92,7 +92,7 @@ describe('#Product Controller', () => {
         .get('/api/products/1')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function (err, res) {
+        .end(function(err, res) {
           if (err) return done(err)
 
           expect(res.body.product.id).to.be.equal(1)
@@ -102,14 +102,14 @@ describe('#Product Controller', () => {
         })
     })
 
-    after(async function () {
+    after(async function() {
       // 在所有測試結束後會執行的程式碼區塊
       await db.Product.destroy({ where: {}, truncate: true })
     })
   })
 
   describe('GET /api/products/:id with cartId', () => {
-    before(async function () {
+    before(async function() {
       // 在所有測試開始前會執行的程式碼區塊
       sinon.stub(stubForTest, 'stubSession').callsFake((req, res, next) => {
         req.session.cartId = 1
@@ -120,7 +120,7 @@ describe('#Product Controller', () => {
       await db.Product.destroy({ where: {}, truncate: true })
       await db.Cart.destroy({ where: {}, truncate: true })
 
-      await db.Product.create({ name: 'product1' })
+      await db.Product.create({ name: 'product1', product_status: true, stock_quantity: 10 })
       await db.Cart.create({ id: 1 })
     })
 
@@ -129,7 +129,7 @@ describe('#Product Controller', () => {
         .get('/api/products/1')
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function (err, res) {
+        .end(function(err, res) {
           if (err) return done(err)
 
           expect(res.body.product.id).to.be.equal(1)
@@ -140,7 +140,7 @@ describe('#Product Controller', () => {
         })
     })
 
-    after(async function () {
+    after(async function() {
       // 在所有測試結束後會執行的程式碼區塊
       stubForTest.stubSession.restore()
       await db.Product.destroy({ where: {}, truncate: true })
