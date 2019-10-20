@@ -45,7 +45,7 @@ const cartController = {
         })
       }
 
-      const cartItem = await cartService.addItemToCart(cartId, cartItemId)
+      const { cartItem, product } = await cartService.addItemToCart(cartId, cartItemId)
 
       if (cartItem === undefined) {
         return res.json({
@@ -55,8 +55,17 @@ const cartController = {
         })
       }
 
+      if (product === undefined) {
+        return res.json({
+          cartItem,
+          status: 'warning',
+          message: '商品已無額外庫存囉！'
+        })
+      }
+
       return res.json({
         cartItem,
+        product,
         status: 'success',
         message: '成功增加購物車的商品數量'
       })
@@ -137,17 +146,27 @@ const cartController = {
         quantity: req.body.quantity
       }
 
-      const { cart, cartItem } = await cartService.postCart(cartId, productInfo)
+      const { cart, cartItem, product } = await cartService.postCart(cartId, productInfo)
 
       req.session.cartId = cart.id
       // 自動清除先前的 coupon 資訊
       req.session.couponCode = undefined
       await req.session.save()
 
-      res.json({
+      if (product === undefined) {
+        return res.json({
+          cart,
+          cartItem,
+          status: 'warning',
+          message: '商品已無額外庫存囉！'
+        })
+      }
+
+      return res.json({
         status: 'success',
         cart,
-        cartItem
+        cartItem,
+        product
       })
     } catch (error) {
       console.log('加入購物車 error', error)
