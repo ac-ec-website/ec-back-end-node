@@ -5,13 +5,18 @@ const Category = db.Category
 const productService = {
   getAllProducts: async () => {
     const products = await Product.findAll({ include: [{ model: Category }] })
+    const productsLive = products.filter(product => {
+      return product.product_status === true && product.stock_quantity > 0
+    })
 
-    return products
+    return productsLive
   },
   getProduct: async productId => {
     const product = await Product.findByPk(productId)
-
-    return product
+    if (product.product_status === true && product.stock_quantity > 0) {
+      return product
+    }
+    throw 'product not active'
   }
 }
 
