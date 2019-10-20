@@ -292,6 +292,19 @@ module.exports = {
           OrderId: 22,
           createdAt: '2019-9-20T13:00:00',
           updatedAt: '2019-9-20T13:00:00'
+        },
+        {
+          sn: null,
+          shipping_fee: 60,
+          shipping_method: '住家宅配',
+          // 0 - 未配送, 1 - 配送中, 2 - 已送達
+          shipping_status: 2,
+          name: faker.name.lastName(),
+          phone: faker.phone.phoneNumber(),
+          address: faker.address.streetAddress(),
+          OrderId: 23,
+          createdAt: new Date(),
+          updatedAt: new Date()
         }
       ],
       {}

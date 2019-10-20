@@ -224,6 +224,16 @@ module.exports = {
           OrderId: 22,
           createdAt: '2019-9-20T13:00:00',
           updatedAt: '2019-9-20T13:00:00'
+        },
+        {
+          params: null,
+          sn: null,
+          total_amount: 10200,
+          payment_method: 'CREDIT',
+          payment_status: 1, // （0 - 尚未付款, 1 - 已付款）
+          OrderId: 23,
+          createdAt: '2019-9-20T13:00:00',
+          updatedAt: '2019-9-20T13:00:00'
         }
       ],
       {}

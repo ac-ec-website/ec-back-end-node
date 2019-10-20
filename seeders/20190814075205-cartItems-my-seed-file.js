@@ -179,6 +179,20 @@ module.exports = {
           ProductId: 1,
           createdAt: '2019-9-20T13:00:00',
           updatedAt: '2019-9-20T13:00:00'
+        },
+        {
+          quantity: 15,
+          CartId: 24,
+          ProductId: 2,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        {
+          quantity: 12,
+          CartId: 24,
+          ProductId: 5,
+          createdAt: new Date(),
+          updatedAt: new Date()
         }
       ],
       {}
