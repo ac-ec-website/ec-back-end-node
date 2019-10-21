@@ -12,7 +12,9 @@ describe('#Order Controller', () => {
       await db.Cart.destroy({ where: {}, truncate: true })
       await db.CartItem.destroy({ where: {}, truncate: true })
       await db.Order.destroy({ where: {}, truncate: true })
+      await db.Product.destroy({ where: {}, truncate: true })
 
+      await db.Product.create({ sell_price: 500, quantity: 100 })
       await db.Coupon.create({
         id: 1,
         type: 1,
@@ -123,9 +125,7 @@ describe('#Order Controller', () => {
 
               agent
                 .post('/api/order')
-                .send(
-                  'orderRecipientName=user1&orderRecipientPhone=0912345678&orderRecipientAddress=test'
-                )
+                .send('orderRecipientName=user1&orderRecipientPhone=0912345678&orderRecipientAddress=test')
                 .set('Accept', 'application/json')
                 .expect(200)
                 .end(function (err, res) {

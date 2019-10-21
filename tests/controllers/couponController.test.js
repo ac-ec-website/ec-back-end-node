@@ -10,6 +10,7 @@ describe('#Coupon Controller', () => {
     before(async function () {
       // 在所有測試開始前會執行的程式碼區塊
       await db.Coupon.destroy({ where: {}, truncate: true })
+
       await db.Coupon.create({
         id: 1,
         type: 1,
@@ -99,7 +100,9 @@ describe('#Coupon Controller', () => {
       await db.Cart.destroy({ where: {}, truncate: true })
       await db.CartItem.destroy({ where: {}, truncate: true })
       await db.Coupon.destroy({ where: {}, truncate: true })
+      await db.Product.destroy({ where: {}, truncate: true })
 
+      await db.Product.create({ sell_price: 500, stock_quantity: 100 })
       await db.Coupon.create({
         id: 1,
         type: 1,
@@ -220,6 +223,9 @@ describe('#Coupon Controller', () => {
       await db.Cart.destroy({ where: {}, truncate: true })
       await db.CartItem.destroy({ where: {}, truncate: true })
       await db.Coupon.destroy({ where: {}, truncate: true })
+      await db.Product.destroy({ where: {}, truncate: true })
+
+      await db.Product.create({ sell_price: 500, stock_quantity: 100 })
 
       await db.Coupon.create({
         id: 1,
