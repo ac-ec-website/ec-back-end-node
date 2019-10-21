@@ -15,8 +15,8 @@ module.exports = {
           sell_price: 460,
           product_status: true,
           CategoryId: 1,
-          createdAt: new Date(),
-          updatedAt: new Date()
+          createdAt: '2019-9-20T13:00:00',
+          updatedAt: '2019-9-20T13:00:00'
         },
         {
           name: '【草本養護】沁檸蘭草防蚤洗毛精-汪汪專用 500ml',
@@ -28,8 +28,8 @@ module.exports = {
           sell_price: 520,
           product_status: true,
           CategoryId: 1,
-          createdAt: new Date(),
-          updatedAt: new Date()
+          createdAt: '2019-9-20T13:00:00',
+          updatedAt: '2019-9-20T13:00:00'
         },
         {
           name: '【口腔對策】得寸淨齒舒口水',
@@ -42,8 +42,8 @@ module.exports = {
           sell_price: 460,
           product_status: true,
           CategoryId: 1,
-          createdAt: new Date(),
-          updatedAt: new Date()
+          createdAt: '2019-9-20T13:00:00',
+          updatedAt: '2019-9-20T13:00:00'
         },
         {
           name: '【植淨日常】草本速淨潔膚水',
@@ -55,8 +55,8 @@ module.exports = {
           sell_price: 349,
           product_status: true,
           CategoryId: 1,
-          createdAt: new Date(),
-          updatedAt: new Date()
+          createdAt: '2019-9-20T13:00:00',
+          updatedAt: '2019-9-20T13:00:00'
         },
         {
           name: '【口腔對策】喵口回春潔牙凝膠',
@@ -69,8 +69,8 @@ module.exports = {
           sell_price: 320,
           product_status: true,
           CategoryId: 2,
-          createdAt: new Date(),
-          updatedAt: new Date()
+          createdAt: '2019-9-20T13:00:00',
+          updatedAt: '2019-9-20T13:00:00'
         },
         {
           name: '【口腔對策】狗齒清新潔牙凝膠',
@@ -82,8 +82,8 @@ module.exports = {
           sell_price: 320,
           product_status: true,
           CategoryId: 1,
-          createdAt: new Date(),
-          updatedAt: new Date()
+          createdAt: '2019-9-20T13:00:00',
+          updatedAt: '2019-9-20T13:00:00'
         }
       ],
       {}

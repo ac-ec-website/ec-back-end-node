@@ -8,13 +8,22 @@ module.exports = {
       'Users',
       [
         {
-          name: 'root',
+          name: '老闆',
           email: 'root@example.com',
           password: bcrypt.hashSync('123', salt),
           role: 'admin',
           address: '你家',
-          createdAt: new Date(),
-          updatedAt: new Date()
+          createdAt: '2019-9-20T13:00:00',
+          updatedAt: '2019-9-20T13:00:00'
+        },
+        {
+          name: '員工',
+          email: 'staff@example.com',
+          password: bcrypt.hashSync('123', salt),
+          role: 'admin',
+          address: '你家',
+          createdAt: '2019-9-20T13:00:00',
+          updatedAt: '2019-9-20T13:00:00'
         },
         {
           name: 'user1',
@@ -22,8 +31,8 @@ module.exports = {
           password: bcrypt.hashSync('123', salt),
           role: 'user',
           address: '你家',
-          createdAt: new Date(),
-          updatedAt: new Date()
+          createdAt: '2019-9-20T13:00:00',
+          updatedAt: '2019-9-20T13:00:00'
         }
       ],
       {}

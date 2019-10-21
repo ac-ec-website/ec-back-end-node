@@ -14,9 +14,9 @@ module.exports = {
           product_reduce: null,
           shipping_free: null,
           limited_num: 88,
-          end_date: '2019-10-20T13:00:00',
-          createdAt: new Date(),
-          updatedAt: new Date()
+          end_date: '2019-11-20T13:00:00',
+          createdAt: '2019-9-20T13:00:00',
+          updatedAt: '2019-9-20T13:00:00'
         },
         {
           type: 1,
@@ -27,9 +27,9 @@ module.exports = {
           product_reduce: 111,
           shipping_free: null,
           limited_num: 111,
-          end_date: '2019-10-20T13:00:00',
-          createdAt: new Date(),
-          updatedAt: new Date()
+          end_date: '2019-11-20T13:00:00',
+          createdAt: '2019-9-20T13:00:00',
+          updatedAt: '2019-9-20T13:00:00'
         },
         {
           type: 0,
@@ -40,9 +40,9 @@ module.exports = {
           product_reduce: null,
           shipping_free: 1,
           limited_num: 3,
-          end_date: '2019-10-20T13:00:00',
-          createdAt: new Date(),
-          updatedAt: new Date()
+          end_date: '2019-11-20T13:00:00',
+          createdAt: '2019-9-20T13:00:00',
+          updatedAt: '2019-9-20T13:00:00'
         }
       ],
       {}
