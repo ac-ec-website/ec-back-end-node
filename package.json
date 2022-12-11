@@ -21,7 +21,7 @@
     "cors": "^2.8.5",
     "coveralls": "^3.0.6",
     "dotenv": "^8.0.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-session": "^1.16.2",
     "faker": "^4.1.0",
     "googleapis": "^43.0.0",
